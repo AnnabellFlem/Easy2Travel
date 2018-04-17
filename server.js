@@ -331,7 +331,6 @@ app.delete('/tmldelete/:tlsId', function(req, res) {
     Timeline.remove({'_id': Timeline.getObjectId(req.params.tlsId)}, function (err) {
         if (err) {
             console.log(err);
-            //res.json(err);
         } else {
             res.send(statusOK);
             console.log('OK_delete');
