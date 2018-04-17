@@ -648,7 +648,6 @@ function enableEvent() {
         $('.blog-form :input').not(':button').val('');
         $(".img-wrapper").css("background-image", "");
         $('.login-status').empty();
-//        $("#blog").data("value", 1);
     });
 
 //    $("#language li a").click(function (e) {
