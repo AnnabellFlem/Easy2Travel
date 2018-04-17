@@ -1,0 +1,40 @@
+<form class="login-form">
+    <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Log In</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input type="text" name="username" placeholder="username or email" class="form-group form-control"/>
+            <input type="password" name="password" placeholder="password" class="form-group form-control" data-toggle="tooltip" data-trigger="manual" data-placement="right" data-title="Caps lock is on"/>
+        </div>
+        <span class="login-status small text-danger ml-3" style="height: 0px;"></span>
+        <div class="modal-footer">
+            <p class="message small mr-auto">Not registered? <a href="#">Create an account</a></p>
+            <button type="submit" class="btn btn-default btn-sm p-1">Login</button>
+        </div>
+    </div>
+    </div>
+</form>
+<form class="register-form">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Register</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" placeholder="name" class="form-group form-control" name="username"/>
+        <input type="text" placeholder="email address" class="form-group form-control" name="email"/>
+        <input type="password" placeholder="password" class="form-group form-control" name="password"/>
+        <input type="password" placeholder="confirm password" class="form-group form-control" name="repassword"/>
+      </div>
+        <span class="login-status small text-danger ml-3" style="height: 0px;"></span>
+      <div class="modal-footer">
+        <p class="message small mr-auto">Already registered? <a href="#">Sign In</a></p>
+        <button type="submit" class="btn btn-default btn-sm p-1">Create</button>
+      </div>
+    </div>
+  </div>
+</form>

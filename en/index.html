@@ -1,0 +1,377 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <title>Home - Easy2Travel</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="../img/favicon.ico">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../fontawesome/web-fonts-with-css/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <script src="../js/jquery.min.js"></script>
+    <!--
+
+    <script src="../bootstrap/js/popper.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../js/tether.min.js"></script>
+-->
+    <script src="../js/jquery.mixitup.min.js"></script>
+    <script src="../js/jPages.min.js"></script>
+    <script src="../js/main.js"></script>
+</head>
+
+<body id="e2t" data-page="index">
+    <!-- Navbar -->
+    <header id="header-top">
+        <nav class="navbar navbar-expand-md bg-white navbar-dark fixed-top">
+            <a class="navbar-brand app-logo" href="#">
+                <img src="../img/flat_logo.png" alt="Logo">
+            </a>
+            <button class="navbar-toggler theme" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon small"></span>
+            </button>
+            <div class="divider collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="menu nav item-show navbar-collapse">
+                    <li>
+                        <a href="index.html#e2t" title="Home">
+                            <i class="fas fa-home fa-2x"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="guide.html" title="Guide">Guide</a>
+                    </li>
+                    <li>
+                        <a href="trips.html" title="Trips">Trips</a>
+                    </li>
+                    <li>
+                        <a href="tours.html" title="Browse tours">Browse tours
+                            <!-- <i class="fas fa-angle-down"></i> -->
+                        </a>
+                        <!-- <ul class="submenu">
+                    <li><a href="404.html" title="Hot">Hot</a></li>
+                    <li><a href="404.html" title="Newest">Newest</a></li>
+                    <li><a href="404.html" title="By country">By country</a></li>
+                </ul> -->
+                    </li>
+                    <li>
+                        <a href="index.html#about" title="About us">About us</a>
+                    </li>
+                    <li>
+                        <a href="index.html#contact" title="Contact">Contact
+                            <i class="fas fa-angle-down"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="quiz.html" title="Questionnaire">Questionnaire</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="menu nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" title="Language">
+                            <i class="fas fa-globe fa-2x">&nbsp;</i>
+                            <sup>EN</sup>
+                        </a>
+                        <ul id="language" class="submenu">
+                            <li>
+                                <a href="/en/">EN</a>
+                            </li>
+                            <li>
+                                <a href="/ua/">UA</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" title="Search" data-toggle="modal" data-target="#search">
+                            <i class="fas fa-search fa-2x"></i>
+                        </a>
+                    </li>
+                    <li id="sign-btn">
+                        <a href="#" title="Login" class="profile">
+                            <i class="fas fa-sign-in-alt fa-2x">&nbsp;</i>
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="profile.html">
+                                    <i class="fas fa-user">&nbsp;</i>Profile</a>
+                            </li>
+                            <li>
+                                <a href="#" id="logout">
+                                    <i class="fas fa-sign-out-alt">&nbsp;</i>Log out</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!--Login form-->
+    <div id="login">
+    </div>
+    <ddddiv></ddddiv>
+
+    <!--Search form-->
+    <div id="search">
+    </div>
+
+    <!--Image slider-->
+    <div class="container-fluid slider mt-4">
+        <div id="slider-list" class="">
+            <img class="img" src="../img/large/travel.jpg" alt="">
+            <img class="img" src="../img/large/travel1.jpg" alt="">
+            <img class="img" src="../img/large/travel2.jpg" alt="">
+            <img class="img" src="../img/large/travel3.jpg" alt="">
+            <img class="img" src="../img/large/travel4.jpg" alt="">
+            <img class="img" src="../img/large/travel5.jpg" alt="">
+            <img class="img" src="../img/large/travel6.jpg" alt="">
+            <img class="img" src="../img/large/travel7.jpg" alt="">
+            <img class="img" src="../img/large/travel8.jpg" alt="">
+            <img class="img" src="../img/large/travel9.jpg" alt="">
+            <img class="img" src="../img/large/travel10.jpg" alt="">
+            <img class="img" src="../img/large/travel11.jpg" alt="">
+        </div>
+        <!--    Landing-->
+        <div class="overlay text-center">
+            <img src="../img/logo.png" alt="" class="img-wrap">
+            <div id="city-search"></div>
+        </div>
+    </div>
+
+    <!--Image gallery-->
+    <div class="container-fluid container-block mt-4">
+        <div class="container-fluid small pt-1">
+            <ul id="filters1" class="filters">
+                <li>
+                    <span class="filter active" data-filter=".new, .popular, .london, .ny, .vinece">All</span>
+                </li>
+                <li>
+                    <span class="filter" data-filter=".new">Newest</span>
+                </li>
+                <li>
+                    <span class="filter" data-filter=".popular">Popular</span>
+                </li>
+                <li>
+                    <span class="filter" data-filter=".london">London</span>
+                </li>
+                <li>
+                    <span class="filter" data-filter=".ny">New York</span>
+                </li>
+                <li>
+                    <span class="filter" data-filter=".vinece">Vinece</span>
+                </li>
+            </ul>
+            <ul id="filters2" class="filters float-right">
+                <li>
+                    <span class="sort fas fa-cog" data-sort="default:asc" title="Default"></span>
+                </li>
+                <li>
+                    <span class="sort fas fa-sort-up" data-sort="value:asc" title="Ascending"></span>
+                </li>
+                <li>
+                    <span class="sort fas fa-sort-down" data-sort="value:desc" title="Descending"></span>
+                </li>
+                <li>
+                    <span class="sort fas fa-random" data-sort="random" title="Random"></span>
+                </li>
+            </ul>
+        </div>
+        <div id="gallerylist" class="clearfix">
+            <!--
+        <div class="gallery logo" data-cat="logo" data-value="1">
+            <a href="#image-1">
+                <figure class="gallery-wrapper">				
+                    <div class="img" style="background-image: url(img/gallery/p5.jpg)"></div>
+                    <figcaption class="label">
+                        <div class="label-text">
+                            <span class="text-title">New York</span>
+                            <span class="text-category">New York</span>
+				        </div>
+				        <div class="label-bg"></div>
+				    </figcaption>
+                </figure>
+            </a>
+            <div class="lb-overlay" id="image-1">
+                <a href="#gallerylist"><i class="fas fa-times fa-lg"></i></a>
+                <img src="img/gallery/p5.jpg" alt="image01" />
+                <div>
+                    <h3>New York</h3>
+                    <p>One of the most brilliant city in our world</p>
+                </div>
+            </div>
+        </div>				
+-->
+        </div>
+        <div id="pagination" class="pagination justify-content-center holder text-theme">
+            <!--
+        <div class="customBtns">
+            <span class="arrowPrev fas fa-chevron-left" ></span>
+            <span class="arrowNext fas fa-chevron-right" aria-hidden="true"></span>
+        </div>
+-->
+        </div>
+        <!--
+    <div id="pagination1" class="container pagination clearfix1" style="display: none1">
+	    <ol class="btn-group mx-auto">
+		    <li class="btn-group-item"><i class="fas fa-chevron-left"></i>
+		    </li>
+		    <li class="btn-group-item">
+			    <button class="btn current">1</button>
+		    </li>
+		    <li class="btn-group-item">
+			    <button class="btn" disabled="disabled">...</button>
+		    </li>
+		    <li class="btn-group-item">
+			    <button class="btn"><span>40</span></button>
+		    </li>
+		    <li class="btn-group-item"><i class="fas fa-chevron-right"></i>
+		    </li>
+	    </ol>
+    </div>
+-->
+    </div>
+    <!-- About -->
+    <div class="container-fluid container-block mt-4 clearfix">
+        <section id="about">
+            <div class="entry-header">
+                <h1 class="entry-title">About Us</h1>
+            </div>
+            <!-- .entry-header -->
+            <article>
+                <h2 style="display:none">f</h2>
+                <p class="desc">
+                    <em class="red">Howdy and Welcome.</em> When travel with us, you travel better. Once you travel with us, You'll Always
+                    Travel With Us.</p>
+            </article>
+            <div class="row">
+            <div class="col-4 block350">
+                <h2>Easy travel for
+                    <span>Everyone</span>
+                </h2>
+            </div>
+            <aside class="col-8 ">
+                <p>If you want to travel around the world quickly and easily, then our site is for you. Let our guides show
+                    you the best ways to see the world, with insights that only they have. All our tours include: a detailed
+                    map with clearly-marked locations of interest, photos and descriptions so you know what to look for and
+                    a recommended step-by-step route to give you the best experience. We hope that you find a suitable route
+                    for you and your trip will be unforgettable!</p>
+            </aside>
+        </div>
+        </section>
+    </div>
+
+    <!-- Summary -->
+    <div class="container-fluid note container-block">
+        <details>
+            <summary>Note</summary>
+            <p>
+                <a href="http://www.farecompare.com/">Cheap fligths</a>
+            </p>
+            <p>
+                <a href="http://www.booking.com/">Booking.com</a>
+            </p>
+            <aside>
+                <p>These sites can help you in your travels</p>
+            </aside>
+        </details>
+    </div>
+    <!-- Table -->
+    <div class="container-fluid container-block">
+        <table class="country">
+            <caption>2017 Top 5 travel destinations</caption>
+            <tr>
+                <th>№</th>
+                <th>Country</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Choquequirao, Peru</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Taranaki, New Zealand</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Açores, Portugal</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>North Wales, U.K.</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>South Australia</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Contact Container -->
+    <div class="container-fluid container-block padding-64" id="contact">
+        <div class="table">
+            <div class="column col-w40">
+                <div class="padding-16">
+                    <span class="bottombar">Contact Us</span>
+                </div>
+                <h3>Address</h3>
+                <p>Swing by for a cup of coffee, or whatever.</p>
+                <p>
+                    <i class="fas fa-map-marker text-theme font-xlarge"></i>  Kiev, Ukraine</p>
+                <p>
+                    <i class="fas fa-phone text-theme font-xlarge"></i>  +00 1515151515</p>
+                <p>
+                    <i class="fas fa-envelope-open text-theme font-xlarge"></i> Ts.Nyutka@gmail.com</p>
+            </div>
+            <div class="column col-w60">
+                <form action="mailto:Ts.Nyutka@gmail.com" class="container card-4 padding-16 background-theme">
+                    <div class="group">
+                        <label>Name</label>
+                        <input type="text">
+                    </div>
+                    <div class="group">
+                        <label>Email</label>
+                        <input type="text">
+                    </div>
+                    <div class="group">
+                        <label>Subject</label>
+                        <input type="text">
+                    </div>
+                    <input class="check" type="checkbox" checked>
+                    <label class="validate">I Like it!</label>
+                    <button type="submit" class="button item-right theme">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Maps -->
+    <div class="container-fluid p-0" style="height:420px">
+        <div id="googleMap" style="height:100%"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI"></script>
+    <script>
+        function initialize() {
+            var center = {lat: 50.4645706, lng: 30.5190734};
+            var map = new google.maps.Map(document.getElementById('googleMap'), {
+                zoom: 15,
+                center: center,
+                scrollwheel: true,
+                draggable: true,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                draggableCursor: 'default'
+            });
+            var marker = new google.maps.Marker({
+                position: center,
+                map: map
+            });
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+    </div>
+
+    <footer id="footer">
+    </footer>
+</body>
+
+</html>

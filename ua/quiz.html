@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <title>Questionnaire - Easy2Travel</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="shortcut icon" href="../img/favicon.ico">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../fontawesome/web-fonts-with-css/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/main.js"></script>
+</head>
+
+<body id="quiz" data-page="quiz">
+<!-- Navbar -->
+<header id="header-top">
+    <nav class="navbar navbar-expand-md bg-white navbar-dark fixed-top">
+        <a class="navbar-brand app-logo" href="#">
+          <img src="../img/flat_logo.png" alt="Logo">
+        </a>
+        <button class="navbar-toggler theme" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon small"></span>
+        </button>
+        <div class="divider collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="menu nav item-show navbar-collapse">
+            <li>
+                <a href="index.html#e2t" title="Home">
+                <i class="fas fa-home fa-2x"></i></a>
+            </li>
+            <li>
+                <a href="guide.html" title="Guide">Guide</a>
+            </li>
+            <li>
+                <a href="trips.html" title="Trips">Trips</a>
+            </li>
+            <li>
+               <a href="404.html" title="Browse tours">Browse tours <i class="fas fa-angle-down"></i>
+               </a>
+                <ul class="submenu">
+                    <li><a href="404.html" title="Hot">Hot</a></li>
+                    <li><a href="404.html" title="Newest">Newest</a></li>
+                    <li><a href="404.html" title="By country">By country</a></li>
+                </ul>
+            </li>
+            <li><a href="index.html#about" title="About us">About us</a></li>
+            <li><a href="index.html#contact" title="Contact">Contact <i class="fas fa-angle-down"></i></a>
+            <ul class="submenu">
+                <li><a href="quiz.html" title="Questionnaire">Questionnaire</a></li>
+            </ul>
+            </li>
+        </ul>
+        <ul class="menu nav navbar-nav navbar-right">
+            <li><a href="#" title="Language"><i class="fas fa-globe fa-2x">&nbsp;</i><sup>EN</sup></a>
+            <ul id="language" class="submenu">
+                <li><a href="/en/">EN</a></li>
+                <li><a href="/ua/">UA</a></li>
+            </ul>
+            </li>
+            <li><a href="#" title="Search" data-toggle="modal" data-target="#search"><i class="fas fa-search fa-2x"></i></a>
+            </li>
+            <li id="sign-btn"><a href="#" title="Login" class="profile"><i class="fas fa-sign-in-alt fa-2x">&nbsp;</i></a>
+            <ul>
+                <li><a href="profile.html"><i class="fas fa-user">&nbsp;</i>Profile</a></li>
+                <li><a href="#" id="logout"><i class="fas fa-sign-out-alt">&nbsp;</i>Log out</a></li>
+            </ul>
+            </li>
+        </ul>
+        </div>
+    </nav>
+</header>
+
+<!--Login form-->
+<div id="login">
+</div>
+
+<!--Search form-->
+<div id="search">
+</div>
+
+<!--Quiz form-->
+<div class="container quiz">
+<!--    <form name="form" action="test.php" method="post" onsubmit="return verify(this)">-->
+    <form name="form" action="index.html" onsubmit="return verify(this)">
+    <div>
+        <h2>Questionnaire</h2>
+        <p>Thank you for helping us evaluate Company Z's website. If you have not yet used this site, please go back to it now and fill out this questionnaire after you've used it.</p>
+    </div>
+    <table>
+       <tr>
+          <th>Gender?</th>
+       </tr>
+       <tr>
+          <td>
+             <input name="f1" value="1" type="radio" required>&nbsp;Male<br/>
+             <input name="f1" value="2" type="radio">&nbsp;Female<br/>
+          </td>
+       </tr>
+    </table>
+    <table>
+       <tr>
+	       <th>What is your age?</th>
+       </tr>
+       <tr>
+	       <td>
+		       <select name=f2>
+                    <option value="" selected>choose ...</option>
+                    <option value="1">Under 18</option>
+                    <option value="2">18-24</option>
+                    <option value="3">25-34</option>
+                    <option value="4">35-44</option>
+                    <option value="5">45-54</option>
+                    <option value="6">55-64</option>
+                    <option value="7">65-74</option>
+                    <option value="8">75 or over</option>
+                    <option value="9">Prefer not to answer</option>
+                </select>
+                <i class="fas fa-angle-down fa-lg"></i>
+	       </td>
+       </tr>
+    </table>
+    <table>
+        <tr>
+            <th>What are your main reasons for visiting this website?</th>
+        </tr>
+        <tr>
+            <td>
+                <input name="t3" type="text" value="">
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <tr class="font-small">
+            <th class="col-w70">Statements 1 - 5 of 5</th>
+            <th class="col-w30 col-two"><p>Strongly<br>Agree</p><p>Strongly<br>Disagree</p></th>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td class="col-w70">This website has much that is of interest to me.</td>
+            <td class="col-w30">
+                <input name="q1" value="1" type="radio">
+                <input name="q1" value="2" type="radio">
+                <input name="q1" value="3" type="radio">
+                <input name="q1" value="4" type="radio">
+                <input name="q1" value="5" type="radio">
+            </td>
+        </tr>
+        <tr>
+            <td class="col-w70">It is difficult to move around this website.</td>
+            <td class="col-w30">
+                <input name="q2" value="1" type="radio">
+                <input name="q2" value="2" type="radio">
+                <input name="q2" value="3" type="radio">
+                <input name="q2" value="4" type="radio">
+                <input name="q2" value="5" type="radio">
+            </td>
+       </tr>
+       <tr>
+            <td class="col-w70">I can quickly find what I want on this website.</td>
+            <td class="col-w30">
+                <input name="q3" value="1" type="radio">
+                <input name="q3" value="2" type="radio">
+                <input name="q3" value="3" type="radio">
+                <input name="q3" value="4" type="radio">
+                <input name="q3" value="5" type="radio">
+            </td>
+        </tr> 
+        <tr>
+            <td class="col-w70">The pages on this website are very attractive.</td>
+            <td class="col-w30">
+                <input name="q6" value="1" type="radio">
+                <input name="q6" value="2" type="radio">
+                <input name="q6" value="3" type="radio">
+                <input name="q6" value="4" type="radio">
+                <input name="q6" value="5" type="radio">
+            </td>
+       </tr>
+       <tr>
+            <td class="col-w70">I can easily contact the people I want to on this website.</td>
+            <td class="col-w30">
+                <input name="q12" value="1" type="radio">
+                <input name="q12" value="2" type="radio">
+                <input name="q12" value="3" type="radio">
+                <input name="q12" value="4" type="radio">
+                <input name="q12" value="5" type="radio">
+           </td>
+       </tr>
+    </table>   
+    <table>
+        <tr>
+            <th>How important for you is the kind of site you have just been rating?</th>
+        </tr>
+        <tr>
+            <td>
+                <input name="f6" value="1" type="radio">&nbsp;Extremely important<br/>
+                <input name="f6" value="2" type="radio">&nbsp;I would need it sometimes<br/>
+                <input name="f6" value="3" type="radio">&nbsp;Not very important<br/>
+                <input name="f6" value="4" type="radio">&nbsp;I would never need it<br/>
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+	        <th>How would you rate your internet skills?</th>
+        </tr>
+        <tr>
+	        <td>
+		        <select name=f7>
+                    <option value="" selected>choose ...</option>
+                    <option value="1">Expert level</option>
+                    <option value="2">I'm fairly good</option>
+                    <option value="3">Average</option>
+                    <option value="4">I'm fairly unskilled</option>
+                </select>
+                <i class="fas fa-angle-down fa-lg"></i> 
+            </td>
+        </tr>
+    </table> 
+    <table>
+        <tr>
+            <th>Did you enjoy our website?</th>
+        </tr>
+        <tr>
+            <td>
+                <input name="a1" value="1" type="radio" required>&nbsp;Yes<br/>
+                <input name="a1" value="2" type="radio">&nbsp;No<br/>
+            </td>
+        </tr>
+    </table>   
+    <table>
+        <tr>
+            <th>How can we improve our website?</th>
+        </tr>
+        <tr>
+            <td>
+                <input name="a2" value="1" type="checkbox">&nbsp;More pictures<br />
+                <input name="a2" value="2" type="checkbox">&nbsp;More links<br/>
+                <input name="a2" value="3" type="checkbox">&nbsp;More content<br/>
+            </td>
+        </tr>
+    </table>  
+    <table>
+        <tr>
+            <th>Your email address</th>
+            <th>Your phone number</th>
+            <th>Your website</th>
+        </tr>
+        <tr>
+            <td><input name="email" value="" type="email" required placeholder="Enter a valid email address"></td>
+            <td><input name="tel" value="" type="tel" pattern='[\+]\d{2}[\(]\d{2}[\)]\d{4}[\-]\d{4}' title='Phone Number (Format: +99(99)9999-9999)' required placeholder="Enter a valid phone number"></td>
+            <td><input name="url" value="" type="url"></td>
+        </tr>
+    </table>  
+    <table>
+        <tr>
+            <td class="col-w40">
+	            <p>When you've answered all the questions,<br/>please click the SEND button.</p>
+            </td>
+       		<td class="col-w30">
+                <div class="progress">
+                    <progress id="progress" max="100" value="0"></progress>
+                    <div id="p-value"><span>0</span>%</div>
+                </div>
+                <script>		
+                    var pBar = document.getElementById('progress');
+                    var val = document.getElementById('p-value');
+                    var fields = getFormElements(document.form);
+                    
+                    var updateProgress = function() {
+                        pBar.value = Math.floor(100 * getFormValidFieldsCount(form) / getFormFields(form).length);
+                        val.getElementsByTagName('span').innerHTML = pBar.value;
+                        val.innerHTML = pBar.value + '%';
+                    }
+                    for (var i = 0; i < fields.length; i += 1) {
+//                        fields[2].addEventListener('click', function() {
+                        fields[i].addEventListener('change', function() {
+                            updateProgress();
+                        });
+                    }
+                </script>
+            </td>
+       		<td class="col-w30">
+             	<input class="button item-right theme" value="Send" type="submit">
+		    </td>
+        </tr>
+    </table>
+    </form>
+</div>
+
+<footer id="footer">
+</footer>
+
+</body>
+</html>
