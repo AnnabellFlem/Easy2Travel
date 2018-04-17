@@ -8,10 +8,6 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 var PlaceSchema = new mongoose.Schema({
-    placeid: {
-        type: mongoose.Schema.ObjectId,
-        required: true
-    },
     country: {
         type: String,
         required: true
@@ -35,10 +31,10 @@ var PlaceSchema = new mongoose.Schema({
         location: {
             type: [Number],
             required: true
-        },
-        created_at: Date,
-        updated_at: Date
-    }]  
+        }
+    }],
+    created_at: Date,
+    updated_at: Date
 });
 PlaceSchema.pre('save', function(next) {
     "use strict";

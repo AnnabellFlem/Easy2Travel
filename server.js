@@ -313,8 +313,7 @@ app.post('/timeline', function(req, res) {
         if (timelineData.title) {
             console.log('OK_upload');
             Timeline.create(timelineData, function (err, timeline) {
-                if 
-                (err) {
+                if (err) {
                     console.log(err);
                 } else {
                     console.log('OK_create');
