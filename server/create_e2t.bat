@@ -1,1 +1,0 @@
-start "Create E2T" "C:\Program Files\nodejs\node" create_e2t.js
