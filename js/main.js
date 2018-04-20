@@ -761,15 +761,13 @@ function citySearch(e) {
                     city = obj.data;
                 if (obj.status === 'OK') {
                     $('#city-place').load('parts/city_place.html', function() {
-                        $('#city-place h2').text(`Plan your rest in ${city.name} for 2 simple steps`); //Rus??
+                        $('#city-place h2').text(`Plan your rest in ${city.name} for 2 simple steps`);
                     });
                     $('#city-sights').load('parts/city_sights.html', function() {
                         $('#city-sights h3').text(`We recommend to visit in ${city.name}`);
                         markers = [];
                         markers_checked = [];
-                        city.places.map(function(place) {
-                            $('.list-group').append(getCityPlace(place));
-                        });
+                        city.places.map(place => $('.list-group').append(getCityPlace(place)));
                     });
                     $('#google').show();
                     $('body[id=tours] footer').css('position', 'absolute');
@@ -788,7 +786,7 @@ function clearCityPlace() {
 
     $('#city-place').empty();
     $('#city-sights').empty();
-//    $('#google').hide();
+    $('#google').hide();
     $('body[id=tours] footer').css('position', 'fixed');
 }
 
@@ -826,7 +824,7 @@ function getCityPlace(place) {
                 )
                 .append($('<div>').addClass('float-left')
                     .append($('<img>').addClass('media-object fixed-size')
-                        .css('background', `url(${place.img})`).css('background-size', 'cover')
+                        .css('background', `url(${place.imgurl})`).css('background-size', 'cover')
                         .attr('alt', 'Image').attr('src', '/img/cities/e2t_gradient.png')
                     )
                 )
@@ -886,7 +884,8 @@ function initMap() {
 function addMarker(place, checked) {
     'use strict';
     var marker = new google.maps.Marker;
-    marker.setPosition(place.location);
+    var latlng = new google.maps.LatLng(place.location[0], place.location[1]);
+    marker.setPosition(latlng);
     if (!checked) {
         marker.setIcon({
             path: google.maps.SymbolPath.CIRCLE,

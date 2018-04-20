@@ -1,3 +1,14 @@
+        city: 'Kiev',
+        description : '',
+        places: [{
+            label: 'A',
+            description: 'A',
+            imgurl: 'aa',
+            location: [22.2, 33.3]}],
+        language: 'ua'
+
+Австрія - це центральноєвропейська країна з імперською історією, архітектурою в стилі бароко, гірськими селами і альпійським ландшафтом. Державна мова тут німецький. Столиця Австрії - Відень - розташована на річці Дунай. Відень примітна своїми палацами Шенбрунн і Хофбург, а також тим, що в ній жили такі відомі люди, як Вольфганг Амадей Моцарт, Йоганн Штраус і Зигмунд Фрейд. Популярними пам'ятками Австрії є Богемський ліс на півночі країни, озеро Траунзе і розташовані на сході виноградники.
+
 Vienna is the capital of Austria, located in the eastern part of the country on the Danube River. In the cultural and intellectual heritage of the city, such well-known residents as V.A. Mozart, L. Beethoven and Z. Freud. Vienna is also famous for its imperial palaces, among which Schönbrunn is the summer residence of the Habsburg dynasty. And in the Museum Quarter area in historical and modern buildings works of such artists as E. Schiele and G. Klimt are collected.
 Відень - столиця Австрії, розташована в східній частині країни на річці Дунай. У культурний та інтелектуальний спадок міста внесли вклад такі відомі жителі, як В.А. Моцарт, Л. Бетховен і З. Фрейд. Також Відень знаменита своїми імператорськими палацами, серед яких Шенбрунн - літня резиденція династії Габсбургів. А в районі Музейний квартал в історичних і сучасних будівлях зібрані роботи таких художників, як Е. Шіле і Г. Клімт.
 Schönbrunn Palace
@@ -19,6 +30,7 @@ https://en.wikipedia.org/wiki/St._Stephen%27s_Cathedral,_Vienna
 St. Stephen's Cathedral is the mother church of the Roman Catholic Archdiocese of Vienna and the seat of the Archbishop of Vienna, Christoph Cardinal Schönborn, OP. The current Romanesque and Gothic form of the cathedral, seen today in the Stephansplatz, was largely initiated by Duke Rudolf IV (1339–1365) and stands on the ruins of two earlier churches, the first a parish church consecrated in 1147. The most important religious building in Vienna, St. Stephen's Cathedral has borne witness to many important events in Habsburg and Austrian history and has, with its multi-coloured tile roof, become one of the city's most recognizable symbols.
 Собор святого Стефана — архієпископський, кафедральний і приходський собор святого Стефана і Всіх Святих єпископальний собор архієпископства Відня; національний символ Австрії й символ міста Відень.
 
+
 Salzburg is a city in Austria near the border with Germany, surrounded by the Eastern Alps. The Salzach River divides Salzburg into two districts - the left-bank pedestrian Old Town, famous for buildings erected in the Middle Ages and the Baroque era, and the right-bank New Town built in the 19th century. In the Old Town there is a house in which the famous composer Wolfgang Amadeus Mozart was born. Now there is a museum and tourists can see the instruments on which Mozart played in childhood.
 Зальцбург - місто в Австрії поблизу кордону з Німеччиною, оточений Східними Альпами. Річка Зальцах ділить Зальцбург на два райони - лівобережний пішохідний Старе місто, яке славиться будівлями, зведеними в Середні віки і в епоху бароко, і правобережний Нове місто, побудований в XIX столітті. У Старому місті знаходиться будинок, в якому народився знаменитий композитор Вольфганг Амадей Моцарт. Зараз там відкрито музей і туристи можуть побачити інструменти, на яких Моцарт грав в дитинстві.
 https://en.wikipedia.org/wiki/Nonnberg_Abbey
@@ -33,6 +45,8 @@ https://uk.wikipedia.org/wiki/%D0%A4%D0%BE%D1%80%D1%82%D0%B5%D1%86%D1%8F_%D0%93%
 https://en.wikipedia.org/wiki/Hohensalzburg_Castle
 Hohensalzburg Castle sits atop the Festungsberg, a small hill in the Austrian city of Salzburg. Erected at the behest of the Prince-Archbishops of Salzburg with a length of 250 m (820 ft) and a width of 150 m (490 ft), it is one of the largest medieval castles in Europe. Hohensalzburg Castle is situated at an altitude of 506 m.
 Гогензальцбург — одна з найбільших середньовічних фортець Європи. Розташована на вершині гори Фестунг поруч із Зальцбургом, Австрія, на висоті 120 метрів. Фортеця Зальцбурга — одна із повністю збережених фортець. Площа будівлі — 30 тис. м² (до 250 м у довжину та 150 м в ширину). Добратись до фортеці можна або на фунікулері з Старого міста, або пішки. Після Відня (Замок Шенборн, Зоопарк Шенбрунн, Собор святого Стефана та Пратер) фортеця Гогензальцбург є другим за відвідуваністю туристами місцем у Австрії.
+
+Андорра - це маленьке незалежне князівство, розташоване на Піренеях між Францією та Іспанією. Воно є відомою зоною безмитної торгівлі, а також приваблює туристів своїми гірськолижними курортами. У столиці держави, місті Андорра-ла-Велья, багато бутиків, ювелірних магазинів і торгових центрів. Більшість з них зосереджена на проспекті Мерічель. Також в столиці є старий квартал, в якому знаходиться романська церква Санта-Колома з круглою дзвонярській вежею.
 
 Andorra
 https://uk.wikipedia.org/wiki/%D0%90%D0%BD%D0%B4%D0%BE%D1%80%D1%80%D0%B0-%D0%BB%D0%B0-%D0%92%D0%B5%D0%BB%D1%8C%D1%8F
@@ -52,6 +66,8 @@ Vallnord
 Валлнорд
 Vallnord is a ski resort in the Andorran Pyrenees, located just 10 km from the city of Andorra la Vella. It represents two combined skiing areas - Pal-Arinsal and Ordino-Arkalis, connected by a single ski pass.
 Валлнорд - гірськолижний курорт в андоррських Піренеях, розташований всього в 10 км від міста Андорра-ла-Велья. Він являє собою дві об'єднані зони катання - Пал - Арінсаль і Ордіно - Аркаліс, з'єднані між собою єдиним скі-пасом.
+
+Болгарія - балканська держава з різноманітним рельєфом. На його території знаходиться узбережжя Чорного моря, рівнини, гори і річки, одна з яких - Дунай. У Болгарії відчувається вплив грецької, слов'янської, османської та перської культур. Країна багата на спадщину ЮНЕСКО. Тут збереглася традиційна музика і безліч танців, костюмів і ремесел. У V столітті до нашої ери біля підніжжя куполоподібного гірського масиву Вітоша була заснована столиця держави - Софія.
 
 Софія
 Sofia
@@ -73,6 +89,8 @@ The Ivan Vazov National Theatre is Bulgaria's national theatre, as well as the o
 https://uk.wikipedia.org/wiki/Національний_історичний_музей_(Софія)
 На сьогоднішній день в музеї близько 650 тисяч одиниць зберігання.Найбільш цінними є колекції археологічних знахідок від палеоліту до середньовіччя. Окрім цього тут експонуються старовинні монети, зброя, предмети побуту, меблі, карти, геральдичні символи, рідкісні історичні фотографії, церковні приналежності, марки.Історичний музей складається з декількох відділів: археології, історії та етнографії.
 The National Historical Museum in Sofia is Bulgaria's largest museum. It was founded on 5 May 1973. A new representative exhibition was opened in the building of the Court of Justice on 2 March 1984, to commemorate the 13th centenary of the Bulgarian state.The museum was moved in 2000 to the former primary residence[1] of the dictator and last communist leader Todor Zhivkov at Boyana, and currently contains over 650,000 objects connected to archaeology, fine arts, history and ethnography, although only 10% of them are permanently exhibited.
+
+Чеська Республіка, більш відома як Чехія, - країна в Центральній Європі, яка славиться своїми вишукано прикрашеними замками, багатою історією і пивом. За головні визначні пам'ятки Праги, столиці країни, є Празький Град IX століття - добре збереглася середньовічна частина міста - і Карлів міст з його статуями. Ческі-Крумлов, невелике місто в Південній Богемії, примітний своєю архітектурою, в якій поєднується готика, ренесанс і бароко. У його старовинних будівлях відкрито безліч магазинів і ресторанів.
 
 Saxon Switzerland
 Cаксонська Швейцарія
@@ -127,6 +145,8 @@ The Kleť
 https://en.wikipedia.org/wiki/Kle%C5%A5
 The Kleť is a mountain located in the South Bohemian Region of the Czech Republic, near the town of Český Krumlov. It rises 1,084 metres (3,556 ft) above sea level, and on a clear day affords a view of the Alps to the South.
 Кліть - гора, розташована в Південночеський краї в Чехії поблизу міста Ческі-Крумлов. Висота піка - 1084 м. У ясний день в південному напрямку відкривається вид на Альпи.Однойменна з вершиною обсерваторія Кліть розташована на південному схилі гори.
+
+Італія - середземноморська держава в Південній Європі з довгою береговою лінією, що справив величезний вплив на західну культуру і кухню. На території столиці країни, Рима, знаходиться держава Ватикан, а також всесвітньо відомі музеї і стародавні руїни. Інші великі міста Італії - Флоренція, де можна побачити шедеври епохи Відродження, наприклад статую Давида роботи Мікеланджело і собор Дуомо, створений за проектом архітектора Брунеллески, а також місто каналів Венеція і столиця моди Мілан
 
 Мілан
 Мілан - велике місто на півночі Італії, розташований в Ломбардії, світова столиця дизайну і моди. Тут знаходиться фондова біржа Італії, тому місто також вважається фінансовим центром країни. Мілан славиться розкішними ресторанами і бутиками, а також готичним кафедральним собором Дуомо і церквою Санта-Марія-делле-Граціє, в якій можна побачити знамениту фреску "Таємна вечеря" роботи Леонардо да Вінчі.
@@ -187,6 +207,8 @@ https://en.wikipedia.org/wiki/Doge%27s_Palace
 The Doge's Palace is a palace built in Venetian Gothic style, and one of the main landmarks of the city of Venice in northern Italy. The palace was the residence of the Doge of Venice, the supreme authority of the former Republic of Venice, opening as a museum in 1923. Today, it is one of the 11 museums run by the Fondazione Musei Civici di Venezia.
 Палац дожів — пам'ятка італійської готичної архітектури (XIV-XV століть) у Венеції. Ця головна будівля Венеції була насамперед резиденцією дожів республіки. У палаці засідали Велика рада і сенат, працював Верховний суд і вершила свої справи таємна поліція. На першому поверсі розміщувалися також контори юристів, канцелярія, служби цензорів і морське відомство. Надбудований зверху балкон служив свого роду святковою трибуною, з якої дож являв себе народу. Гості міста, які причалювали до самого палацу з боку Пьяцетти, виявлялися, таким чином, біля ніг правителя Республіки.
 
+Франція - це країна в Західній Європі, на території якої знаходяться середньовічні міста, альпійські села і пляжі Середземного моря. Париж, столиця держави, славиться своїми будинками моди, найстаршими художніми музеями, в числі яких Лувр, і пам'ятками, такими як Ейфелева вежа. Франція відома своїми винами і вишуканою кухнею. Наскальний живопис в печері Ласко, амфітеатр Трьох Галій в Ліоні і величезний Версальський палац свідчать про багату історію цих місць.
+
 France
 The capital of France Paris is one of the main European cities and the world center of culture, art, fashion and gastronomy. In the central part of the city, built in the XIX century, there are wide boulevards and the river Seine flows. The most famous sights of Paris - the Eiffel Tower and the Notre Dame Cathedral in the Gothic style, erected in the XII century.
 Столиця Франції Париж - один з головних європейських міст і світовий центр культури, мистецтва, моди і гастрономії. У центральній частині міста, побудованої в XIX столітті, проходять широкі бульвари і протікає річка Сена. Найвідоміші пам'ятки Парижа - Ейфелева вежа і собор Паризької Богоматері в готичному стилі, зведений в XII столітті.
@@ -227,6 +249,8 @@ https://en.wikipedia.org/wiki/French_Riviera
 The French Riviera is the Mediterranean coastline of the southeast corner of France. There is no official boundary, but it is usually considered to extend from Cassis or Toulon or Saint-Tropez on the west to the France-Italy border in the east, where the Italian Riviera joins. The coast is entirely within the Provence-Alpes-Côte d'Azur (PACA) region of France. The principality of Monaco is a semi-enclave within the region, surrounded on three sides by France and fronting the Mediterranean.
 Французька Рив'єра — курортна зона на узбережжі Середземного моря, на території Італії, Франції, Монако, включає міста Сан-Ремо, Рапалло, Монте-Карло, Ніццу тощо. Назву «Рив'єра» придумав маловідомий зараз французький письменник і поет Стефан Л'єжар — 1870 року він видав роман з назвою «Лазуровий Берег»; ці слова спали йому на думку, коли він побачив «дивної краси» бухту міста Єр.
 
+Греція - країна в Південній Європі, розташована на Балканському півострові і тисячах островів в Егейському та Іонічному морях. Вона є спадкоємицею могутньої Стародавній Греції, яка вважається колискою західної цивілізації. Столиця Греції Афіни славиться своєю фортецею Акрополь, яка була зведена в V столітті до н. е., і храмом Парфенон. У туристів користуються популярністю пляжі острова Санторіні з чорним піском, курорти острова Міконос і інші місця літнього відпочинку.
+
 Athens
 Athens - the capital of modern Greece and the center of ancient Greek civilization, which was famous for its power in the era of antiquity. Above the city rises the Acropolis - built in the 5th century. BC fortress, which is crowned by the Temple Parthenon with its famous colonnade. The exposition of the Museum of the Acropolis and the National Archaeological Museum presents sculptures, vases, jewelry and other items of material culture of Ancient Greece.
 Афіни - столиця сучасної Греції і центр давньогрецької цивілізації, яка славилася своєю могутністю в епоху античності. Над містом височить Акрополь - зведена в V ст. до нашої ери фортеця, яку вінчає храм Парфенон з його знаменитої колонадою. В експозиції Музею Акрополя і Національного археологічного музею представлені скульптури, вази, ювелірні вироби та інші предмети матеріальної культури Стародавньої Греції.
@@ -261,6 +285,8 @@ Prasonisi
 https://en.wikipedia.org/wiki/Prasonisi
 Prasonisi (also Prassoníssi) cape is a part of the island of Rhodes. It is located 92 km from Rhodes town; 40 km from Lindos, at the southern-west part of Rhodes.
 Прасонісі - мис в Греції в протоці Карпатос, що омивається Критським і Лівійським морями, південно-західний край Родосу. Являє собою острів, влітку при низькому рівні води з'єднаний піщаним перешийком з Родосом. Знаходиться в 91 кілометрі на північний захід від міста Родосу, в 12 кілометрах на південь від села Kатавей і в 40 кілометрах на північний захід від Линдоса.
+
+Росія - найбільша країна світу, розташована в Східній Європі і Північній Азії і омивається водами Тихого і Північного Льодовитого океанів. Ландшафт Росії вкрай різноманітний: на її території є і тундра, і ліси, і субтропічні пляжі. У Великому театрі в Москві і Маріїнському театрі в Санкт-Петербурзі виступають балетні трупи, які здобули всесвітню славу. Санкт-Петербург, заснований імператором Петром I, відомий своїм Зимовим палацом в стилі бароко, в якому розміщується частина великої художньої колекції музею "Ермітаж".
 
 Moscow
 Moscow is the capital of Russia, a multinational city on the Moscow River in the western part of the country. In its historical center is the medieval fortress Kremlin - the residence of the Russian president. On its territory you can visit the Armory Chamber, where precious objects belonging to the royal family are exhibited. The northeast wall of the Kremlin is the Red Square, the symbolic center of Russia. Here you can see the Lenin Mausoleum, the State Historical Museum and the Cathedral of St. Basil the Blessed with colorful onion domes.
@@ -297,6 +323,8 @@ https://en.wikipedia.org/wiki/Peterhof_Palace
 The Peterhof Palace is a series of palaces and gardens located in Petergof, Saint Petersburg, Russia, laid out on the orders of Peter the Great. These palaces and gardens are sometimes referred as the "Russian Versailles". The palace-ensemble along with the city center is recognized as a UNESCO World Heritage Site.
 Петергоф — музейний комплекс палаців і парків 18-19 століть на відстані 29 кілометрів від Санкт-Петербурга. З 1944 по 1997 роки місту змінили німецьку назву з Петергоф на Петропалац. Історична назва Петергоф повернута 1997 року.
 
+Іспанія - європейська країна, розташована на Піренейському півострові. Територія Іспанії розділена на 17 автономних регіонів. У столиці країни, Мадриді, знаходяться Королівський палац і музей Прадо, де зберігаються твори європейських майстрів. У Сеговії можна відвідати середньовічний замок (Алькасар) і побачити добре збережений римський акведук. Барселона - столиця автономного співтовариства Каталонія. Зовнішність цього міста визначають численні химерно-фантастичні твори архітектора Антоніо Гауді, серед яких храм Святого Сімейства.
+
 Barselona
 Barcelona is the capital of the autonomous region of Catalonia. This multinational city is famous for its architecture and art. Some of the main attractions are the buildings of architect Antonio Gaudi, for example the temple of the Holy Family. Also in the city are museums of contemporary art: the Picasso Museum and the Joan Miró Foundation. In the Museum of History of Barcelona you can see not only the exhibits related to the Roman period, but also the archaeological sites in the underground part.
 Барселона - столиця автономної області Каталонія. Цей багатонаціональне місто знаменитий своєю архітектурою і мистецтвом. Одні з головних визначних пам'яток - будівлі архітектора Антоніо Гауді, наприклад храм Святого Сімейства. Також в місті знаходяться музеї сучасного мистецтва: Музей Пікассо і Фонд Жоана Міро. У Музеї історії Барселони можна подивитися не тільки експонати, пов'язані з римського періоду, але і місця археологічних розкопок в підземній частині.
@@ -313,6 +341,8 @@ Casa Milà, popularly known as La Pedrera or "The stone quarry", a reference to 
 Sagrada Família
 The Basílica i Temple Expiatori de la Sagrada Família is a large unfinished Roman Catholic church in Barcelona, designed by Catalan architect Antoni Gaudí (1852–1926). Gaudí's work on the building is part of a UNESCO World Heritage Site, and in November 2010 Pope Benedict XVI consecrated and proclaimed it a minor basilica, as distinct from a cathedral, which must be the seat of a bishop.
 Храм споку́ти Свято́го Сіме́йства, більше знаний як Храм Свято́го Сіме́́йства або за своєю каталанською назвою — Саґра́да Фамі́лія, — католицька церква у Барселоні. Її побудова почалась у 1882 і триває донині. Храм розташований на північ від барселонського району Старе Місто у міському районі Ашямпла.
+
+Україна - це велика країна в Східній Європі, відома православними церквами, чорноморськими курортами і лісистими горами. У Києві, столиці країни, розташований Софійський собор, прикрашений золотими куполами, мозаїкою XI століття і фресками. Над річкою Дніпро височить монастир Києво-Печерська лавра, місце паломництва багатьох православних християн. В її скитах зберігаються релігійні реліквії, а в катакомбах - муміфіковані останки православних монахів.
 
 Kiev
 Kiev is the capital of Ukraine, located on the Dnieper River. The city is famous for monuments of religious architecture and historical museums. The Kiev-Pechersk Lavra of the 11th century is a monastery and pilgrimage center. On its territory there are several churches, crowned with golden domes. This architectural complex is famous for its underground passages leading to the tombs of Orthodox monks, and a collection of gold objects of Scythian times.
@@ -367,6 +397,8 @@ https://en.wikipedia.org/wiki/Shevchenko_Park_(Odessa)
 Central Park of Culture and Recreation of Taras Shevchenko is a park in Odessa. It is located in the central part of Odessa city. It carries the name of Taras Shevchenko since 1954.
 Центра́льний па́рк культу́ри й відпочи́нку і́мені Тараса́ Шевче́нка — парк в Одесі. Межує із вулицями Маразліївською, Успенською й Лідерсовським бульваром.
 
+Великобританія - острівна держава на північному заході Європи, що складається з Англії, Шотландії, Уельсу та Північної Ірландії. В Англії, на батьківщині Шекспіра і групи The Beatles, знаходиться столиця держави Лондон - світовий діловий і культурний центр. Також країна відома неолітичним спорудою Стоунхендж, римськими лазнями в місті Бат і старовинними університетами в Оксфорді та Кембриджі.
+
 London
 London is the capital of England and the United Kingdom. The history of this modern city goes back to the time of the Romans. In the heart of London is the parliament building - Westminster Palace, as well as the famous Big Ben clock tower and Westminster Abbey. This church is the place of coronation of the British monarchs. On the opposite bank of the Thames is the London Eye, which offers a panoramic view not only to the south coast, but also to the whole city.
 Лондон - столиця Англії та Сполученого Королівства. Історія цього сучасного міста сягає часів римлян. У самому центрі Лондона знаходиться будівля парламенту - Вестмінстерський палац, а також знаменита годинникова башта Біг-Бен і Вестмінстерське абатство. Ця церква є місцем коронації британських монархів. На протилежному березі Темзи розташовано колесо огляду "Лондонське око", з якого відкривається панорамний вигляд не тільки на південний берег, а й на все місто.
@@ -384,6 +416,8 @@ Tower of London
 https://en.wikipedia.org/wiki/Tower_of_London
 The Tower of London, officially Her Majesty's Royal Palace and Fortress of the Tower of London, is a historic castle located on the north bank of the River Thames in central London. It lies within the London Borough of Tower Hamlets, separated from the eastern edge of the square mile of the City of London by the open space known as Tower Hill. 
 Лондонський Тауер — укріплення, побудоване на північному березі річки Темза, історичний центр міста Лондон. Одна з найстаріших історичних споруд Великої Британії, що довгий час слугувала резиденцією англійських монархів. Сьогодні Тауер є одночасно пам'ятником історії та музеєм, включеним до списку об'єктів, що належать до всесвітньої спадщини ЮНЕСКО.
+
+Сполучені Штати Америки - держава, що складається з 50 штатів, займає значну частину Північної Америки. Штат Аляска розташований на північному заході континенту, а Гаваї - в Тихому океані. До великих містах атлантичного узбережжя відносяться Нью-Йорк і столиця Вашингтон. На захід від них знаходиться ще одне важливе місто - Чикаго, відоме своєю вражаючою архітектурою. А на західному узбережжі розташований Лос-Анджелес зі знаменитими голлівудськими кіностудіями.
 
 New York
 Нью-Йорк включає п'ять боро (районів), розташованих в місці впадання річки Гудзон в Атлантичний океан. У центрі міста розташований густонаселений Манхеттен - один з найбільших в світі комерційних, фінансових та культурних центрів. Головні пам'ятки Нью-Йорка - численні хмарочоси, в тому числі Емпайр-стейт-білдінг, і величезний Центральний парк. На залитій неоновими вогнями площі Таймс-сквер розташований театр "Бродвей".

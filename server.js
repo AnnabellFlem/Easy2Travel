@@ -32,6 +32,7 @@ var statusOK = {status: 'OK'};
 var statusERROR = {status: 'ERROR'};
 var User = require('./server/db/user');
 var Timeline = require('./server/db/blog');
+var Place = require('./server/db/place');
 //var pathoptions = 'en/';//??
 
 //app.use(router);
@@ -105,8 +106,8 @@ function getTimeline(req, res) {
                 sessionId: req.session.userId,
                 username: req.session.username,
                 timeline: Timeline.getTimeline(timeline)}));
-            }
-        });
+        }
+    });
 }
 
 function getError(err) {
@@ -375,7 +376,7 @@ app.put('/tmledit/:tlsId', function(req, res) {
     });
 });
 
-app.get('/city', function(req, res) {
+app.get('/city', (req, res) => {
     "use strict";
     var param = req.query.city;
 
@@ -386,28 +387,22 @@ app.get('/city', function(req, res) {
     }
 });
 
-app.get('/tours/:city', function(req, res) {
+app.get('/tours/:city', (req, res) => {
     "use strict";
-    var city = req.params.city, 
-        city_place = {
-            country: 'Ukraine',
-            name: city,
-            places: [{
-                label: "Park Güell",
-                description: "The Park Güell is a public park system composed of gardens and architectonic elements located on Carmel Hill, in Barcelona, Catalonia (Spain)",
-                img: `./img/cities/${city}/golden_gate.jpg`,
-                location: {lat: 50.467023, lng: 30.519073}
-            }, {
-                label: "Casa Milà",
-                description: "Casa Milà, popularly known as La Pedrera or 'The stone quarry', a reference to its unconventional rough-hewn appearance",
-                img: `./img/cities/${city}/maidan_nezalezhnosti.jpg`,
-                location: {lat: 50.464571, lng: 30.519073}
-            }]//from mongo
-        };
+    let city = req.params.city;
 
-    if (city === 'Kiev') {
-        res.send(setStatusMessage(statusOK, "", city_place));
-    } else {
-        res.send(setStatusMessage(statusERROR, "City not found."));
-    }
+    Place.findOne({'city': city}, (err, place) => {
+        if (err || place === null) {
+            console.log(err);
+            res.send(setStatusMessage(statusERROR, "", {message: "City not found."}));
+        } else {
+            let cityPlace = {
+                name: place.city,
+                description: place.description,
+                places: place.places,
+                language: place.language
+            };
+            res.send(setStatusMessage(statusOK, "", cityPlace));
+        }
+    });
 });

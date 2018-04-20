@@ -7,32 +7,29 @@ mongoose.connect("mongodb://localhost:27017/e2t", {
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-var PlaceSchema = new mongoose.Schema({
+var CountrySchema = new mongoose.Schema({
+    country_name: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
     city: {
         type: String,
         required: true
     },
-    // description: {
-    //     type: String,
-    //     trim: true
+    city_description: {
+        type: String,
+        required: true
+    },
+    // imgurl_country: {
+    //     type: String
     // },
-    places: [{
-        label: {
-            type: String,
-            required: true
-        },
-        description: {
-            type: String,
-            trim: true
-        },
-        imgurl: {
-            type: String
-        },
-        location: {
-            type: [Number],
-            required: true
-        }
-    }],
+    // imgurl_city: {
+    //     type: String
+    // },
     language: {
         type: String,
         required: true
@@ -40,7 +37,7 @@ var PlaceSchema = new mongoose.Schema({
     created_at: Date,
     updated_at: Date
 });
-PlaceSchema.pre('save', function(next) {
+CountrySchema.pre('save', function(next) {
     "use strict";
     var currentDate = new Date();
 
@@ -51,7 +48,7 @@ PlaceSchema.pre('save', function(next) {
     next();
 });
 
-var Place = mongoose.model('Place', PlaceSchema);
+var Country = mongoose.model('Country', CountrySchema);
 var functions = {
 //    getTimeline : function(t) {
 //         "use strict";
@@ -72,7 +69,7 @@ var functions = {
 //     return mongoose.Types.ObjectId(id); //
 //     }
 };
-module.exports = Place;
+module.exports = Country;
 for (var key in functions) {
     module.exports[key] = functions[key];
 }
