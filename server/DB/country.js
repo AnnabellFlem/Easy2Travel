@@ -8,7 +8,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 var CountrySchema = new mongoose.Schema({
-    country_name: {
+    name: {
         type: String,
         required: true
     },
@@ -16,20 +16,21 @@ var CountrySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    city: {
-        type: String,
-        required: true
+    cities: [{
+        name: {
+            type: String,
+            required: true
+        },
+        description: {
+            type: String,
+            required: true
+        },
+        imgurl: {
+            type: String
+        }}],
+    imgurl: {
+        type: String
     },
-    city_description: {
-        type: String,
-        required: true
-    },
-    // imgurl_country: {
-    //     type: String
-    // },
-    // imgurl_city: {
-    //     type: String
-    // },
     language: {
         type: String,
         required: true

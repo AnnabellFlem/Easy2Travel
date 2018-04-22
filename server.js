@@ -33,7 +33,10 @@ var statusERROR = {status: 'ERROR'};
 var User = require('./server/db/user');
 var Timeline = require('./server/db/blog');
 var Place = require('./server/db/place');
+var Country = require('./server/db/country');
 //var pathoptions = 'en/';//??
+
+var getCaseInsensitive = (value) => new RegExp(`^${value}$`, 'i');
 
 //app.use(router);
 app.use(bodyParser.json());
@@ -381,27 +384,49 @@ app.get('/city', (req, res) => {
     var param = req.query.city;
 
     if (param) {
-        res.redirect('/tours/' + param);
+        res.redirect(`/tours/${req.query.lng}/${param}`);
     } else {
         res.send(setStatusMessage(statusERROR, "City not found."));
     }
 });
 
-app.get('/tours/:city', (req, res) => {
+app.get('/tours/:lng/:city', (req, res) => {
     "use strict";
-    let city = req.params.city;
+    let lng = req.params.lng;
 
-    Place.findOne({'city': city}, (err, place) => {
-        if (err || place === null) {
+    Place.find({
+            city: getCaseInsensitive(req.params.city)
+        }, (err, places) => {
+        if (err || places === null) {
             console.log(err);
             res.send(setStatusMessage(statusERROR, "", {message: "City not found."}));
         } else {
-            let cityPlace = {
-                name: place.city,
-                description: place.description,
-                places: place.places,
-                language: place.language
-            };
+            let cityPlace = {};
+            let place = places.filter(place => place.language === lng);
+            if (place.length == 1) {
+                cityPlace = {
+                    name: place[0].city,
+                    places: place[0].places,
+                    language: place[0].language
+                };
+            } else {
+                place = places.filter(place => place.language === 'en');
+                if (place.length == 1) {
+                    cityPlace = {
+                        name: place[0].city,
+                        places: place[0].places,
+                        language: place[0].language
+                    };
+                } else {
+                    cityPlace = {
+                        name: places[0].city,
+                        places: places[0].places,
+                        language: places[0].language
+                    };
+                }
+            }
+            // users will be documents with age>1 and further filtered by query sent as query params from FE 
+            //res.status(200).json(users);
             res.send(setStatusMessage(statusOK, "", cityPlace));
         }
     });

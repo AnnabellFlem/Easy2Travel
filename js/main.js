@@ -3,9 +3,11 @@
 
 //var itemByPage = 10;
 var sender = [];
-var map;
-var markers = [];
-var markers_checked = [];
+
+let map;
+let markers = [];
+let markers_checked = [];
+let directionsDisplay;
 //$.getScript("jquery.mixitup.min.js");
 //$.getScript("jPages.min.js");
 //	<script src="../js/jquery.mixitup.min.js"></script>
@@ -741,10 +743,19 @@ function getUrlParameter(sParam) {
     }
 }
 
+function getCurrentLanguage(value = 'en')
+{
+    let lng = $('#language');
+
+    return lng ? lng.prev().find('sup').text().toLowerCase() : value;
+}
+
 function citySearch(e) {
     'use strict';
-    var obj = {
-        city: $(".city-search-form input").val()
+    
+    let obj = {
+        city: $(".city-search-form input").val(),
+        lng: getCurrentLanguage()
     };
     e.preventDefault();
     if ($('body').attr('id') !== 'tours') {
@@ -767,7 +778,10 @@ function citySearch(e) {
                         $('#city-sights h3').text(`We recommend to visit in ${city.name}`);
                         markers = [];
                         markers_checked = [];
+//                        if (map)
+//                            map.setCenter(new google.maps.LatLng(22, 22));//getGeoLocation(city.name));
                         city.places.map(place => $('.list-group').append(getCityPlace(place)));
+//                            map.setCenter(new google.maps.LatLng(22, 22));//getGeoLocation(city.name));
                     });
                     $('#google').show();
                     $('body[id=tours] footer').css('position', 'absolute');
@@ -793,8 +807,46 @@ function clearCityPlace() {
 function checkMarker(target)
 {
     'use strict';
-//    var isInfo = $(target).hasClass('infomarker');
-    markers_checked[$(target).attr('data-locationid')].setMap($(target).is(':checked') ? map : null);
+    let lid = $(target).attr('data-locationid');
+
+    markers_checked[lid].setMap($(target).is(':checked') ? map : null);
+//        map.setCenter(markers_checked[lid].position);//delete
+    let markerWay = markers_checked.filter(item => isExist(item.map));
+    clearDirections();
+    if (markerWay.length > 1) {
+        var waypts = [];
+        for (var i = 1; i < markerWay.length - 1; i++) {
+            waypts.push({
+                location: markerWay[i].position,
+                stopover: true
+            });
+        }
+        var directionsService = new google.maps.DirectionsService;
+        directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+        directionsService.route({
+            origin: markerWay[0].position,
+            destination: markerWay[markerWay.length - 1].position,
+            waypoints: waypts,
+            optimizeWaypoints: true,
+            travelMode: 'DRIVING'
+        }, function(response, status) {
+            if (status === 'OK') {
+                directionsDisplay.setDirections(response);
+                directionsDisplay.setMap(map);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
+    }
+}
+
+function clearDirections()
+{
+    if (isExist(directionsDisplay)) {
+        directionsDisplay.setDirections({routes: []});
+        directionsDisplay.setMap(null);
+        directionsDisplay = null;
+    }
 }
 
 function getCityPlace(place) {
@@ -833,26 +885,6 @@ function getCityPlace(place) {
     markers_checked.push(addMarker(place, true));
 
     return item;
-
-// <div class="list-group-item">
-//         <div class="media">
-//             <div class="checkbox pull-left">
-//                 <label style="font-size: 2.5em">
-//                     <input type="checkbox" value="" checked>
-//                     <span class="cr">
-//                         <i class="cr-icon fas fa-check"></i>
-//                     </span>
-//                 </label>
-//             </div>
-//             <div class="media-body m-2">
-//                 <h4 class="media-heading">St.Sofia Cathedral</h4>
-//                 <p>Description</p>
-//             </div>
-//             <div class="float-left">
-//                 <img class="media-object fixed-size" style="background: url(/img/gallery/ln1.jpg); background-size: cover" src="/img/cities/e2t_gradient.png" alt="Image">
-//             </div>
-//         </div>
-//     </div>
 }
 
 function initMap() {
@@ -861,7 +893,8 @@ function initMap() {
 //        function() {
             function initialize() {
                 'use strict';
-                var center = {lat: 50.4645706, lng: 30.5190734};
+//                new google.maps.LatLng(Lat, Lng)
+                var center = {lat: 48.2205994, lng: 16.2396331};//{lat: 50.4645706, lng: 30.5190734};
                 map = new google.maps.Map(document.getElementById('googleMap'), {
                     zoom: 15,
                     center: center,
@@ -870,15 +903,40 @@ function initMap() {
                     mapTypeId: google.maps.MapTypeId.ROADMAP,
                     draggableCursor: 'default'
                 });
-                map.addListener('mouseout', function() {
-                    markers.map(item => {
-                        if (item.infowindow)
-                            item.infowindow.close();
-                    });
-                });
+                map.addListener('mouseout', () => closeMarkers());
+//                var c = {lat: 50.4645706, lng: 30.5190734};
+//                var d = getGeoLocation('Vienna');
+//                alert(c);
+//                alert(d);
+//                map.setCenter(getGeoLocation('Vienna'));//{lat: 50.4645706, lng: 30.5190734});//getGeoLocation('Vienna'));
             }
             google.maps.event.addDomListener(window, 'load', initialize);
 //        });
+}
+
+function closeMarkers()
+{
+    markers.map(item => {
+        if (item.infowindow)
+            item.infowindow.close();
+    });
+}
+
+function getGeoLocation(address)
+{
+    var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({
+        address: address
+    }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+//            var location = results[0].geometry.location;
+//            alert(location);
+//            return results[0].geometry.location;//
+            return {lat: 50.4645706, lng: 30.5190734};//location;
+        } else {
+            return {lat: 50.4645706, lng: 30.5190734};
+        }
+    });
 }
 
 function addMarker(place, checked) {
@@ -886,6 +944,7 @@ function addMarker(place, checked) {
     var marker = new google.maps.Marker;
     var latlng = new google.maps.LatLng(place.location[0], place.location[1]);
     marker.setPosition(latlng);
+    marker.setTitle(place.label);
     if (!checked) {
         marker.setIcon({
             path: google.maps.SymbolPath.CIRCLE,
@@ -898,7 +957,6 @@ function addMarker(place, checked) {
         var infowindow = new google.maps.InfoWindow({
             content: '<div class="text-center container">' +
                 `<h5 class="ml-3">${place.label}</h5><br/>` + 
-//                `<input type="checkbox" class="btn btn-primary btn-sm ml-4 infomarker" data-locationid="${markers.length}">Add/Remove</inpututton>` +
                 '<div class="custom-control custom-checkbox ml-3">' +
                 `<input type="checkbox" class="custom-control-input infomarker" data-locationid="${markers.length}" id="im${markers.length}">` +
                 `<label class="custom-control-label mt-1" for="im${markers.length}">Add/Remove</label>` +
@@ -906,11 +964,12 @@ function addMarker(place, checked) {
         });
         marker.infowindow = infowindow;
         marker.addListener('click', function() {
+            closeMarkers();
             infowindow.open(map, marker);
         });
         google.maps.event.addListener(infowindow, 'domready', function() {
             var m = markers_checked[$('.infomarker').attr('data-locationid')];
-            $('.infomarker').prop('checked', typeof m.map !== 'undefined' && m.map !== null);
+            $('.infomarker').prop('checked', isExist(m.map));
             $('.infomarker').click(function() {
                 var lid = $(this).attr('data-locationid');
                 checkMarker(this);
@@ -923,6 +982,10 @@ function addMarker(place, checked) {
     return marker;
 }
 
+function isExist(element)
+{
+    return typeof element !== 'undefined' && element !== null;
+}
 /*function toggleClick(obj) {
     'use strict';
     $(obj).toggleClass('responsive');

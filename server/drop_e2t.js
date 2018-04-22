@@ -22,7 +22,7 @@ MongoClient.connect(url, function(err, db) {
 //  console.log('Collections: ' + db.getCollectionNames());
   db.collection("places").drop(function(err, delOK) {
     if (err) throw err;
-    if (delOK) console.log("users deleted");
+    if (delOK) console.log("places deleted");
     db.close();
   });
 });
