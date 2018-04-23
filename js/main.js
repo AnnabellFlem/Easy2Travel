@@ -718,6 +718,18 @@ $(document).ready(function() {
             $('#login .login-form').on("submit", login);
             $("#login .register-form").on("submit", register);
         }),
+        $("#btnmap").on('click', () => {
+            $('html, body').animate({
+                scrollTop: $("#googleMap").offset().top
+            }, 2000);
+        }),
+        $("#btn-clear").on('click', () => {
+           $('.list-group').children().map(() => {
+               alert($(this));//find('input').attr('type'));
+           });
+            $('#markers-count').text(`0 places marked`);
+        }),
+
         $.getScript('../bootstrap/js/popper.min.js'),
         $.getScript('../bootstrap/js/bootstrap.min.js'),
         $.getScript('../js/tether.min.js')
@@ -727,6 +739,12 @@ $(document).ready(function() {
     );
     
     $(window).resize();
+});
+
+$(window).scroll(function() {
+    let fp = $('.float-panel');
+    let pos = fp.offset().top + fp.height();
+    fp.css('visibility', pos > $('#googleMap').offset().top ? 'hidden' : 'visible');
 });
 
 function getUrlParameter(sParam) {
@@ -838,6 +856,7 @@ function checkMarker(target)
             }
         });
     }
+    $('#markers-count').text(`${markerWay.length} places marked`);
 }
 
 function clearDirections()
@@ -986,6 +1005,7 @@ function isExist(element)
 {
     return typeof element !== 'undefined' && element !== null;
 }
+
 /*function toggleClick(obj) {
     'use strict';
     $(obj).toggleClass('responsive');

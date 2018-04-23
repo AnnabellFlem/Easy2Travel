@@ -397,13 +397,13 @@ app.get('/tours/:lng/:city', (req, res) => {
     Place.find({
             city: getCaseInsensitive(req.params.city)
         }, (err, places) => {
-        if (err || places === null) {
+        if (err || places === null || !places.length) {
             console.log(err);
             res.send(setStatusMessage(statusERROR, "", {message: "City not found."}));
         } else {
             let cityPlace = {};
             let place = places.filter(place => place.language === lng);
-            if (place.length == 1) {
+            if (place.length) {
                 cityPlace = {
                     name: place[0].city,
                     places: place[0].places,

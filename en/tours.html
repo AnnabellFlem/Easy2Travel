@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../css/timeline.css">
     <link rel="stylesheet" href="../fontawesome/web-fonts-with-css/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/flex-button.css">
     <script src="../js/jquery.min.js"></script>
     <script src="../js/main.js"></script>
 </head>
@@ -125,7 +126,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="City...">
                         </div>
-                        <button type="submit" class="btn btn-secondary m-3">Browse</button>
+                        <button type="submit" class="btn btn-secondary m-3" title="Browse">Browse</button>
                     </div>
                 </div>
             </div>
@@ -139,8 +140,31 @@
         <div id="googleMap" style="height:100%"></div>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI"></script>
     </div>
-    <div>
-        <span class="float-left">Places selected: </span>
+    <div class="float-panel text-center w-25">
+        <i class="p-2 downArrow bounce fas fa-chevron-down m-5" title="Scroll down"></i>
+        <button type="button" title="To the map" id="btnmap" class="p-2 pulse-button m-2 action-button shadow animate blue">To the map</button>
+        <button type="submit" title="Create a route" id="btnroute" class="p-2 pulse-button m-2 action-button shadow animate blue">Create a route</button>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <i class="fas downArrow fa-map-marker-alt mt-3 float-left"></i>
+                <p class="lead font-weight-bold mt-4 pl-5">
+                    <em id="markers-count">0 places marked</em>
+                </p>
+            </div>
+            <div class="col-sm d-flex justify-content-center">
+                <button type="submit" title="Create a route" class="m-2 action-button shadow animate blue rounded">Create a route</button>
+            </div>
+            <div class="col-sm d-flex justify-content-end">    
+                <button type="button" id="btn-clear" class="downArrow close h1" aria-label="Close">
+                    <p aria-hidden="true" class="text-theme-dark m-1">&times;</p>
+                </button>
+                <p class="lead font-weight-bold pl-1 mt-4 ">
+                    <em>Clear all checked places</em>
+                </p>
+            </div>
+        </div>
     </div>
     <footer id="footer">
     </footer>
