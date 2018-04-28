@@ -118,19 +118,7 @@
     </div>
 
     <div class="container-fluid img-map text-center">
-        <form class="city-search-form">
-            <!-- <div class="container-overlay1 overlay-regular1"></div> -->
-            <div class="container-overlay1 overlay-small m-auto">
-                <div class="row">
-                    <div class="col-lg-11 mx-auto m-3">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="City...">
-                        </div>
-                        <button type="submit" class="btn btn-secondary m-3" title="Browse">Browse</button>
-                    </div>
-                </div>
-            </div>
-        </form>
+        <div id="city-search"></div>
     </div>
     <div id="city-place">
     </div>
@@ -138,25 +126,26 @@
     </div>
     <div id="google" class="container-fluid p-0 mt-2" style="height:420px">
         <div id="googleMap" style="height:100%"></div>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI&callback=initMap" async
+            defer></script>
     </div>
     <div class="float-panel text-center w-25">
-        <i class="p-2 downArrow bounce fas fa-chevron-down m-5" title="Scroll down"></i>
-        <button type="button" title="To the map" id="btnmap" class="p-2 pulse-button m-2 action-button shadow animate blue">To the map</button>
-        <button type="submit" title="Create a route" id="btnroute" class="p-2 pulse-button m-2 action-button shadow animate blue">Create a route</button>
+        <!-- <i class="p-2 downArrow bounce fas fa-chevron-down m-5" title="Scroll down"></i> -->
+        <button type="button" title="To the map" id="btn-map" class="p-2 pulse-button m-2 action-button shadow animate blue">To the map</button>
+        <button type="submit" title="Create a route" id="btn-route" class="p-2 pulse-button m-2 action-button shadow animate blue btn-route">Create a route</button>
     </div>
-    <div class="container">
-        <div class="row">
+    <div id="city-route" class="container">
+        <!-- <div class="row">
             <div class="col-sm">
-                <i class="fas downArrow fa-map-marker-alt mt-3 float-left"></i>
+                <i class="fas fa-map-marker-alt mt-3 float-left downArrow"></i>
                 <p class="lead font-weight-bold mt-4 pl-5">
                     <em id="markers-count">0 places marked</em>
                 </p>
             </div>
             <div class="col-sm d-flex justify-content-center">
-                <button type="submit" title="Create a route" class="m-2 action-button shadow animate blue rounded">Create a route</button>
+                <button type="submit" title="Create a route" class="m-2 action-button shadow animate blue rounded btn-route">Create a route</button>
             </div>
-            <div class="col-sm d-flex justify-content-end">    
+            <div class="col-sm d-flex justify-content-end">
                 <button type="button" id="btn-clear" class="downArrow close h1" aria-label="Close">
                     <p aria-hidden="true" class="text-theme-dark m-1">&times;</p>
                 </button>
@@ -164,7 +153,7 @@
                     <em>Clear all checked places</em>
                 </p>
             </div>
-        </div>
+        </div> -->
     </div>
     <footer id="footer">
     </footer>

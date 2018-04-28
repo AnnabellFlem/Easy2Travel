@@ -145,8 +145,8 @@
     text-shadow: 0px -2px #8ea6c5;
 }
 
-.action-button[id="btnmap"]:active,
-.action-button[id="btnroute"]:active {
+.action-button[id="btn-map"]:active,
+.action-button[id="btn-route"]:active {
     transform: translate(0px, 5px);
     -webkit-transform: translate(0px, 5px);
     border-bottom: 1px solid;
@@ -159,6 +159,6 @@
     z-index: 999;
 }
 
-.float-panel>button {
+.float-panel > button {
     outline: none !important;
 }

@@ -10,12 +10,6 @@
     <link rel="stylesheet" href="../fontawesome/web-fonts-with-css/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <script src="../js/jquery.min.js"></script>
-    <!--
-
-    <script src="../bootstrap/js/popper.min.js"></script>
-    <script src="../bootstrap/js/bootstrap.min.js"></script>
-    <script src="../js/tether.min.js"></script>
--->
     <script src="../js/jquery.mixitup.min.js"></script>
     <script src="../js/jPages.min.js"></script>
     <script src="../js/main.js"></script>
@@ -246,19 +240,19 @@
                     Travel With Us.</p>
             </article>
             <div class="row">
-            <div class="col-4 block350">
-                <h2>Easy travel for
-                    <span>Everyone</span>
-                </h2>
+                <div class="col-4 block350">
+                    <h2>Easy travel for
+                        <span>Everyone</span>
+                    </h2>
+                </div>
+                <aside class="col-8 ">
+                    <p>If you want to travel around the world quickly and easily, then our site is for you. Let our guides show
+                        you the best ways to see the world, with insights that only they have. All our tours include: a detailed
+                        map with clearly-marked locations of interest, photos and descriptions so you know what to look for
+                        and a recommended step-by-step route to give you the best experience. We hope that you find a suitable
+                        route for you and your trip will be unforgettable!</p>
+                </aside>
             </div>
-            <aside class="col-8 ">
-                <p>If you want to travel around the world quickly and easily, then our site is for you. Let our guides show
-                    you the best ways to see the world, with insights that only they have. All our tours include: a detailed
-                    map with clearly-marked locations of interest, photos and descriptions so you know what to look for and
-                    a recommended step-by-step route to give you the best experience. We hope that you find a suitable route
-                    for you and your trip will be unforgettable!</p>
-            </aside>
-        </div>
         </section>
     </div>
 
@@ -318,9 +312,9 @@
                 <h3>Address</h3>
                 <p>Swing by for a cup of coffee, or whatever.</p>
                 <p>
-                    <i class="fas fa-map-marker text-theme font-xlarge"></i>  Kiev, Ukraine</p>
+                    <i class="fas fa-map-marker text-theme font-xlarge"></i> Kiev, Ukraine</p>
                 <p>
-                    <i class="fas fa-phone text-theme font-xlarge"></i>  +00 1515151515</p>
+                    <i class="fas fa-phone text-theme font-xlarge"></i> +00 1515151515</p>
                 <p>
                     <i class="fas fa-envelope-open text-theme font-xlarge"></i> Ts.Nyutka@gmail.com</p>
             </div>
@@ -349,25 +343,8 @@
     <!-- Google Maps -->
     <div class="container-fluid p-0" style="height:420px">
         <div id="googleMap" style="height:100%"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI"></script>
-    <script>
-        function initialize() {
-            var center = {lat: 50.4645706, lng: 30.5190734};
-            var map = new google.maps.Map(document.getElementById('googleMap'), {
-                zoom: 15,
-                center: center,
-                scrollwheel: true,
-                draggable: true,
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                draggableCursor: 'default'
-            });
-            var marker = new google.maps.Marker({
-                position: center,
-                map: map
-            });
-        }
-        google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI&callback=initMap" async
+            defer></script>
     </div>
 
     <footer id="footer">

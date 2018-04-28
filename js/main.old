@@ -1,16 +1,16 @@
 /*global $, window*/
 /*jslint maxerr: 10, es6, node, single, for, multivar, bitwise, white, this, devel, browser*/
 'use strict';
-//const util = require('util');
-// import * as util from 'util';
 
 //var itemByPage = 10;
 var sender = [];
-
 let map;
 let markers = [];
 let markers_checked = [];
-let directionsDisplay;
+//$.getScript("jquery.mixitup.min.js");
+//$.getScript("jPages.min.js");
+//	<script src="../js/jquery.mixitup.min.js"></script>
+//	<script src="../js/jPages.min.js"></script>
 
 function removeClass(obj) {
     if ($(obj).hasClass('responsive')) {
@@ -18,24 +18,8 @@ function removeClass(obj) {
     }
 }
 
-function isExist(element) {
-    return typeof element !== 'undefined' && element !== null;
-}
-
-function getUrlParameter(param) {
-    let sPageURL = decodeURIComponent(window.location.search.substring(1)),
-        sURLVariables = sPageURL.split('&'),
-        parameterName;
-
-    for (let i = 0; i < sURLVariables.length; i++) {
-        parameterName = sURLVariables[i].split('=');
-        if (parameterName[0] === param) {
-            return parameterName[1] === undefined ? true : parameterName[1];
-        }
-    }
-}
-
 /*function setProfile() {
+    'use strict';
 ////    var f = e.target.className;
 ////    e.preventDefault();
     $.ajax({
@@ -52,6 +36,8 @@ function getUrlParameter(param) {
 }
 */
 function setUserSession(b, username) {
+//    alert(b);
+//    alert(username);
     if (b) {
         $("#sign-btn i:first")
             .removeClass("fa-sign-in-alt")
@@ -208,6 +194,7 @@ function renderForm(f, dj, textStatus/*, je*/) {
 }
 
 function logout(e) {
+//    var f = e.target.className;
     e.preventDefault();
     $.ajax({
         type: "GET",
@@ -226,19 +213,15 @@ function logout(e) {
 function login(e) {
     var f = e.target.className,
         obj = {
-            username: $("." + f + " input[name=username]").val(),
-            password: $("." + f + " input[name=password]").val()
+            username: $('.' + f + ' input[name=username]').val(),
+            password: $('.' + f + ' input[name=password]').val()
         };
     e.preventDefault();
     $.ajax({
-        type: "POST",
-        url: "/login",
-        dataType: "json",
-        data: JSON.parse(JSON.stringify(obj))/*,
-        success: function (data, status, xhr) {
-        },
-        error: function(xhr, status, error) {
-        }*/
+        type: 'POST',
+        url: '/login',
+        dataType: 'json',
+        data: JSON.parse(JSON.stringify(obj))
     }).always(function(dj, textStatus, je) {
         renderForm(f, dj, textStatus, je);
     });
@@ -555,12 +538,16 @@ function enableEvent() {
     });
     
     $('#slider-list .img:gt(0)').hide();
-    setInterval(() =>
-        $("#slider-list .img:first-child").fadeOut(4000).next("#slider-list .img").fadeIn(4000).end().appendTo("#slider-list"),
-        4000);
+    setInterval(function() {
+        $("#slider-list .img:first-child").fadeOut(4000).next("#slider-list .img").fadeIn(4000).end().appendTo("#slider-list");
+    }, 4000);
 
-    $('#search').focusout(() => removeClass('#search'));
-    $('#menu').focusout(() => removeClass('#menu'));
+    $('#search').focusout(function () {
+        removeClass('#search');
+    });
+    $('#menu').focusout(function () {
+        removeClass('#menu');
+    });
 //    $('#login .message a').click(function () {
 //        $('#login form').animate({
 //            height: "toggle",
@@ -573,23 +560,28 @@ function enableEvent() {
         if (Number.isNaN(cnt) || !isFinite(cnt)) {
             cnt = 0;
         }
-        cnt++;
+        cnt += 1;
         obj.innerHTML = cnt;
     });
 //    $("#login .login-form").on("submit", login);
 //    $("#login .register-form").on("submit", register);
-    $("#login .login-form input[name=password]").keypress(e => {
+    $("#login .login-form input[name=password]").keypress(function(e) {
         var isTooltip = $('.tooltip').is(':visible'),
             s = String.fromCharCode(e.which);
         if (s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey) {
             if (!isTooltip) {
                 $(e.target).tooltip('show');
+//                $(this).tooltip('show');
             }
         } else if (isTooltip) {
+//            $(this).tooltip('hide');
             $(e.target).tooltip('hide');
         }
 //        $(this).blur(function(e) {
-        $(e.target).blur(e => $(e.target).tooltip('hide'));
+        $(e.target).blur(function(e) {
+//            $(this).tooltip('hide');
+            $(e.target).tooltip('hide');
+        });
     });
     $("#logout").click(function(e) {
         setUserSession(false);
@@ -625,6 +617,7 @@ function enableEvent() {
         $('.blog-form :input').not(':button').val('');
         $(".img-wrapper").css("background-image", "");
         $('.login-status').empty();
+//        $("#blog").data("value", 1);
     });
 
 //    $("#language li a").click(function (e) {
@@ -646,24 +639,14 @@ function enableEvent() {
     });
     isLoggedIn();
     dragdropImage();
-
-    if (isTourPage()) {
-        $('#btn-map').on('click', () => {
-            $('html, body').animate({
-                scrollTop: $('#googleMap').offset().top
-            }, 2000);
-        });
-    }
-    let city = getUrlParameter('city');
-    if (city) {
-        $('.city-search-form input').val(city);
-    }
-    if (isMainPage()) {
-        loadGallery();
-    } else if (isTourPage()) {
+    loadGallery();
+    if ($('body').attr('id') == 'tours') {
+        var city = getUrlParameter('city');
+        if (city) {
+            $('.city-search-form input').val(city);
+        }
         $('.city-search-form').submit();
-    }
-    // initMap();
+    };
 }
 
 $(window).on('load', function() {
@@ -675,9 +658,9 @@ $(document).ready(function() {
     $.when(
 //        $('#header-top').load('parts/header.html'),
 //$('head').append( $('<link rel="stylesheet" type="text/css" />').attr('href', 'your stylesheet url') );
+        $('.city-search-form').on("submit", citySearch),
         $('#city-search').load('parts/city_search.html', function() {
-           getCitiesList().map(item => $('#cities').append(`<option value="${item.name}">`));
-            $('.city-search-form').on("submit", citySearch);
+            $('#city-search .city-search-form').on("submit", citySearch);
         }),
         $('#footer').load('parts/footer.html', function() {
             $(this).addClass('footer d-flex flex-column theme small');
@@ -700,24 +683,25 @@ $(document).ready(function() {
         $.getScript('../bootstrap/js/bootstrap.min.js'),
         $.getScript('../js/tether.min.js')
     )
-    .then(() => enableEvent());
+    .then(
+        enableEvent()
+    );
     
     $(window).resize();
 });
 
-$(window).scroll(function() {
-    if (isTourPage()) {
-        let fp = $('.float-panel');
-        let pos = fp.offset().top + fp.height();
-        fp.css('visibility', pos > $('#googleMap').offset().top ? 'hidden' : 'visible');
-    }
-});
+function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
 
-function isTourPage() {
-    return $('body').attr('id') === 'tours';
-}
-function isMainPage() {
-    return $('body').attr('id') === 'e2t';
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
 }
 
 function getCurrentLanguage(value = 'en') {
@@ -726,9 +710,8 @@ function getCurrentLanguage(value = 'en') {
     return lng ? lng.prev().find('sup').text().toLowerCase() : value;
 }
 
-function getCitiesList(e) {
-//    e.preventDefault();
-    return [{name: 'Kiev'}, {name: 'Vienna'}];
+function isTourPage() {
+    return $('body').attr('id') === 'tours';
 }
 
 function citySearch(e) {
@@ -736,43 +719,31 @@ function citySearch(e) {
         city: $('.city-search-form input').val(),
         lng: getCurrentLanguage()
     };
+
     e.preventDefault();
     if (!isTourPage()) {
-        location.replace('./tours.html?city=' + obj.city);
+        location.replace(`./tours.html?city=${obj.city}`);
     } else if (obj.city) {
             $.ajax({
-            type: "GET",
-            url: "/city",
+            type: 'GET',
+            url: '/city',
             cache: false,
-            dataType: "json",
+            dataType: 'json',
             data: JSON.parse(JSON.stringify(obj)),
             success: function (data, status, xhr) {
-                var obj = JSON.parse(xhr.responseText),
+                let obj = JSON.parse(xhr.responseText),
                     city = obj.data;
                 if (obj.status === 'OK') {
-                    $('#city-place').load('parts/city_place.html', () => {
-                        $('#city-place h2').text(`Plan your rest in ${city.name} for 2 simple steps`);
+                    $('#city-place').load('parts/city_place.html', function() {
+                        $('#city-place h2').text(`Plan your rest in ${city.name} for 2 simple steps`); //Rus??
                     });
-                    $('#city-sights').load('parts/city_sights.html', () => {
+                    $('#city-sights').load('parts/city_sights.html', function() {
                         $('#city-sights h3').text(`We recommend to visit in ${city.name}`);
                         markers = [];
                         markers_checked = [];
-                        setCenter(city.name);
+                        setCenter();//city.name);
                         city.places.map(place => $('.list-group').append(getCityPlace(place)));
                     });
-                    $('#city-route').load('parts/city_route.html', () => {
-                        $('.btn-route').on('click', () => {
-                            alert(1);
-                        });
-                        $('#btn-clear').on('click', () => {
-                           $('.list-group').children().map(index => {
-                               let item = $($('.list-group').children()[index]).find('input');
-                               item.prop('checked', false);
-                               checkMarker(item);
-                           });
-                        });
-                    });
-                    
                     $('#google').show();
                     $('body[id=tours] footer').css('position', 'absolute');
                 } else {
@@ -794,36 +765,34 @@ function clearCityPlace() {
 
 function checkMarker(target) {
     let lid = $(target).attr('data-locationid');
-
     markers_checked[lid].setMap($(target).is(':checked') ? map : null);
     let markerWay = markers_checked.filter(item => isExist(item.map));
     clearDirections();
-    if (markerWay.length > 1) {
-        var waypts = [];
-        for (var i = 1; i < markerWay.length - 1; i++) {
-            waypts.push({
-                location: markerWay[i].position,
-                stopover: true
-            });
-        }
-        var directionsService = new google.maps.DirectionsService;
-        directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
-        directionsService.route({
-            origin: markerWay[0].position,
-            destination: markerWay[markerWay.length - 1].position,
-            waypoints: waypts,
-            optimizeWaypoints: true,
-            travelMode: 'DRIVING'
-        }, function(response, status) {
-            if (status === 'OK') {
-                directionsDisplay.setDirections(response);
-                directionsDisplay.setMap(map);
-            } else {
-                window.alert('Directions request failed due to ' + status);
-            }
-        });
-    }
-    $('#markers-count').text(`${markerWay.length} places marked`);
+    // if (markerWay.length > 1) {
+    //     var waypts = [];
+    //     for (var i = 1; i < markerWay.length - 1; i++) {
+    //         waypts.push({
+    //             location: markerWay[i].position,
+    //             stopover: true
+    //         });
+    //     }
+    //     var directionsService = new google.maps.DirectionsService;
+    //     directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+    //     directionsService.route({
+    //         origin: markerWay[0].position,
+    //         destination: markerWay[markerWay.length - 1].position,
+    //         waypoints: waypts,
+    //         optimizeWaypoints: true,
+    //         travelMode: 'DRIVING'
+    //     }, function(response, status) {
+    //         if (status === 'OK') {
+    //             directionsDisplay.setDirections(response);
+    //             directionsDisplay.setMap(map);
+    //         } else {
+    //             window.alert('Directions request failed due to ' + status);
+    //         }
+    //     });
+    // }
 }
 
 function clearDirections() {
@@ -835,14 +804,16 @@ function clearDirections() {
 }
 
 function getCityPlace(place) {
-    let item = 
+    var item = 
        $('<div>').addClass('list-group-item')
             .append($('<div>').addClass('media')
                 .append($('<div>').addClass('checkbox pull-left')
                     .append($('<label>').css('font-size', '2.5em')
                         .append($('<input>').attr('type', 'checkbox')
                             .attr('data-locationid', markers.length).addClass('checkmarker')
-                            .click(e => checkMarker(e.target))
+                            .click(function() {
+                                checkMarker(this);
+                            })
                         )
                         .append($('<span>').addClass('cr')
                             .append($('<i>').addClass('cr-icon fas fa-check'))
@@ -855,7 +826,7 @@ function getCityPlace(place) {
                 )
                 .append($('<div>').addClass('float-left')
                     .append($('<img>').addClass('media-object fixed-size')
-                        .css('background', `url(${place.imgurl})`).css('background-size', 'cover')
+                        .css('background', `url(${place.img})`).css('background-size', 'cover')
                         .attr('alt', 'Image').attr('src', '/img/cities/e2t_gradient.png')
                     )
                 )
@@ -866,21 +837,21 @@ function getCityPlace(place) {
     return item;
 }
 
+    // return new Promise((resolve, reject) => {
 function initMap() {
     map = new google.maps.Map(document.getElementById('googleMap'), {
-        zoom: 15,
         scrollwheel: true,
         draggable: true,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         draggableCursor: 'default'
     });
-    if (isTourPage()) {
-        map.addListener('mouseout', () => closeMarkers());
-    } else {
+    if (!isTourPage()) {
         new google.maps.Marker({
             position: setCenter(),
             map: map
         });
+    } else {
+        map.addListener('mouseout', () => closeMarkers());
     }
 }
 
@@ -908,14 +879,15 @@ function setCenter(address) {
     } else {
         map.setCenter(location);
     }
-    // map.setZoom(15);
+    map.setZoom(15);
 
     return location;
 }
 
 function addMarker(place, checked) {
-    var marker = new google.maps.Marker;
-    var latlng = new google.maps.LatLng(place.location[0], place.location[1]);
+    let marker = new google.maps.Marker;
+    let latlng = new google.maps.LatLng(place.location[0], place.location[1]);
+
     marker.setPosition(latlng);
     marker.setTitle(place.label);
     if (!checked) {
@@ -927,7 +899,7 @@ function addMarker(place, checked) {
             strokeWeight: 3,
             strokeColor: '#4285f4'
         });
-        var infowindow = new google.maps.InfoWindow({
+        let infowindow = new google.maps.InfoWindow({
             content: `<div class="text-center container">
                 <h5 class="ml-3">${place.label}</h5><br/>
                 <div class="custom-control custom-checkbox ml-3">
@@ -950,22 +922,28 @@ function addMarker(place, checked) {
             });
         });
         marker.setMap(map);
-
     }
 
     return marker;
 }
 
+function isExist(element) {
+    return typeof element !== 'undefined' && element !== null;
+}
+
 /*function toggleClick(obj) {
+    'use strict';
     $(obj).toggleClass('responsive');
     $(obj + " form input:visible:first").focus();
 }
 
 function insertAfter(newNode, referenceNode) {
+    'use strict';
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
 function clickPage(obj) {
+    'use strict';
     var btns = document.querySelectorAll('.btn-group-item .btn');
     btns.forEach(function (btn) {
         btn.setAttribute('class', 'btn');
@@ -974,15 +952,18 @@ function clickPage(obj) {
 }
 */
 //$(window).resize(function () {
+//    'use strict';
 ////    removeClass('#menu');
 ////    removeClass('#search');
 //    removeClass('#login');
 //});
 //Verify Form
 /*function isValidValue(obj) {
+    'use strict';
     return obj.value !== null && obj.value !== "";
 }
 function validateText(obj) {
+    'use strict';
     var i;
     
     for (i = 0; i < obj.length; i += 1) {
@@ -994,24 +975,28 @@ function validateText(obj) {
     return false;
 }
 function validateReason(obj) {
+    'use strict';
     var pattern = /\d/;
     
 //    return obj.value === null || obj.value === "" || obj.value.length > 20 || pattern.test(obj.value) ? false : true;
     return obj.value === null || obj.value === "" || obj.value.length > 20 || !pattern.test(obj.value);
 }
 function validateTel(obj) {
+    'use strict';
     var pattern = /[\+]\d{2}[\(]\d{2}[\)]\d{4}[\-]\d{4}/;
 
 //    return obj.value === null || obj.value === "" || !pattern.test(obj.value) ? false : true;
     return obj.value === null || obj.value === "" || pattern.test(obj.value);
 }
 function validateEmail(obj) {
+    'use strict';
     var pattern = /^\w+([\.\-]?\w+)*@\w+([\.\-]?\w+)*(\.\w{2,3})+$/;
 
 //    return obj.value === null || obj.value === "" || !pattern.test(obj.value) ? false : true;
     return obj.value === null || obj.value === "" || pattern.test(obj.value);
 }
 function validateUrl(obj) {
+    'use strict';
     var pattern = /^https?:\/\/[\w\W]+/i;
 
 //    return obj.value === null || obj.value === "" || !pattern.test(obj.value) ? false : true;
@@ -1019,6 +1004,7 @@ function validateUrl(obj) {
 }
 
 function validateRadio(obj) {
+    'use strict';
     var i;
     
     for (i = 0; i < obj.length; i += 1) {
@@ -1030,6 +1016,7 @@ function validateRadio(obj) {
     return false;
 }
 function validateCheck(obj) {
+    'use strict';
     var i;
   
     for (i = 0; i < obj.length; i += 1) {
@@ -1041,6 +1028,7 @@ function validateCheck(obj) {
     return false;
 }
 function getElementType(obj) {
+    'use strict';
     var type = "";
     
     if (obj.tagName === "INPUT") { return obj.type; }
@@ -1050,6 +1038,7 @@ function getElementType(obj) {
     return type;
 }
 function validateField(form, field) {
+    'use strict';
     var res = true;
     if (field.length > 0) {
         switch (getElementType(field)) {
@@ -1106,6 +1095,7 @@ function validateField(form, field) {
     return res;
 }
 function validateRequiredFields(form) {
+    'use strict';
     var i, requiredFields, isValid = true;
     
     requiredFields = form.querySelectorAll(
@@ -1123,12 +1113,14 @@ function validateRequiredFields(form) {
 }
 
 function getFormElements(form) {
+    'use strict';
     return form.querySelectorAll(
         "input:not(:disabled):not([readonly]):not([type=hidden]):not([type=submit])," +
         "select:not(:disabled):not([readonly])," +
         "textarea:not(:disabled):not([readonly])");
 }
 function getFormFields(form) {
+    'use strict';
     var i, formFields, fields = [];
     
     formFields = getFormElements(form);
@@ -1140,6 +1132,7 @@ function getFormFields(form) {
     return fields;
 }
 function getFormValidFieldsCount(form) {
+    'use strict';
     var i, j = 0, fields;
     
     fields = getFormFields(form);
@@ -1152,6 +1145,7 @@ function getFormValidFieldsCount(form) {
 }
 
 function verify(form) {
+    'use strict';
 //    alert("1: text = " + validateReason(form.t3));
 //    alert("2: radio = " + validateRadio(form.f1));
 //    alert("3: tel = " + validateTel(form.tel));
