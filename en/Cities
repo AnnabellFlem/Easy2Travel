@@ -6,6 +6,16 @@ places: [{
     location: [22.2, 33.3]}],
 language: 'ua'
 
+country: "Ukraine",
+description: "",
+imgurl: "",
+cities: [{
+    name: "Kiev",
+    description: "",
+    imgurl: ""
+}],
+language: 'en'
+
 Австрія - це центральноєвропейська країна з імперською історією, архітектурою в стилі бароко, гірськими селами і альпійським ландшафтом. Державна мова тут німецький. Столиця Австрії - Відень - розташована на річці Дунай. Відень примітна своїми палацами Шенбрунн і Хофбург, а також тим, що в ній жили такі відомі люди, як Вольфганг Амадей Моцарт, Йоганн Штраус і Зигмунд Фрейд. Популярними пам'ятками Австрії є Богемський ліс на півночі країни, озеро Траунзе і розташовані на сході виноградники.
 Vienna is the capital of Austria, located in the eastern part of the country on the Danube River. In the cultural and intellectual heritage of the city, such well-known residents as V.A. Mozart, L. Beethoven and Z. Freud. Vienna is also famous for its imperial palaces, among which Schönbrunn is the summer residence of the Habsburg dynasty. And in the Museum Quarter area in historical and modern buildings works of such artists as E. Schiele and G. Klimt are collected.
 Відень - столиця Австрії, розташована в східній частині країни на річці Дунай. У культурний та інтелектуальний спадок міста внесли вклад такі відомі жителі, як В.А. Моцарт, Л. Бетховен і З. Фрейд. Також Відень знаменита своїми імператорськими палацами, серед яких Шенбрунн - літня резиденція династії Габсбургів. А в районі Музейний квартал в історичних і сучасних будівлях зібрані роботи таких художників, як Е. Шіле і Г. Клімт.

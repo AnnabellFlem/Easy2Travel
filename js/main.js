@@ -84,8 +84,6 @@ function getTimelineItem(timeline, position) {
         positionClass = isLastInverted ? "" : "timeline-inverted",
         item = 
         $("<li>").attr("id", timeline.id)
-//        $("<li>").attr("id", timeline._id)
-//            .addClass(typeof position === "undefined" ? positionClass : position).append(
             .addClass(position === undefined ? positionClass : position).append(
             $("<div>").addClass("timeline-badge primary").append(
                 $('<a>').append(
@@ -119,7 +117,6 @@ function getTimelineItem(timeline, position) {
                             $("<a>").append(
                                 $("<i>")
                                     .addClass("far fa-thumbs-up fa-lg")
-//                <a><i class="tl-comments far fa-comment fa-lg">&nbsp;&nbsp;</i></a>
                                     .attr("aria-hidden", "true")
                                     .html("&nbsp;&nbsp;")
                             )
@@ -583,13 +580,11 @@ function enableEvent() {
         } else if (isTooltip) {
             $(e.target).tooltip('hide');
         }
-//        $(this).blur(function(e) {
         $(e.target).blur(e => $(e.target).tooltip('hide'));
     });
     $("#logout").click(function(e) {
-        alert(1);
-        // setUserSession(false);
-        // logout(e);
+        setUserSession(false);
+        logout(e);
     });
     $("#login").on("hide.bs.modal", function() {
         $('.register-form :input').val('');
@@ -633,8 +628,11 @@ function enableEvent() {
 //$(location).attr('href').split('/').pop() === 
 //        $("#blog").modal("toggle");
 
-    $("#sign-btn a").click(function() {
-        $('#login').modal('toggle');
+    $("#sign-btn > a").click(() => {
+        if (isLoggin)
+            location.replace('./profile.html');
+        else    
+            $('#login').modal('toggle');
     });
     isLoggedIn();
     dragdropImage();
@@ -767,19 +765,18 @@ function citySearch(e) {
                                 $('.routeguest').show();
                                 $('.routeuser').hide();
                             }
-                            //alert(isLoggin);
-                            // if ($(e.target).data("btn") === "edit") {
-                            //     $('#btn-img-delete').show();
-                            //     $('#blog .modal-title').text('Edit or delete trip');
-                            // } else {
-                            //     $('#btn-img-delete').hide();
-                            //     $('#blog .modal-title').text('Add new trip');
-                            // }
                         });
-                    
-
+                        $('.routeguest a').on('click', () => {
+                            $('#login').modal('toggle');
+                        });
                         $('.btn-route').on('click', () => {
-                            $('#route').modal("toggle");/////////////////////////
+                            if (getCheckMarkers().length > 1) {
+                                //save to variable
+                                $('#route').modal("toggle");
+                            }
+                            else {
+                                $('#alert-box').load('parts/alert.html');
+                            }
                         });
                         $('#btn-clear').on('click', () => {
                            $('.list-group').children().map(index => {
@@ -809,11 +806,15 @@ function clearCityPlace() {
     $('body[id=tours] footer').css('position', 'fixed');
 }
 
+function getCheckMarkers() {
+    return markers_checked.filter(item => isExist(item.map));
+}
+
 function checkMarker(target) {
     let lid = $(target).attr('data-locationid');
 
     markers_checked[lid].setMap($(target).is(':checked') ? map : null);
-    let markerWay = markers_checked.filter(item => isExist(item.map));
+    let markerWay = getCheckMarkers();
     clearDirections();
     if (markerWay.length > 1) {
         var waypts = [];

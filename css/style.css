@@ -1625,3 +1625,9 @@ body[id="e2t"] .overlay-regular, body[id="e2t"] .overlay-small {
 .city-search-form input[list]::-webkit-calendar-picker-indicator {
   display: none;
 }
+#alert-box {
+  position: fixed;
+  z-index: 1999;
+  width: 100%;
+  bottom: 0;
+}
