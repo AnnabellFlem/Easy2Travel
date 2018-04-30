@@ -11,6 +11,7 @@ let map;
 let markers = [];
 let markers_checked = [];
 let directionsDisplay;
+let isLoggin = false;
 
 function removeClass(obj) {
     if ($(obj).hasClass('responsive')) {
@@ -73,6 +74,7 @@ function setUserSession(b, username) {
         $("#sign-btn ul")
             .css("visibility", "hidden");
     }
+    isLoggin = b;
 }
 
 function getTimelineItem(timeline, position) {
@@ -163,7 +165,7 @@ function isLoggedIn() {
                 tls = obj.data.timeline, i;
             if (obj.status === 'OK' && obj.data.sessionId) {
                 setUserSession(true, obj.data.username);
-                for (i = 0; i < tls.length; i +=1) {
+                for (i = 0; i < tls.length; i++) {
                     addTimeline(tls[i]);
                 }
                 $('[data-toggle="tooltip"]').tooltip();
@@ -271,6 +273,7 @@ function timeline(e) {
     var f = e.target, val = $('#blog form').data('actionid'),
         tlsId = $(e.target.parentElement).data("timeline"),
         form_data;
+
     e.preventDefault();
     if ($(e.target.parentElement).data('btn') === "edit") {
         if (val === "1") {
@@ -561,12 +564,6 @@ function enableEvent() {
 
     $('#search').focusout(() => removeClass('#search'));
     $('#menu').focusout(() => removeClass('#menu'));
-//    $('#login .message a').click(function () {
-//        $('#login form').animate({
-//            height: "toggle",
-//            opacity: "toggle"
-//        }, "slow");
-//    });
     
     $('.like').click(function() {
         var obj = this.getElementsByTagName('span')[0], cnt = parseInt(obj.innerHTML, 10);
@@ -576,8 +573,6 @@ function enableEvent() {
         cnt++;
         obj.innerHTML = cnt;
     });
-//    $("#login .login-form").on("submit", login);
-//    $("#login .register-form").on("submit", register);
     $("#login .login-form input[name=password]").keypress(e => {
         var isTooltip = $('.tooltip').is(':visible'),
             s = String.fromCharCode(e.which);
@@ -592,8 +587,9 @@ function enableEvent() {
         $(e.target).blur(e => $(e.target).tooltip('hide'));
     });
     $("#logout").click(function(e) {
-        setUserSession(false);
-        logout(e);
+        alert(1);
+        // setUserSession(false);
+        // logout(e);
     });
     $("#login").on("hide.bs.modal", function() {
         $('.register-form :input').val('');
@@ -605,13 +601,9 @@ function enableEvent() {
     $(".blog-form button[type=submit]").click(function(e) {
         $(e.target).parents('form').data('actionid', $(e.target).attr('value'));
     });
-    $("#img-btn").change(function (e) {
-        setImageFile(e.target.files[0]);
-    });
-    $("#img-clear").click(function () {
-        setImageFile();
-    });
-    $("#blog").on("show.bs.modal", function(e) {
+    $('#img-btn').change(e => setImageFile(e.target.files[0]));
+    $('#img-clear').click(() => setImageFile());
+    $('#blog').on('show.bs.modal', e => {
         if ($(e.target).data("btn") === "edit") {
             $('#btn-img-delete').show();
             $('#blog .modal-title').text('Edit or delete trip');
@@ -620,10 +612,10 @@ function enableEvent() {
             $('#blog .modal-title').text('Add new trip');
         }
     });
-    $("#blog").on("hide.bs.modal", function() {
-        $("#blog").data("btn", "");
+    $('#blog').on('hide.bs.modal', () => {
+        $('#blog').data('btn', "");
         $('.blog-form :input').not(':button').val('');
-        $(".img-wrapper").css("background-image", "");
+        $('.img-wrapper').css('background-image', "");
         $('.login-status').empty();
     });
 
@@ -696,6 +688,11 @@ $(document).ready(function() {
             $('#login .login-form').on("submit", login);
             $("#login .register-form").on("submit", register);
         }),
+        $('#route').load('parts/route_form.html', function() {
+            $(this).addClass('modal fade login-page');
+            // $('#login .login-form').on("submit", login);
+            // $("#login .register-form").on("submit", register);
+        }),
         $.getScript('../bootstrap/js/popper.min.js'),
         $.getScript('../bootstrap/js/bootstrap.min.js'),
         $.getScript('../js/tether.min.js')
@@ -736,6 +733,7 @@ function citySearch(e) {
         city: $('.city-search-form input').val(),
         lng: getCurrentLanguage()
     };
+
     e.preventDefault();
     if (!isTourPage()) {
         location.replace('./tours.html?city=' + obj.city);
@@ -761,8 +759,27 @@ function citySearch(e) {
                         city.places.map(place => $('.list-group').append(getCityPlace(place)));
                     });
                     $('#city-route').load('parts/city_route.html', () => {
+                        $('#route').on('show.bs.modal', function(e) {
+                            if (isLoggin) {
+                                $('.routeguest').hide();
+                                $('.routeuser').show();
+                            } else {
+                                $('.routeguest').show();
+                                $('.routeuser').hide();
+                            }
+                            //alert(isLoggin);
+                            // if ($(e.target).data("btn") === "edit") {
+                            //     $('#btn-img-delete').show();
+                            //     $('#blog .modal-title').text('Edit or delete trip');
+                            // } else {
+                            //     $('#btn-img-delete').hide();
+                            //     $('#blog .modal-title').text('Add new trip');
+                            // }
+                        });
+                    
+
                         $('.btn-route').on('click', () => {
-                            alert(1);
+                            $('#route').modal("toggle");/////////////////////////
                         });
                         $('#btn-clear').on('click', () => {
                            $('.list-group').children().map(index => {
@@ -875,7 +892,7 @@ function initMap() {
         draggableCursor: 'default'
     });
     if (isTourPage()) {
-        map.addListener('mouseout', () => closeMarkers());
+        map.addListener('mouseout', closeMarkers);
     } else {
         new google.maps.Marker({
             position: setCenter(),
