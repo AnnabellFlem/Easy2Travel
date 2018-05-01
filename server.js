@@ -1,15 +1,16 @@
 /*global require*/
 /*eslint-disable no-console */
 /*jslint maxerr: 10, es6, node, single, for, bitwise, multivar, white, this, browser*/
+'use strict';
 
-var express = require('express');
+const express = require('express');
 //var router = express.Router();
-var path = require('path');
-var bodyParser = require('body-parser');
-var app = express();
-var session = require('express-session');
-var multer  = require('multer');
-var storage = multer.diskStorage({
+const path = require('path');
+const bodyParser = require('body-parser');
+const app = express();
+const session = require('express-session');
+const multer  = require('multer');
+const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         "use strict";
         cb(null, './blog/img/');
@@ -19,21 +20,20 @@ var storage = multer.diskStorage({
         cb(null, file.fieldname + '-' + Date.now()+ '.' + file.originalname.split('.').pop());
     }
 });
-var upload = multer({storage: storage}).single('pic');
-var passport = require('passport');
+const upload = multer({storage: storage}).single('pic');
+const passport = require('passport');
 
-var port = 3000;
+const port = 3000;
 //http://expressjs.com/ru/guide/routing.html
 //https://code.tutsplus.com/tutorials/authenticating-nodejs-applications-with-passport--cms-21619
 //var express = require('express'),
 //    app = express(),
-//    session = require('express-session');
-var statusOK = {status: 'OK'};
-var statusERROR = {status: 'ERROR'};
-var User = require('./server/db/user');
-var Timeline = require('./server/db/blog');
-var Place = require('./server/db/place');
-var Country = require('./server/db/country');
+const statusOK = {status: 'OK'};
+const statusERROR = {status: 'ERROR'};
+const User = require('./server/db/user');
+const Timeline = require('./server/db/blog');
+const Place = require('./server/db/place');
+const Country = require('./server/db/country');
 //var pathoptions = 'en/';//??
 
 var getCaseInsensitive = (value) => new RegExp(`^${value}$`, 'i');
@@ -63,25 +63,20 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
-    "use strict";
     done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
-    "use strict";
     User.findById(id, function(err, user) {
         done(err, user);
   });
 });
 
 app.listen(port, function () {
-    "use strict";
     console.log('Listening on port ' + port);
 });
 
-
 function setStatusMessage(status, msg, data) {
-    "use strict";
     if (msg) {
         status.message = msg;
     } else {
@@ -97,8 +92,37 @@ function setStatusMessage(status, msg, data) {
 }
 
 function getTimeline(req, res) {
-    "use strict";
+    let locations = req.session.locations;
+    console.log(locations);
+    let t = {};
+
+    if (locations) {
+        //save to mongo
+        delete req.session.locations;
+    }//only on profile html?
     Timeline.find({'userid': req.session.userId}, function (err, timeline) {
+        t = [{
+            id: req.session.userId,
+            userid: req.session.userId,
+            title: "Vienna",
+            locations: [[48.1861987, 16.3128606], [48.2076579, 16.3638598]],
+            body: [{
+                title: "Vienna",
+                description: "vv",
+                imgurl: "/img/trips/cities/hofburg.jpg",
+                imgsize: 1
+                },
+                {
+                    title: "Kiev",
+                    description: "aa",
+                    imgurl: "/img/trips/cities/hofburg.jpg",
+                    imgsize: 1
+                }
+            ],
+            comments: ["qq", "cc", "ww"],
+            created_at: t.created_at,
+            updated_at: t.updated_at
+        }];
         if (err) {
             console.log(err);
             res.send(setStatusMessage(statusOK, "", {
@@ -108,13 +132,15 @@ function getTimeline(req, res) {
             res.send(setStatusMessage(statusOK, "", {
                 sessionId: req.session.userId,
                 username: req.session.username,
-                timeline: Timeline.getTimeline(timeline)}));
+                timeline: t}));
+                // sessionId: req.session.userId,
+                // username: req.session.username,
+                // timeline: Timeline.getTimeline(timeline)}));
         }
     });
 }
 
 function getError(err) {
-    "use strict";
     switch (err.code) {
         case 11000 :
             return "This name or email already exists.";
@@ -124,7 +150,6 @@ function getError(err) {
 }
 
 function getUser(userData, req, res) {
-    "use strict";
 //    if (!userData.username) {
 //        setStatusMessage(statusERROR, "Name or email can't be empty.");
 //    } else if (!userData.password) {
@@ -151,18 +176,15 @@ function getUser(userData, req, res) {
 }
 
 function init() {
-    "use strict";
     setStatusMessage(statusOK);
     setStatusMessage(statusERROR);
 }
 
 function validateEmail(email) {
-    "use strict";
     return /^\w+([\-]?\w+)*@\w+([\-]?\w+)*(\.\w{2,3})+$/.test(email);
 }
 
 function validate(userData) {
-    "use strict";
     if (!userData.username) {
         setStatusMessage(statusERROR, "Name can't be empty.");
         return false;
@@ -183,7 +205,6 @@ function validate(userData) {
 }
 
 function createUser(userData, req, res) {
-    "use strict";
     User.create(userData, function (err, user) {
         if (err) {
             res.send(setStatusMessage(statusERROR, getError(err)));
@@ -196,7 +217,6 @@ function createUser(userData, req, res) {
 }
 
 app.get('/', function(req, res) {
-    "use strict";
 //    req.flash('message', 'Invalid Password');
 	console.log(__dirname);
 //	res.sendFile('index.html', pathoptions);
@@ -211,7 +231,6 @@ app.get('/', function(req, res) {
 //res.sendFile('index1.html', { root: path.join(__dirname, //'../public') });
 
 app.get('/isloggedin', function(req, res) {
-    "use strict";
 	console.log('[' + new Date() + ']: sessionId => ' + req.session.userId);
 //    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 //    console.log(fullUrl);
@@ -224,7 +243,6 @@ app.get('/isloggedin', function(req, res) {
 });
 
 app.get('/profile', function(req, res) {
-    "use strict";
 //	console.log(pathoptions);
 //	res.sendFile('profile.html', pathoptions, function(err) {
 //      console.log(err);
@@ -253,7 +271,6 @@ app.get('/profile', function(req, res) {
 });
 
 app.post('/login', function(req, res) {
-    "use strict";
     var userData = {
         username: req.body.username,
         password: req.body.password
@@ -263,7 +280,6 @@ app.post('/login', function(req, res) {
 });
 
 app.post('/register', function(req, res) {
-    "use strict";
     var userData = {
         email: req.body.email,
         username: req.body.username,
@@ -279,7 +295,6 @@ app.post('/register', function(req, res) {
 });
 
 app.get('/logout', function(req, res, next) {
-    "use strict";
 //    init();
     if (req.session) {
         req.session.destroy(function(err) {
@@ -293,7 +308,6 @@ app.get('/logout', function(req, res, next) {
 });
 
 app.post('/timeline', function(req, res) {
-    "use strict";
     upload(req, res, function (err) {
         if (err) {
             console.log(err);
@@ -331,7 +345,6 @@ app.post('/timeline', function(req, res) {
 });
 
 app.delete('/tmldelete/:tlsId', function(req, res) {
-    "use strict";
     Timeline.remove({'_id': Timeline.getObjectId(req.params.tlsId)}, function (err) {
         if (err) {
             console.log(err);
@@ -343,7 +356,6 @@ app.delete('/tmldelete/:tlsId', function(req, res) {
 });
 
 app.put('/tmledit/:tlsId', function(req, res) {
-    "use strict";
     upload(req, res, function (err) {
         if (err) {
             console.log(err);
@@ -380,7 +392,6 @@ app.put('/tmledit/:tlsId', function(req, res) {
 });
 
 app.get('/city', (req, res) => {
-    "use strict";
     var param = req.query.city;
 
     if (param) {
@@ -391,7 +402,6 @@ app.get('/city', (req, res) => {
 });
 
 app.get('/tours/:lng/:city', (req, res) => {
-    "use strict";
     let lng = req.params.lng;
 
     Place.find({
@@ -430,4 +440,15 @@ app.get('/tours/:lng/:city', (req, res) => {
             res.send(setStatusMessage(statusOK, "", cityPlace));
         }
     });
+});
+
+app.get('/routes', (req, res) => {
+    req.session.locations = req.query.locations;
+    req.session.languange = req.query.lng;
+    // console.log(param);
+    // if (param) {
+    //     res.redirect(`/tours/${req.query.lng}/${param}`);
+    // } else {
+    res.send(setStatusMessage(statusOK));
+    // }
 });

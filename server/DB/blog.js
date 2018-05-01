@@ -1,10 +1,11 @@
 /*jslint maxerr: 10, es6, node, single, for, multivar, bitwise, white, this, devel, browser*/
+'use strict';
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 mongoose.connect("mongodb://localhost:27017/e2t", {
-  useMongoClient: true
+    useMongoClient: true
 });
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 var TimelineSchema = new mongoose.Schema({
@@ -17,20 +18,34 @@ var TimelineSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    body: {
-        type: String
-    },
-    imgurl: {
-        type: String
-    },
-    imgsize: {
-        type: Number
-    },
+    locations: [{
+        type: [Number],
+        required: true
+    }],
+    body: [{
+        title: {
+            type: String,
+            required: true
+        },
+        description: {
+            type: String
+        },
+        imgurl: {
+            type: String
+        },
+        imgsize: {
+            type: Number
+        }
+    }],
+    comments: [{
+        description: {
+            type: String
+        }
+    }],
     created_at: Date,
     updated_at: Date
 });
 TimelineSchema.pre('save', function(next) {
-    "use strict";
     var currentDate = new Date();
 
     this.updated_at = currentDate;
@@ -42,24 +57,19 @@ TimelineSchema.pre('save', function(next) {
 
 var Timeline = mongoose.model('Timeline', TimelineSchema);
 var functions = {
-   getTimeline : function(t) {
-        "use strict";
+   getTimeline : t => {
         return {
             id: t._id,
             userid: t.userid,
             title: t.title,
+            locations: t.locations,
             body: t.body,
-            imgurl: t.imgurl,
-            imgsize: t.imgsize,
+            comments: t.comments,
             created_at: t.created_at,
             updated_at: t.updated_at
         };
     },
-    getObjectId : function(id) {
-        "use strict";
-        return new mongoose.Types.ObjectId(id);
-//    return mongoose.Types.ObjectId(id);
-    }
+    getObjectId : id => new mongoose.Types.ObjectId(id)
 };
 module.exports = Timeline;
 for (var key in functions) {

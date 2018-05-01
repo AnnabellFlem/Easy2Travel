@@ -77,13 +77,63 @@ function setUserSession(b, username) {
     isLoggin = b;
 }
 
-function getTimelineItem(timeline, position) {
+function getTimelineItem(timeline, position, i) {
     var isLastInverted = $('#timeline ul > li:not(.clearfix):last').hasClass('timeline-inverted'),
         d = new Date(timeline.created_at),
         timeline_date = d.getDate() + "." + d.getMonth() + "." + d.getFullYear(),
         positionClass = isLastInverted ? "" : "timeline-inverted",
-        item = 
-        $("<li>").attr("id", timeline.id)
+        item =
+        $(`<li>
+        <div class="timeline-badge primary">
+            <a>
+                <i class="far fa-circle fa-lg" data-toggle="tooltip" title="11 hours ago via Twitter"></i>
+            </a>
+        </div>
+        <div class="timeline-panel">
+            <div class="list-group">
+                <a href="#" class="list-group-item">
+                    <div id="${i}" class="container-fluid mb-2" style="height:180px;">
+                    </div>
+                    <div class="media">
+                        <div class="media-body m-2">
+                            <h4 class="media-heading">St.Sofia Cathedral</h4>
+                            <p>Description</p>
+                        </div>
+                        <div>
+                            <img class="media-object h-25 w-50 float-right" src="/img/trips/au.jpg" alt="Image1">
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="list-group">
+                <a href="#" class="list-group-item">
+                    <div class="media">
+                        <div class="media-body m-2">
+                            <h4 class="media-heading">Old town</h4>
+                            <p>Description</p>
+                        </div>
+                        <div>
+                            <img class="media-object h-25 w-50 float-right" src="/img/trips/ad.jpg" alt="Image">
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="timeline-footer">
+                <a>
+                    <i class="tl-likes far fa-thumbs-up fa-lg">&nbsp;&nbsp;</i>
+                </a>
+                <a>
+                    <i class="tl-comments far fa-comment fa-lg">&nbsp;&nbsp;</i>
+                </a>
+                <a>
+                    <i class="tl-edit far fa-edit fa-lg"></i>
+                </a>
+                <a class="float-right">London trip</a>
+            </div>
+        </div>
+    </li>`);
+
+/*        $("<li>").attr("id", timeline.id)
             .addClass(position === undefined ? positionClass : position).append(
             $("<div>").addClass("timeline-badge primary").append(
                 $('<a>').append(
@@ -142,15 +192,50 @@ function getTimelineItem(timeline, position) {
                         )
                 )
         );
-
+*/
     return item;
 }
 
 function addTimeline(timeline) {
-    $('#timeline ul').find(' > li:last-child').before(getTimelineItem(timeline));
+//    $('#timeline ul').prepend(getTimelineItem(timeline));//.find(' > li:last-child').before(getTimelineItem(timeline));//newest to oldest?
+//$('#timeline ul').find(' > li:first-child').before(getTimelineItem(timeline));//newest to oldest?
+    $.getScript('../bootstrap/js/popper.min.js');
+
+    $('#timeline ul').find(' > li:first-child').after(getTimelineItem(timeline, 0, "google1"));//newest to oldest?
+    $('#timeline ul').find(' > li:first-child').after(getTimelineItem(timeline, 0, "google2"));//newest to oldest?
+    $('#timeline ul').append(
+        $(`
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI&callback=initm" async defer></script>
+        <script>
+        function initm() {
+            var uluru = {
+                lat: -25.363,
+                lng: 131.044
+            };
+            var map1 = new google.maps.Map(document.getElementById('google1'), {
+                zoom: 4,
+                center: uluru
+            });
+            var marker1 = new google.maps.Marker({
+                position: uluru,
+                map: map1
+            });
+            var map2 = new google.maps.Map(document.getElementById('google2'), {
+                zoom: 4,
+                center: uluru
+            });
+            var marker2 = new google.maps.Marker({
+                position: uluru,
+                map: map2
+            });
+        }
+    </script>`)
+
+    );
+
 }
 
-function isLoggedIn() {
+function isLoggedIn() {////remove to tours only for profile
     setUserSession(false);
     $.ajax({
         type: "GET",
@@ -158,13 +243,11 @@ function isLoggedIn() {
         dataType: "json",
         cache: false,
         success: function (data, status, xhr) {
-            var obj = JSON.parse(xhr.responseText),
-                tls = obj.data.timeline, i;
+            let obj = JSON.parse(xhr.responseText),
+                tls = obj.data.timeline;
             if (obj.status === 'OK' && obj.data.sessionId) {
                 setUserSession(true, obj.data.username);
-                for (i = 0; i < tls.length; i++) {
-                    addTimeline(tls[i]);
-                }
+                Object.values(tls).map(t => addTimeline(t));
                 $('[data-toggle="tooltip"]').tooltip();
             } else {
                 setUserSession(false);
@@ -546,7 +629,7 @@ function loadGallery() {
     }
 }
 
-function enableEvent() {
+function enableEvent() {//remove to tours only = check all
     $('top-menu').click(function() {
         var p = $(this);
         $('.navigation').css('top', p.position().top + p.outerHeight() + 'px');
@@ -554,10 +637,12 @@ function enableEvent() {
         $('.navigation').css('display', 'block');
     });
     
-    $('#slider-list .img:gt(0)').hide();
-    setInterval(() =>
-        $("#slider-list .img:first-child").fadeOut(4000).next("#slider-list .img").fadeIn(4000).end().appendTo("#slider-list"),
-        4000);
+    if (isMainPage()) {
+        $('#slider-list .img:gt(0)').hide();
+        setInterval(() =>
+            $("#slider-list .img:first-child").fadeOut(4000).next("#slider-list .img").fadeIn(4000).end().appendTo("#slider-list"),
+            4000);
+    }
 
     $('#search').focusout(() => removeClass('#search'));
     $('#menu').focusout(() => removeClass('#menu'));
@@ -657,15 +742,17 @@ function enableEvent() {
 }
 
 $(window).on('load', function() {
-    $('.overlay-regular').css('opacity','0.3');
-    $('.overlay-small').css('opacity','1');
+    if (isTourPage() || isMainPage()) {
+        $('.overlay-regular').css('opacity','0.3');
+        $('.overlay-small').css('opacity','1');
+    }
 });
 
 $(document).ready(function() {
     $.when(
 //        $('#header-top').load('parts/header.html'),
 //$('head').append( $('<link rel="stylesheet" type="text/css" />').attr('href', 'your stylesheet url') );
-        $('#city-search').load('parts/city_search.html', function() {
+        $('#city-search').load('parts/city_search.html', function() {//remove to tours only
            getCitiesList().map(item => $('#cities').append(`<option value="${item.name}">`));
             $('.city-search-form').on("submit", citySearch);
         }),
@@ -686,7 +773,7 @@ $(document).ready(function() {
             $('#login .login-form').on("submit", login);
             $("#login .register-form").on("submit", register);
         }),
-        $('#route').load('parts/route_form.html', function() {
+        $('#route').load('parts/route_form.html', function() {//remove to tours only
             $(this).addClass('modal fade login-page');
             // $('#login .login-form').on("submit", login);
             // $("#login .register-form").on("submit", register);
@@ -742,7 +829,7 @@ function citySearch(e) {
             cache: false,
             dataType: "json",
             data: JSON.parse(JSON.stringify(obj)),
-            success: function (data, status, xhr) {
+            success: function(data, status, xhr) {
                 var obj = JSON.parse(xhr.responseText),
                     city = obj.data;
                 if (obj.status === 'OK') {
@@ -767,11 +854,17 @@ function citySearch(e) {
                             }
                         });
                         $('.routeguest a').on('click', () => {
-                            $('#login').modal('toggle');
+                            //save to session
+                            saveRoute(getCheckMarkers(), true);
+                            // $('#login').modal('toggle');
+                        });
+                        $('.routeuser a').on('click', () => {
+                            //save to mongo
+                            saveRoute(getCheckMarkers(), false);
+                            // location.replace('./profile.html');
                         });
                         $('.btn-route').on('click', () => {
                             if (getCheckMarkers().length > 1) {
-                                //save to variable
                                 $('#route').modal("toggle");
                             }
                             else {
@@ -786,7 +879,6 @@ function citySearch(e) {
                            });
                         });
                     });
-                    
                     $('#google').show();
                     $('body[id=tours] footer').css('position', 'absolute');
                 } else {
@@ -797,6 +889,37 @@ function citySearch(e) {
     } else {
         clearCityPlace();
     }
+}
+
+function saveRoute(routes, status) {
+    let obj = {
+        locations: routes.map(item => item.position),
+        lng: getCurrentLanguage()
+    };
+
+    $.ajax({
+        type: 'GET',
+        url: '/routes',
+        cache: false,
+        dataType: 'json',
+        data: JSON.parse(JSON.stringify(obj)),
+        success: function(data, status, xhr) {
+             let obj = JSON.parse(xhr.responseText);
+             if (obj.status === 'OK') {
+                // alert("OK");//check register
+                if (status) {
+                    $('#login').modal('toggle');
+                } else {
+                    location.replace('./profile.html');
+                }
+            } else {
+                // alert("OK1");
+            }
+        },
+        error: function(xhr, status, error) {
+            // alert("Error");
+        }
+    });
 }
 
 function clearCityPlace() {
