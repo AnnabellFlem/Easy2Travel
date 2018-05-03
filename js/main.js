@@ -77,47 +77,45 @@ function setUserSession(b, username) {
     isLoggin = b;
 }
 
-function getTimelineItem(timeline, position, i) {
-    var isLastInverted = $('#timeline ul > li:not(.clearfix):last').hasClass('timeline-inverted'),
-        d = new Date(timeline.created_at),
-        timeline_date = d.getDate() + "." + d.getMonth() + "." + d.getFullYear(),
-        positionClass = isLastInverted ? "" : "timeline-inverted",
-        item =
-        $(`<li>
+function getTimelineItem(timeline, position, index) {
+    // alert(JSON.stringify(timeline));
+    let isLastInverted = $('#timeline ul > li:not(.clearfix):last').hasClass('timeline-inverted');
+    let d = new Date(timeline.created_at);
+    let timeline_date = d.getDate() + "." + d.getMonth() + "." + d.getFullYear();
+    let positionClass = isLastInverted ? "" : "timeline-inverted";
+    let places = "";
+    let subPlace = item => `
+        <div class="list-group">
+            <div class="list-group-item">
+                <div class="media">
+                    <div class="media-body m-2">
+                        <h4 class="media-heading">${item.title}</h4>
+                        <p></p>${item.description}</p>
+                    </div>
+                    <div class="w-50">
+                        <img class="media-object w-75 float-right" src="${item.imgurl}" alt="Image1">
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    timeline.body.map(item => places += subPlace(item));   
+    let aaa = () => {
+        alert(1);
+    }; 
+    let item =
+        $(`<li id="${timeline.id}" class="${position === undefined || position === null ? positionClass : position}">
         <div class="timeline-badge primary">
             <a>
-                <i class="far fa-circle fa-lg" data-toggle="tooltip" title="11 hours ago via Twitter"></i>
+                <i class="far fa-circle fa-lg" data-toggle="tooltip" data-placement="${isLastInverted ? "right" : "left"}" title="${timeline_date}"></i>
             </a>
         </div>
         <div class="timeline-panel">
             <div class="list-group">
                 <a href="#" class="list-group-item">
-                    <div id="${i}" class="container-fluid mb-2" style="height:180px;">
-                    </div>
-                    <div class="media">
-                        <div class="media-body m-2">
-                            <h4 class="media-heading">St.Sofia Cathedral</h4>
-                            <p>Description</p>
-                        </div>
-                        <div>
-                            <img class="media-object h-25 w-50 float-right" src="/img/trips/au.jpg" alt="Image1">
-                        </div>
-                    </div>
+                    <div id="google${index}" class="container-fluid" style="height:180px;"></div>
                 </a>
             </div>
-            <div class="list-group">
-                <a href="#" class="list-group-item">
-                    <div class="media">
-                        <div class="media-body m-2">
-                            <h4 class="media-heading">Old town</h4>
-                            <p>Description</p>
-                        </div>
-                        <div>
-                            <img class="media-object h-25 w-50 float-right" src="/img/trips/ad.jpg" alt="Image">
-                        </div>
-                    </div>
-                </a>
-            </div>
+            ${places}
             <div class="timeline-footer">
                 <a>
                     <i class="tl-likes far fa-thumbs-up fa-lg">&nbsp;&nbsp;</i>
@@ -128,114 +126,112 @@ function getTimelineItem(timeline, position, i) {
                 <a>
                     <i class="tl-edit far fa-edit fa-lg"></i>
                 </a>
-                <a class="float-right">London trip</a>
+                <a class="float-right">${timeline.title} trip</a>
             </div>
         </div>
     </li>`);
 
-/*        $("<li>").attr("id", timeline.id)
-            .addClass(position === undefined ? positionClass : position).append(
-            $("<div>").addClass("timeline-badge primary").append(
-                $('<a>').append(
-                    $('<i>')
-                        .addClass("far fa-circle fa-lg circle-r invert")
-                        .attr("data-toggle", "tooltip")
-                        .attr("data-placement", isLastInverted ? "right" : "left")
-                        .attr("title", timeline_date)
-                        .css("cursor", "pointer")
-                )
-            )
-        ).append(
-            $("<div>")
-                .addClass("timeline-panel").append(
-                    $("<div>")
-                        .addClass("timeline-heading").append(
-                            $("<img>")
-                                .addClass("img-fluid")
-                                .attr("src", timeline.imgurl)
-                                .attr("alt", "")
-                        )
-                ).append(
-                    $("<div>")
-                        .addClass("timeline-body").append(
-                            $("<p>").text(timeline.body)
-                        )
-                    
-                ).append(
-                    $("<div>")
-                        .addClass("timeline-footer").append(
-                            $("<a>").append(
-                                $("<i>")
-                                    .addClass("far fa-thumbs-up fa-lg")
-                                    .attr("aria-hidden", "true")
-                                    .html("&nbsp;&nbsp;")
-                            )
-                        ).append(
-                            $("<a>").append(
-                                $("<i>")
-                                    .addClass("tl-edit far fa-edit fa-lg")
-                                    .attr("aria-hidden", "true")
-                                    .html("&nbsp;&nbsp;")
-                            ).click(function (e) {
-                                    var liid = $(e.target).parents('li').attr('id');
-                                    $("#blog").data("btn", "edit");
-                                    $("#blog").data("timeline", liid);
-                                    $("#blog input[type=text]").val($('#' + liid + ' .timeline-footer .float-right').text());
-                                    $("#blog textarea").val($('#' + liid + ' .timeline-body p').text());
-                                    $('#blog .img-wrapper').css('background-image', 'url(' + $('#' + liid + ' .timeline-heading img').attr('src') + ')');
-                                    $("#blog").modal("toggle");
-                            })
-                        ).append(
-                            $("<a>")
-                                .addClass("float-right")
-                                .text(timeline.title)
-                        )
-                )
-        );
-*/
+    //$(".timeline-footer a i").on("click", () => alert(1));
+
+    // $("<li>").attr("id", timeline.id)
+    //     .addClass(position === undefined ? positionClass : position).append(
+    //     $("<div>").addClass("timeline-badge primary").append(
+    //         $('<a>').append(
+    //             $('<i>')
+    //                 .addClass("far fa-circle fa-lg circle-r invert")
+    //                 .attr("data-toggle", "tooltip")
+    //                 .attr("data-placement", isLastInverted ? "right" : "left")
+    //                 .attr("title", timeline_date)
+    //                 .css("cursor", "pointer")
+    //         )
+    //     )
+    // ).append(
+    //     $("<div>")
+    //         .addClass("timeline-panel").append(
+    //             $("<div>")
+    //                 .addClass("timeline-heading").append(
+    //                     $("<img>")
+    //                         .addClass("img-fluid")
+    //                         .attr("src", timeline.imgurl)
+    //                         .attr("alt", "")
+    //                 )
+    //         ).append(
+    //             $("<div>")
+    //                 .addClass("timeline-body").append(
+    //                     $("<p>").text(timeline.body)
+    //                 )
+
+    //         ).append(
+    //             $("<div>")
+    //                 .addClass("timeline-footer").append(
+    //                     $("<a>").append(
+    //                         $("<i>")
+    //                             .addClass("far fa-thumbs-up fa-lg")
+    //                             .attr("aria-hidden", "true")
+    //                             .html("&nbsp;&nbsp;")
+    //                     )
+    //                 ).append(
+    //                     $("<a>").append(
+    //                         $("<i>")
+    //                             .addClass("tl-edit far fa-edit fa-lg")
+    //                             .attr("aria-hidden", "true")
+    //                             .html("&nbsp;&nbsp;")
+    //                     ).click(function (e) {
+    //                             var liid = $(e.target).parents('li').attr('id');
+    //                             $("#blog").data("btn", "edit");
+    //                             $("#blog").data("timeline", liid);
+    //                             $("#blog input[type=text]").val($('#' + liid + ' .timeline-footer .float-right').text());
+    //                             $("#blog textarea").val($('#' + liid + ' .timeline-body p').text());
+    //                             $('#blog .img-wrapper').css('background-image', 'url(' + $('#' + liid + ' .timeline-heading img').attr('src') + ')');
+    //                             $("#blog").modal("toggle");
+    //                     })
+    //                 ).append(
+    //                     $("<a>")
+    //                         .addClass("float-right")
+    //                         .text(timeline.title)
+    //                 )
+    //         )
+    // );
+
     return item;
 }
 
-function addTimeline(timeline) {
-//    $('#timeline ul').prepend(getTimelineItem(timeline));//.find(' > li:last-child').before(getTimelineItem(timeline));//newest to oldest?
-//$('#timeline ul').find(' > li:first-child').before(getTimelineItem(timeline));//newest to oldest?
+function addTimeline(timeline, index) {
+    //    $('#timeline ul').prepend(getTimelineItem(timeline));//.find(' > li:last-child').before(getTimelineItem(timeline));//newest to oldest?
+    //$('#timeline ul').find(' > li:first-child').before(getTimelineItem(timeline));//newest to oldest?
     $.getScript('../bootstrap/js/popper.min.js');
 
-    $('#timeline ul').find(' > li:first-child').after(getTimelineItem(timeline, 0, "google1"));//newest to oldest?
-    $('#timeline ul').find(' > li:first-child').after(getTimelineItem(timeline, 0, "google2"));//newest to oldest?
+    //    alert(JSON.stringify(timeline));
+    $('#timeline ul').find(' > li:first-child').after(getTimelineItem(timeline, null, index)); //newest to oldest?
+    let ls = "";
+    timeline.locations.map(item => {
+        ls += `m = new google.maps.Marker({
+                position: new google.maps.LatLng(${item[0]}, ${item[1]}),
+                map: map
+            });
+            ways.push(m);
+            drawRoute(ways, map);`;
+    });
     $('#timeline ul').append(
         $(`
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI&callback=initm" async defer></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI&callback=init" async defer></script>
         <script>
-        function initm() {
-            var uluru = {
-                lat: -25.363,
-                lng: 131.044
-            };
-            var map1 = new google.maps.Map(document.getElementById('google1'), {
-                zoom: 4,
-                center: uluru
+        function init() {
+            let ways = [];
+            let m;
+            let map = new google.maps.Map(document.getElementById('google${index}'), {
+                zoom: 12
             });
-            var marker1 = new google.maps.Marker({
-                position: uluru,
-                map: map1
-            });
-            var map2 = new google.maps.Map(document.getElementById('google2'), {
-                zoom: 4,
-                center: uluru
-            });
-            var marker2 = new google.maps.Marker({
-                position: uluru,
-                map: map2
-            });
+            setCenter("${timeline.title}", map);
+            ${ls}
         }
     </script>`)
 
     );
-
+    $(".timeline-footer a i").on("click", () => alert(1));
 }
 
-function isLoggedIn() {////remove to tours only for profile
+function isLoggedIn() { ////remove to tours only for profile
     setUserSession(false);
     $.ajax({
         type: "GET",
@@ -247,20 +243,20 @@ function isLoggedIn() {////remove to tours only for profile
                 tls = obj.data.timeline;
             if (obj.status === 'OK' && obj.data.sessionId) {
                 setUserSession(true, obj.data.username);
-                Object.values(tls).map(t => addTimeline(t));
+                Object.values(tls).map((t, index) => addTimeline(t, index));
                 $('[data-toggle="tooltip"]').tooltip();
             } else {
                 setUserSession(false);
             }
             console.log('data: ' + data + ', status:' + status);
         },
-        error: function() {
+        error: function () {
             setUserSession(false);
         }
     });
 }
 
-function renderForm(f, dj, textStatus/*, je*/) {
+function renderForm(f, dj, textStatus /*, je*/ ) {
     if (f === 'register-form' || f === 'login-form') {
         var frm_status = $('.' + f + ' .login-status');
         if (textStatus === 'success') {
@@ -275,13 +271,13 @@ function renderForm(f, dj, textStatus/*, je*/) {
             frm_status.html('Error accessing the server.');
         } else if (dj.statusText === 'error') {
             switch (dj.status) {
-                case 0 :
+                case 0:
                     frm_status.html('Not connect. Verify Network.');
                     break;
-                case 404 :
+                case 404:
                     frm_status.html('Requested page not found. [404]');
                     break;
-                case 500 :
+                case 500:
                     frm_status.html('Internal Server Error [500].');
                     break;
             }
@@ -295,13 +291,14 @@ function logout(e) {
         type: "GET",
         url: "/logout",
         cache: false,
-        success: function (/*data, status, xhr*/) {
+        success: function ( /*data, status, xhr*/ ) {
             if ($(location).attr('href').split('/').pop() === 'profile.html') {
                 location.replace('./index.html');
             }
-        }/*,
-        error: function(xhr, status, error) {
-        }*/
+        }
+        /*,
+                error: function(xhr, status, error) {
+                }*/
     });
 }
 
@@ -316,12 +313,13 @@ function login(e) {
         type: "POST",
         url: "/login",
         dataType: "json",
-        data: JSON.parse(JSON.stringify(obj))/*,
-        success: function (data, status, xhr) {
-        },
-        error: function(xhr, status, error) {
-        }*/
-    }).always(function(dj, textStatus, je) {
+        data: JSON.parse(JSON.stringify(obj))
+        /*,
+                success: function (data, status, xhr) {
+                },
+                error: function(xhr, status, error) {
+                }*/
+    }).always(function (dj, textStatus, je) {
         renderForm(f, dj, textStatus, je);
     });
 }
@@ -339,18 +337,20 @@ function register(e) {
         type: "POST",
         url: "/register",
         dataType: "json",
-        data: JSON.parse(JSON.stringify(obj))/*,
-        success: function (data, status, xhr) {
-        },
-        error: function(xhr, status, error) {
-        }*/
-    }).always(function(dj, textStatus, je) {
+        data: JSON.parse(JSON.stringify(obj))
+        /*,
+                success: function (data, status, xhr) {
+                },
+                error: function(xhr, status, error) {
+                }*/
+    }).always(function (dj, textStatus, je) {
         renderForm(f, dj, textStatus, je);
     });
 }
 
 function timeline(e) {
-    var f = e.target, val = $('#blog form').data('actionid'),
+    var f = e.target,
+        val = $('#blog form').data('actionid'),
         tlsId = $(e.target.parentElement).data("timeline"),
         form_data;
 
@@ -370,9 +370,10 @@ function timeline(e) {
                         $(f.parentElement).modal("toggle");
                     }
                     console.log('data: ' + data + ', status:' + status);
-                }/*,
-                error: function(xhr, status, error) {
-                }*/
+                }
+                /*,
+                                error: function(xhr, status, error) {
+                                }*/
             });
         } else {
             form_data = new FormData(f);
@@ -394,9 +395,10 @@ function timeline(e) {
                         $('.' + f.className + ' .login-status').html(obj.message);
                     }
                     console.log('data: ' + data + ', status:' + status);
-                }/*,
-                error: function(xhr, status, error) {
-                }*/
+                }
+                /*,
+                                error: function(xhr, status, error) {
+                                }*/
             });
         }
     } else {
@@ -418,9 +420,10 @@ function timeline(e) {
                     $('.' + f.className + ' .login-status').html(obj.message);
                 }
                 console.log('data: ' + data + ', status:' + status);
-            }/*,
-            error: function(xhr, status, error) {
-            }*/
+            }
+            /*,
+                        error: function(xhr, status, error) {
+                        }*/
         });
     }
 }
@@ -428,7 +431,8 @@ function timeline(e) {
 function setImageFile(imagefile) {
     sender = [];
     if (imagefile) {
-        var file = imagefile, reader = new FileReader();
+        var file = imagefile,
+            reader = new FileReader();
         reader.onloadend = function () {
             $('.img-wrapper').css('background-image', 'url(' + reader.result + ')');
         };
@@ -445,7 +449,7 @@ function dragdropImage() {
         e.stopPropagation();
         e.preventDefault();
         $(e.target).css('border', '2px solid #0B85A1');
-//        $(this).css('border', '2px solid #0B85A1');
+        //        $(this).css('border', '2px solid #0B85A1');
     });
     obj.on('dragover', function (e) {
         e.stopPropagation();
@@ -453,7 +457,7 @@ function dragdropImage() {
     });
     obj.on('drop', function (e) {
         $(e.target).css('border', '2px dotted #0B85A1');
-//        $(this).css('border', '2px dotted #0B85A1');
+        //        $(this).css('border', '2px dotted #0B85A1');
         e.preventDefault();
         setImageFile(e.originalEvent.dataTransfer.files[0]);
     });
@@ -474,41 +478,43 @@ function dragdropImage() {
 
 function loadGallery() {
     var items = [
-        ["london", "../img/gallery/ln1.jpg", "London", "London", "London"],
-        ["london", "../img/gallery/ln2.jpg", "London", "London", "London"],
-        ["london", "../img/gallery/ln3.jpg", "London", "London", "London"],
-        ["london", "../img/gallery/ln4.jpg", "London", "London", "London"],
-        ["new", "../img/gallery/ns1.jpg", "New", "New", "New"],
-        ["new", "../img/gallery/ns2.jpg", "New", "New", "New"],
-        ["new", "../img/gallery/ns3.jpg", "New", "New", "New"],
-        ["new", "../img/gallery/ns4.jpg", "New", "New", "New"],
-        ["new", "../img/gallery/ns5.jpg", "New", "New", "New"],
-        ["new", "../img/gallery/ns6.jpg", "New", "New", "New"],
-        ["new", "../img/gallery/ns7.jpg", "New", "New", "New"],
-        ["new", "../img/gallery/ns8.jpg", "New", "New", "New"],
-        ["new", "../img/gallery/ns9.jpg", "New", "New", "New"],
-        ["new", "../img/gallery/ns10.jpg", "New", "New", "New"],
-        ["ny", "../img/gallery/ny1.jpg", "New York", "New York", "New York"],
-        ["ny", "../img/gallery/ny2.jpg", "New York", "New York", "New York"],
-        ["ny", "../img/gallery/ny3.jpg", "New York", "New York", "New York"],
-        ["ny", "../img/gallery/ny4.jpg", "New York", "New York", "New York"],
-        ["ny", "../img/gallery/ny5.jpg", "New York", "New York", "New York"],
-        ["ny", "../img/gallery/ny6.jpg", "New York", "New York", "New York"],
-        ["ny", "../img/gallery/ny7.jpg", "New York", "New York", "New York"],
-        ["popular", "../img/gallery/p1.jpg", "Popular", "Popular", "Popular"],
-        ["popular", "../img/gallery/p2.jpg", "Popular", "Popular", "Popular"],
-        ["popular", "../img/gallery/p3.jpg", "Popular", "Popular", "Popular"],
-        ["popular", "../img/gallery/p4.jpg", "Popular", "Popular", "Popular"],
-        ["popular", "../img/gallery/p5.jpg", "Popular", "Popular", "Popular"],
-        ["popular", "../img/gallery/p6.jpg", "Popular", "Popular", "Popular"],
-        ["popular", "../img/gallery/p7.jpg", "Popular", "Popular", "Popular"],
-        ["popular", "../img/gallery/p8.jpg", "Popular", "Popular", "Popular"],
-        ["vinece", "../img/gallery/v1.jpg", "Vinece", "Vinece", "Vinece"],
-        ["vinece", "../img/gallery/v2.jpg", "Vinece", "Vinece", "Vinece"],
-        ["vinece", "../img/gallery/v3.jpg", "Vinece", "Vinece", "Vinece"],
-        ["vinece", "../img/gallery/v4.jpg", "Vinece", "Vinece", "Vinece"],
-        ["vinece", "../img/gallery/v5.jpg", "Vinece", "Vinece", "Vinece"],
-        ["vinece", "../img/gallery/v6.jpg", "Vinece", "Vinece", "Vinece"]], list, j,
+            ["london", "../img/gallery/ln1.jpg", "London", "London", "London"],
+            ["london", "../img/gallery/ln2.jpg", "London", "London", "London"],
+            ["london", "../img/gallery/ln3.jpg", "London", "London", "London"],
+            ["london", "../img/gallery/ln4.jpg", "London", "London", "London"],
+            ["new", "../img/gallery/ns1.jpg", "New", "New", "New"],
+            ["new", "../img/gallery/ns2.jpg", "New", "New", "New"],
+            ["new", "../img/gallery/ns3.jpg", "New", "New", "New"],
+            ["new", "../img/gallery/ns4.jpg", "New", "New", "New"],
+            ["new", "../img/gallery/ns5.jpg", "New", "New", "New"],
+            ["new", "../img/gallery/ns6.jpg", "New", "New", "New"],
+            ["new", "../img/gallery/ns7.jpg", "New", "New", "New"],
+            ["new", "../img/gallery/ns8.jpg", "New", "New", "New"],
+            ["new", "../img/gallery/ns9.jpg", "New", "New", "New"],
+            ["new", "../img/gallery/ns10.jpg", "New", "New", "New"],
+            ["ny", "../img/gallery/ny1.jpg", "New York", "New York", "New York"],
+            ["ny", "../img/gallery/ny2.jpg", "New York", "New York", "New York"],
+            ["ny", "../img/gallery/ny3.jpg", "New York", "New York", "New York"],
+            ["ny", "../img/gallery/ny4.jpg", "New York", "New York", "New York"],
+            ["ny", "../img/gallery/ny5.jpg", "New York", "New York", "New York"],
+            ["ny", "../img/gallery/ny6.jpg", "New York", "New York", "New York"],
+            ["ny", "../img/gallery/ny7.jpg", "New York", "New York", "New York"],
+            ["popular", "../img/gallery/p1.jpg", "Popular", "Popular", "Popular"],
+            ["popular", "../img/gallery/p2.jpg", "Popular", "Popular", "Popular"],
+            ["popular", "../img/gallery/p3.jpg", "Popular", "Popular", "Popular"],
+            ["popular", "../img/gallery/p4.jpg", "Popular", "Popular", "Popular"],
+            ["popular", "../img/gallery/p5.jpg", "Popular", "Popular", "Popular"],
+            ["popular", "../img/gallery/p6.jpg", "Popular", "Popular", "Popular"],
+            ["popular", "../img/gallery/p7.jpg", "Popular", "Popular", "Popular"],
+            ["popular", "../img/gallery/p8.jpg", "Popular", "Popular", "Popular"],
+            ["vinece", "../img/gallery/v1.jpg", "Vinece", "Vinece", "Vinece"],
+            ["vinece", "../img/gallery/v2.jpg", "Vinece", "Vinece", "Vinece"],
+            ["vinece", "../img/gallery/v3.jpg", "Vinece", "Vinece", "Vinece"],
+            ["vinece", "../img/gallery/v4.jpg", "Vinece", "Vinece", "Vinece"],
+            ["vinece", "../img/gallery/v5.jpg", "Vinece", "Vinece", "Vinece"],
+            ["vinece", "../img/gallery/v6.jpg", "Vinece", "Vinece", "Vinece"]
+        ],
+        list, j,
         /*maxPageCount = 10, totalPageCount,
         li, btn,*/
         div, ahref, figure, img, figcaption, label, title, category, bg, overlay, ohref, oimg, odiv, otitle;
@@ -520,19 +526,19 @@ function loadGallery() {
             div.setAttribute('class', 'gallery ' + items[j][0]);
             div.setAttribute('data-cat', items[j][0]);
             div.setAttribute('data-value', items[j][2]);
-//        $('<div/>', {
-//            class: 'gallery ' + items[j][0],
-//            'data-cat': items[j][0],
-//            'data-value': items[j][2]
-//        });
+            //        $('<div/>', {
+            //            class: 'gallery ' + items[j][0],
+            //            'data-cat': items[j][0],
+            //            'data-value': items[j][2]
+            //        });
             ahref = document.createElement('a');
             ahref.setAttribute('href', '#image' + j);
             div.appendChild(ahref);
-        
+
             figure = document.createElement('figure');
             figure.setAttribute('class', "gallery-wrapper");
             ahref.appendChild(figure);
-        
+
             img = document.createElement('div');
             img.setAttribute('class', 'img');
             img.setAttribute('style', "background-image: url(" + items[j][1] + ")");
@@ -545,7 +551,7 @@ function loadGallery() {
             label = document.createElement('div');
             label.setAttribute('class', 'label-text');
             figcaption.appendChild(label);
-        
+
             title = document.createElement('span');
             title.setAttribute('class', 'text-title');
             title.innerHTML = items[j][2];
@@ -562,12 +568,12 @@ function loadGallery() {
             overlay.setAttribute('class', 'lb-overlay');
             overlay.setAttribute('id', 'image' + j);
             div.appendChild(overlay);
-        
+
             ohref = document.createElement('a');
             ohref.setAttribute('href', '#' + list.id);
             ohref.innerHTML = "<i class=\"fas fa-times fa-lg\"></i>";
             overlay.appendChild(ohref);
-        
+
             oimg = document.createElement('img');
             oimg.setAttribute('src', items[j][1]);
             oimg.setAttribute('alt', "");
@@ -581,26 +587,28 @@ function loadGallery() {
             otitle = document.createElement('p');
             otitle.innerHTML = items[j][4];
             odiv.appendChild(otitle);
-        
+
             list.appendChild(div);
         }
         var pagination = $('.holder');
+
         function setPagination() {
             pagination.jPages({
                 containerID: 'gallerylist',
                 perPage: 7,
-    //                   startPage: 1,
-    //                   startRange: 1,
-    //                   midRange: 3,
-    //                   endRange: 1,
-    //                   first : true,
-    //                   last : true,
-    //                   previous : "span.arrowPrev",
-    //                   next : "span.arrowNext"
-                previous : false,
-                next : false
+                //                   startPage: 1,
+                //                   startRange: 1,
+                //                   midRange: 3,
+                //                   endRange: 1,
+                //                   first : true,
+                //                   last : true,
+                //                   previous : "span.arrowPrev",
+                //                   next : "span.arrowNext"
+                previous: false,
+                next: false
             });
         }
+
         function destroyPagination() {
             pagination.jPages('destroy');
         }
@@ -618,10 +626,10 @@ function loadGallery() {
             callbacks: {
                 /*onMixLoad: function(state, futureState) {
                 },*/
-                onMixStart: function(/*state, futureState*/) {
+                onMixStart: function ( /*state, futureState*/ ) {
                     destroyPagination();
                 },
-                onMixEnd: function(/*state, futureState*/) {
+                onMixEnd: function ( /*state, futureState*/ ) {
                     setPagination();
                 }
             }
@@ -629,14 +637,14 @@ function loadGallery() {
     }
 }
 
-function enableEvent() {//remove to tours only = check all
-    $('top-menu').click(function() {
+function enableEvent() { //remove to tours only = check all
+    $('top-menu').click(function () {
         var p = $(this);
         $('.navigation').css('top', p.position().top + p.outerHeight() + 'px');
         $('.navigation').css('left', p.position().left + 'px');
         $('.navigation').css('display', 'block');
     });
-    
+
     if (isMainPage()) {
         $('#slider-list .img:gt(0)').hide();
         setInterval(() =>
@@ -646,9 +654,10 @@ function enableEvent() {//remove to tours only = check all
 
     $('#search').focusout(() => removeClass('#search'));
     $('#menu').focusout(() => removeClass('#menu'));
-    
-    $('.like').click(function() {
-        var obj = this.getElementsByTagName('span')[0], cnt = parseInt(obj.innerHTML, 10);
+
+    $('.like').click(function () {
+        var obj = this.getElementsByTagName('span')[0],
+            cnt = parseInt(obj.innerHTML, 10);
         if (Number.isNaN(cnt) || !isFinite(cnt)) {
             cnt = 0;
         }
@@ -667,18 +676,18 @@ function enableEvent() {//remove to tours only = check all
         }
         $(e.target).blur(e => $(e.target).tooltip('hide'));
     });
-    $("#logout").click(function(e) {
+    $("#logout").click(function (e) {
         setUserSession(false);
         logout(e);
     });
-    $("#login").on("hide.bs.modal", function() {
+    $("#login").on("hide.bs.modal", function () {
         $('.register-form :input').val('');
         $('.login-form :input').val('');
         $('.login-status').empty();
     });
 
     $("#blog .blog-form").on("submit", timeline);
-    $(".blog-form button[type=submit]").click(function(e) {
+    $(".blog-form button[type=submit]").click(function (e) {
         $(e.target).parents('form').data('actionid', $(e.target).attr('value'));
     });
     $('#img-btn').change(e => setImageFile(e.target.files[0]));
@@ -699,24 +708,24 @@ function enableEvent() {//remove to tours only = check all
         $('.login-status').empty();
     });
 
-//    $("#language li a").click(function (e) {
-////        alert(window.location.pathname);//document.URL);
-////        alert($(location).attr('href'));
-//        e.relatedTarget.prefentDefault();
-//    });
-    $('#language > li a').on('click', function(e) {
+    //    $("#language li a").click(function (e) {
+    ////        alert(window.location.pathname);//document.URL);
+    ////        alert($(location).attr('href'));
+    //        e.relatedTarget.prefentDefault();
+    //    });
+    $('#language > li a').on('click', function (e) {
         var url = $(e.target).attr('href') + $('body').attr('data-page') + '.html';
         e.preventDefault();
         location.replace(url);
-//        alert(url);//.split('/').pop() === 
-    });    
-//$(location).attr('href').split('/').pop() === 
-//        $("#blog").modal("toggle");
+        //        alert(url);//.split('/').pop() === 
+    });
+    //$(location).attr('href').split('/').pop() === 
+    //        $("#blog").modal("toggle");
 
     $("#sign-btn > a").click(() => {
         if (isLoggin)
             location.replace('./profile.html');
-        else    
+        else
             $('#login').modal('toggle');
     });
     isLoggedIn();
@@ -741,53 +750,53 @@ function enableEvent() {//remove to tours only = check all
     // initMap();
 }
 
-$(window).on('load', function() {
+$(window).on('load', function () {
     if (isTourPage() || isMainPage()) {
-        $('.overlay-regular').css('opacity','0.3');
-        $('.overlay-small').css('opacity','1');
+        $('.overlay-regular').css('opacity', '0.3');
+        $('.overlay-small').css('opacity', '1');
     }
 });
 
-$(document).ready(function() {
+$(document).ready(function () {
     $.when(
-//        $('#header-top').load('parts/header.html'),
-//$('head').append( $('<link rel="stylesheet" type="text/css" />').attr('href', 'your stylesheet url') );
-        $('#city-search').load('parts/city_search.html', function() {//remove to tours only
-           getCitiesList().map(item => $('#cities').append(`<option value="${item.name}">`));
-            $('.city-search-form').on("submit", citySearch);
-        }),
-        $('#footer').load('parts/footer.html', function() {
-            $(this).addClass('footer d-flex flex-column theme small');
-        }),
-        $('#search').load('parts/search_form.html', function() {
-            $(this).addClass('modal fade');
-        }),
-        $('#login').load('parts/login_form.html', function() {
-            $(this).addClass('modal fade login-page');
-            $('#login .message a').click(function () {
-                $('#login form').animate({
-                    height: "toggle",
-                    opacity: "toggle"
-                }, "slow");
-            });
-            $('#login .login-form').on("submit", login);
-            $("#login .register-form").on("submit", register);
-        }),
-        $('#route').load('parts/route_form.html', function() {//remove to tours only
-            $(this).addClass('modal fade login-page');
-            // $('#login .login-form').on("submit", login);
-            // $("#login .register-form").on("submit", register);
-        }),
-        $.getScript('../bootstrap/js/popper.min.js'),
-        $.getScript('../bootstrap/js/bootstrap.min.js'),
-        $.getScript('../js/tether.min.js')
-    )
-    .then(() => enableEvent());
-    
+            //        $('#header-top').load('parts/header.html'),
+            //$('head').append( $('<link rel="stylesheet" type="text/css" />').attr('href', 'your stylesheet url') );
+            $('#city-search').load('parts/city_search.html', function () { //remove to tours only
+                getCitiesList().map(item => $('#cities').append(`<option value="${item.name}">`));
+                $('.city-search-form').on("submit", citySearch);
+            }),
+            $('#footer').load('parts/footer.html', function () {
+                $(this).addClass('footer d-flex flex-column theme small');
+            }),
+            $('#search').load('parts/search_form.html', function () {
+                $(this).addClass('modal fade');
+            }),
+            $('#login').load('parts/login_form.html', function () {
+                $(this).addClass('modal fade login-page');
+                $('#login .message a').click(function () {
+                    $('#login form').animate({
+                        height: "toggle",
+                        opacity: "toggle"
+                    }, "slow");
+                });
+                $('#login .login-form').on("submit", login);
+                $("#login .register-form").on("submit", register);
+            }),
+            $('#route').load('parts/route_form.html', function () { //remove to tours only
+                $(this).addClass('modal fade login-page');
+                // $('#login .login-form').on("submit", login);
+                // $("#login .register-form").on("submit", register);
+            }),
+            $.getScript('../bootstrap/js/popper.min.js'),
+            $.getScript('../bootstrap/js/bootstrap.min.js'),
+            $.getScript('../js/tether.min.js')
+        )
+        .then(() => enableEvent());
+
     $(window).resize();
 });
 
-$(window).scroll(function() {
+$(window).scroll(function () {
     if (isTourPage()) {
         let fp = $('.float-panel');
         let pos = fp.offset().top + fp.height();
@@ -798,6 +807,7 @@ $(window).scroll(function() {
 function isTourPage() {
     return $('body').attr('id') === 'tours';
 }
+
 function isMainPage() {
     return $('body').attr('id') === 'e2t';
 }
@@ -809,8 +819,12 @@ function getCurrentLanguage(value = 'en') {
 }
 
 function getCitiesList(e) {
-//    e.preventDefault();
-    return [{name: 'Kiev'}, {name: 'Vienna'}];
+    //    e.preventDefault();
+    return [{
+        name: 'Kiev'
+    }, {
+        name: 'Vienna'
+    }];
 }
 
 function citySearch(e) {
@@ -823,13 +837,13 @@ function citySearch(e) {
     if (!isTourPage()) {
         location.replace('./tours.html?city=' + obj.city);
     } else if (obj.city) {
-            $.ajax({
+        $.ajax({
             type: "GET",
             url: "/city",
             cache: false,
             dataType: "json",
             data: JSON.parse(JSON.stringify(obj)),
-            success: function(data, status, xhr) {
+            success: function (data, status, xhr) {
                 var obj = JSON.parse(xhr.responseText),
                     city = obj.data;
                 if (obj.status === 'OK') {
@@ -844,7 +858,7 @@ function citySearch(e) {
                         city.places.map(place => $('.list-group').append(getCityPlace(place)));
                     });
                     $('#city-route').load('parts/city_route.html', () => {
-                        $('#route').on('show.bs.modal', function(e) {
+                        $('#route').on('show.bs.modal', function (e) {
                             if (isLoggin) {
                                 $('.routeguest').hide();
                                 $('.routeuser').show();
@@ -866,17 +880,16 @@ function citySearch(e) {
                         $('.btn-route').on('click', () => {
                             if (getCheckMarkers().length > 1) {
                                 $('#route').modal("toggle");
-                            }
-                            else {
+                            } else {
                                 $('#alert-box').load('parts/alert.html');
                             }
                         });
                         $('#btn-clear').on('click', () => {
-                           $('.list-group').children().map(index => {
-                               let item = $($('.list-group').children()[index]).find('input');
-                               item.prop('checked', false);
-                               checkMarker(item);
-                           });
+                            $('.list-group').children().map(index => {
+                                let item = $($('.list-group').children()[index]).find('input');
+                                item.prop('checked', false);
+                                checkMarker(item);
+                            });
                         });
                     });
                     $('#google').show();
@@ -903,9 +916,9 @@ function saveRoute(routes, status) {
         cache: false,
         dataType: 'json',
         data: JSON.parse(JSON.stringify(obj)),
-        success: function(data, status, xhr) {
-             let obj = JSON.parse(xhr.responseText);
-             if (obj.status === 'OK') {
+        success: function (data, status, xhr) {
+            let obj = JSON.parse(xhr.responseText);
+            if (obj.status === 'OK') {
                 // alert("OK");//check register
                 if (status) {
                     $('#login').modal('toggle');
@@ -916,7 +929,7 @@ function saveRoute(routes, status) {
                 // alert("OK1");
             }
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             // alert("Error");
         }
     });
@@ -940,67 +953,75 @@ function checkMarker(target) {
     let markerWay = getCheckMarkers();
     clearDirections();
     if (markerWay.length > 1) {
-        var waypts = [];
-        for (var i = 1; i < markerWay.length - 1; i++) {
-            waypts.push({
-                location: markerWay[i].position,
-                stopover: true
-            });
-        }
-        var directionsService = new google.maps.DirectionsService;
-        directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
-        directionsService.route({
-            origin: markerWay[0].position,
-            destination: markerWay[markerWay.length - 1].position,
-            waypoints: waypts,
-            optimizeWaypoints: true,
-            travelMode: 'DRIVING'
-        }, function(response, status) {
-            if (status === 'OK') {
-                directionsDisplay.setDirections(response);
-                directionsDisplay.setMap(map);
-            } else {
-                window.alert('Directions request failed due to ' + status);
-            }
-        });
+        drawRoute(markerWay);
     }
     $('#markers-count').text(`${markerWay.length} places marked`);
 }
 
+function drawRoute(markerWay, initmap = map) {
+    var waypts = [];
+    for (var i = 1; i < markerWay.length - 1; i++) {
+        waypts.push({
+            location: markerWay[i].position,
+            stopover: true
+        });
+    }
+    var directionsService = new google.maps.DirectionsService;
+    directionsDisplay = new google.maps.DirectionsRenderer({
+        suppressMarkers: true
+    });
+    directionsService.route({
+        origin: markerWay[0].position,
+        destination: markerWay[markerWay.length - 1].position,
+        waypoints: waypts,
+        optimizeWaypoints: true,
+        travelMode: 'DRIVING'
+    }, function (response, status) {
+        if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+            directionsDisplay.setMap(initmap);
+        } else {
+            window.alert('Directions request failed due to ' + status);
+        }
+    });
+}
+
 function clearDirections() {
     if (isExist(directionsDisplay)) {
-        directionsDisplay.setDirections({routes: []});
+        directionsDisplay.setDirections({
+            routes: []
+        });
         directionsDisplay.setMap(null);
         directionsDisplay = null;
     }
 }
 
 function getCityPlace(place) {
-    let item = 
-       $('<div>').addClass('list-group-item')
-            .append($('<div>').addClass('media')
-                .append($('<div>').addClass('checkbox pull-left')
-                    .append($('<label>').css('font-size', '2.5em')
-                        .append($('<input>').attr('type', 'checkbox')
-                            .attr('data-locationid', markers.length).addClass('checkmarker')
-                            .click(e => checkMarker(e.target))
-                        )
-                        .append($('<span>').addClass('cr')
-                            .append($('<i>').addClass('cr-icon fas fa-check'))
-                        )
+    let item =
+        $('<div>').addClass('list-group-item')
+        .append($('<div>').addClass('media')
+            .append($('<div>').addClass('checkbox pull-left')
+                .append($('<label>').css('font-size', '2.5em')
+                    .append($('<input>').attr('type', 'checkbox')
+                        .attr('data-locationid', markers.length).addClass('checkmarker')
+                        .click(e => checkMarker(e.target))
+                    )
+                    .append($('<span>').addClass('cr')
+                        .append($('<i>').addClass('cr-icon fas fa-check'))
                     )
                 )
-                .append($('<div>').addClass('media-body m-2')
-                    .append($('<h4>').addClass('media-heading').text(place.label))
-                    .append($('<p>').text(place.description))
+            )
+            .append($('<div>').addClass('media-body m-2')
+                .append($('<h4>').addClass('media-heading').text(place.label))
+                .append($('<p>').text(place.description))
+            )
+            .append($('<div>').addClass('float-left')
+                .append($('<img>').addClass('media-object fixed-size')
+                    .css('background', `url(${place.imgurl})`).css('background-size', 'cover')
+                    .attr('alt', 'Image').attr('src', '/img/cities/e2t_gradient.png')
                 )
-                .append($('<div>').addClass('float-left')
-                    .append($('<img>').addClass('media-object fixed-size')
-                        .css('background', `url(${place.imgurl})`).css('background-size', 'cover')
-                        .attr('alt', 'Image').attr('src', '/img/cities/e2t_gradient.png')
-                    )
-                )
-            );
+            )
+        );
     markers.push(addMarker(place, false));
     markers_checked.push(addMarker(place, true));
 
@@ -1032,16 +1053,19 @@ function closeMarkers() {
     });
 }
 
-function setCenter(address) {
-    let location = {lat: 50.4645706, lng: 30.5190734};
+function setCenter(address, initmap = map) {
+    let location = {
+        lat: 50.4645706,
+        lng: 30.5190734
+    };
 
     if (address) {
         let geocoder = new google.maps.Geocoder();
-            geocoder.geocode({
+        geocoder.geocode({
             address: address
         }, (results, status) => {
             if (status == google.maps.GeocoderStatus.OK) {
-                map.setCenter(results[0].geometry.location);
+                initmap.setCenter(results[0].geometry.location);
             } else {
                 map.setCenter(location);
             }
@@ -1077,14 +1101,14 @@ function addMarker(place, checked) {
                 </div></div>`
         });
         marker.infowindow = infowindow;
-        marker.addListener('click', function() {
+        marker.addListener('click', function () {
             closeMarkers();
             infowindow.open(map, marker);
         });
-        google.maps.event.addListener(infowindow, 'domready', function() {
+        google.maps.event.addListener(infowindow, 'domready', function () {
             var m = markers_checked[$('.infomarker').attr('data-locationid')];
             $('.infomarker').prop('checked', isExist(m.map));
-            $('.infomarker').click(function() {
+            $('.infomarker').click(function () {
                 var lid = $(this).attr('data-locationid');
                 checkMarker(this);
                 $($('.checkmarker')[lid]).prop('checked', $(this).is(':checked'));
