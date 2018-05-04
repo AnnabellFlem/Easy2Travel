@@ -478,6 +478,23 @@ app.get('/tours/:lng/:city', (req, res) => {
     });
 });
 
+app.get('/tours/:lng', (req, res) => {
+    Place.find({
+        language: req.params.lng
+    },
+    'city',
+    (err, cities) => {
+        if (err) {
+            console.log(err);
+            res.send(setStatusMessage(statusERROR, "", {
+                message: "Cities not found."
+            }));
+        } else {
+            res.send(setStatusMessage(statusOK, "", cities));
+        }
+    });
+});
+
 app.get('/routes', (req, res) => {
     req.session.locations = req.query.locations;
     req.session.languange = req.query.lng;

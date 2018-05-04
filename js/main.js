@@ -95,12 +95,11 @@ function setUserSession(username) {
 }
 
 function getTimelineItem(timeline, position, index) {
-    // alert(JSON.stringify(timeline));
     let isLastInverted = $('#timeline ul > li:not(.clearfix):last').hasClass('timeline-inverted');
     let d = new Date(timeline.created_at);
     let timeline_date = d.getDate() + "." + d.getMonth() + "." + d.getFullYear();
     let positionClass = isLastInverted ? "" : "timeline-inverted";
-    let places = "";//list-group-flush??
+    let places = "";
     let subPlace = item =>
         `<div class="list-group list-group-flush">
             <div class="list-group-item">
@@ -116,9 +115,6 @@ function getTimelineItem(timeline, position, index) {
             </div>
         </div>`;
     timeline.body.map(item => places += subPlace(item));
-    let aaa = () => {
-        alert(1);
-    };
     let item =
         $(`<li id="${timeline.id}" class="${position === undefined || position === null ? positionClass : position}">
         <div class="timeline-badge primary">
@@ -237,10 +233,8 @@ function addTimeline(timeline, index) {
             setCenter("${timeline.title}", map);
             ${ls}
         }
-    </script>`)
-
-    );
-    $(".timeline-footer a i").on("click", () => alert(1));
+    </script>`));
+    $(".timeline-footer a i").on("click", () => alert(2));
 }
 
 function checkAuthorization() { ////remove to tours only for profile
@@ -608,7 +602,7 @@ $(document).ready(() => {
             });
             if (isMainPage() || isTourPage()) {
                 $('#city-search').load('parts/city_search.html', () => {
-                    getCitiesList().map(item => $('#cities').append(`<option value="${item.name}">`));
+                    getCitiesList();
                     $('.city-search-form').submit(citySearch);
                     let city = getUrlParameter('city');
                     if (city) {
@@ -683,13 +677,22 @@ function getCurrentLanguage(value = 'en') {
     return lng ? lng.prev().find('sup').text().toLowerCase() : value;
 }
 
-function getCitiesList(e) {
-    //    e.preventDefault();
-    return [{
-        name: 'Kiev'
-    }, {
-        name: 'Vienna'
-    }];
+function getCitiesList() {
+    $.ajax({
+        type: 'GET',
+        url: `/tours/${getCurrentLanguage()}`,
+        dataType: 'json',
+        cache: false,
+        success: (data, status, xhr) => {
+            let obj = JSON.parse(xhr.responseText);
+            if (obj.status === 'OK' && obj.data) {
+                Object.values(obj.data).map(item => $('#cities').append(`<option value="${item.city}">`));
+            }
+            console.log('data: ' + data + ', status:' + status);
+        },
+        error: () => {
+        }
+    });
 }
 
 function citySearch(e) {
@@ -700,7 +703,7 @@ function citySearch(e) {
 
     e.preventDefault();
     if (!isTourPage()) {
-        location.replace('./tours.html?city=' + obj.city);
+        location.replace(`./tours.html?city=${obj.city}`);
     } else if (obj.city) {
         $.ajax({
             type: "GET",
@@ -888,7 +891,7 @@ function getCityPlace(place) {
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('googleMap'), {
-        zoom: 15,
+        zoom: 14,
         scrollwheel: true,
         draggable: true,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
