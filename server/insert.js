@@ -769,7 +769,7 @@ function ins() {
                 {
                     label: 'Red Square',
                     description: `Red Square is a city square (plaza) in Moscow, Russia. It separates the Kremlin, the former royal citadel and now the official residence of the President of Russia, from a historic merchant quarter known as Kitai-gorod. Red Square is often considered the central square of Moscow since Moscow's major streets, which connect to Russia's major highways, originate from the square.`,
-                    imgurl: '/img/trips/cities/red',
+                    imgurl: '/img/trips/cities/red_square.jpg',
                     location: [55.7507979, 37.6067005]
                 },
 
@@ -795,7 +795,7 @@ function ins() {
                 {
                     label: 'Красна площа',
                     description: 'Красна площа — головна площа Москви, розташована в центрі міста. Назва походить від давньоруського «красний» — гарний,  красивий. Із західної сторони до площі прилягає Кремль, зі східної ГУМ, «Китай-город», з північної Історичний музей та Собор Казанської ікони Божої Матері, а зі сходу Собор Василя Блаженного (Покровський собор).',
-                    imgurl: '/img/trips/cities/red',
+                    imgurl: '/img/trips/cities/red_square.jpg',
                     location: [55.7507979, 37.6067005]
                 },
 

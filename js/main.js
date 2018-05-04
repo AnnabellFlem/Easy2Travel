@@ -3,7 +3,6 @@
 'use strict';
 //const util = require('util');
 // import * as util from 'util';
-
 //var itemByPage = 10;
 var sender = [];
 
@@ -11,7 +10,7 @@ let map;
 let markers = [];
 let markers_checked = [];
 let directionsDisplay;
-let isLoggin = false;
+let isLoggedIn = false;
 
 function removeClass(obj) {
     if ($(obj).hasClass('responsive')) {
@@ -21,6 +20,21 @@ function removeClass(obj) {
 
 function isExist(element) {
     return typeof element !== 'undefined' && element !== null;
+}
+
+function loadScripts(next) {
+    $.getScript('../bootstrap/js/bootstrap.bundle.min.js', () => {
+        $.getScript('../js/tether.min.js', () => {
+            next();
+        });
+    });
+    // $.getScript('../bootstrap/js/popper.min.js', () => {
+    //     $.getScript('../bootstrap/js/bootstrap.min.js', () => {
+    //         $.getScript('../js/tether.min.js', () => {
+    //             next();
+    //         });
+    //     });
+    // });
 }
 
 function getUrlParameter(param) {
@@ -52,29 +66,32 @@ function getUrlParameter(param) {
 //    });
 }
 */
-function setUserSession(b, username) {
-    if (b) {
-        $("#sign-btn i:first")
-            .removeClass("fa-sign-in-alt")
-            .addClass("fa-user-circle");
-        $(".profile")
-            .attr("title", username);
-        $("#sign-btn a")
-            .removeAttr("data-toggle");
-        $("#sign-btn ul")
-            .removeAttr("style");
-        $('#login').modal('hide');
+function setUserSession(username) {
+    isLoggedIn = isExist(username);
+    if (isLoggedIn) {
+        $('#sign-btn i:first')
+            .removeClass('fa-sign-in-alt')
+            .addClass('fa-user-circle');
+        $('.profile')
+            .attr('title', username);
+        $('#sign-btn a')
+            .removeAttr('data-toggle');
+        $('#sign-btn > ul')
+            .removeAttr('style');
+        // $('#login').modal('hide');
     } else {
-        $("#sign-btn i:first")
-            .addClass("fa-sign-in-alt")
-            .removeClass("fa-user-circle");
-        $(".profile")
-            .attr("title", "Login")
-            .attr("data-toggle", "modal");
-        $("#sign-btn ul")
-            .css("visibility", "hidden");
+        $('#sign-btn i:first')
+            .addClass('fa-sign-in-alt')
+            .removeClass('fa-user-circle');
+        $('.profile')
+            .attr('title', 'Login')
+            .attr('data-toggle", "modal');
+        $('#sign-btn > ul')
+            .css('visibility', 'hidden');
     }
-    isLoggin = b;
+    if (isProfilePage()) {
+        $("#sign-btn > ul > li:first").hide();
+    }
 }
 
 function getTimelineItem(timeline, position, index) {
@@ -83,9 +100,9 @@ function getTimelineItem(timeline, position, index) {
     let d = new Date(timeline.created_at);
     let timeline_date = d.getDate() + "." + d.getMonth() + "." + d.getFullYear();
     let positionClass = isLastInverted ? "" : "timeline-inverted";
-    let places = "";
-    let subPlace = item => `
-        <div class="list-group">
+    let places = "";//list-group-flush??
+    let subPlace = item =>
+        `<div class="list-group list-group-flush">
             <div class="list-group-item">
                 <div class="media">
                     <div class="media-body m-2">
@@ -98,10 +115,10 @@ function getTimelineItem(timeline, position, index) {
                 </div>
             </div>
         </div>`;
-    timeline.body.map(item => places += subPlace(item));   
+    timeline.body.map(item => places += subPlace(item));
     let aaa = () => {
         alert(1);
-    }; 
+    };
     let item =
         $(`<li id="${timeline.id}" class="${position === undefined || position === null ? positionClass : position}">
         <div class="timeline-badge primary">
@@ -110,7 +127,7 @@ function getTimelineItem(timeline, position, index) {
             </a>
         </div>
         <div class="timeline-panel">
-            <div class="list-group">
+            <div class="list-group list-group-flush">
                 <a href="#" class="list-group-item">
                     <div id="google${index}" class="container-fluid" style="height:180px;"></div>
                 </a>
@@ -197,13 +214,8 @@ function getTimelineItem(timeline, position, index) {
 }
 
 function addTimeline(timeline, index) {
-    //    $('#timeline ul').prepend(getTimelineItem(timeline));//.find(' > li:last-child').before(getTimelineItem(timeline));//newest to oldest?
-    //$('#timeline ul').find(' > li:first-child').before(getTimelineItem(timeline));//newest to oldest?
-    $.getScript('../bootstrap/js/popper.min.js');
-
-    //    alert(JSON.stringify(timeline));
-    $('#timeline ul').find(' > li:first-child').after(getTimelineItem(timeline, null, index)); //newest to oldest?
     let ls = "";
+    $('#timeline ul').find(' > li:first-child').after(getTimelineItem(timeline, null, index)); //newest to oldest?
     timeline.locations.map(item => {
         ls += `m = new google.maps.Marker({
                 position: new google.maps.LatLng(${item[0]}, ${item[1]}),
@@ -231,41 +243,37 @@ function addTimeline(timeline, index) {
     $(".timeline-footer a i").on("click", () => alert(1));
 }
 
-function isLoggedIn() { ////remove to tours only for profile
-    setUserSession(false);
+function checkAuthorization() { ////remove to tours only for profile
     $.ajax({
-        type: "GET",
-        url: "/isloggedin",
-        dataType: "json",
+        type: 'GET',
+        url: '/isloggedin',
+        dataType: 'json',
         cache: false,
-        success: function (data, status, xhr) {
-            let obj = JSON.parse(xhr.responseText),
-                tls = obj.data.timeline;
-            if (obj.status === 'OK' && obj.data.sessionId) {
-                setUserSession(true, obj.data.username);
-                Object.values(tls).map((t, index) => addTimeline(t, index));
-                $('[data-toggle="tooltip"]').tooltip();
+        success: (data, status, xhr) => {
+            let obj = JSON.parse(xhr.responseText);
+            if (obj.status === 'OK' && obj.data.userid) {
+                setUserSession(obj.data.username);
             } else {
-                setUserSession(false);
+                setUserSession();
             }
             console.log('data: ' + data + ', status:' + status);
         },
-        error: function () {
-            setUserSession(false);
+        error: () => {
+            setUserSession();
         }
     });
 }
 
-function renderForm(f, dj, textStatus /*, je*/ ) {
+function renderForm(f, dj, textStatus) {
     if (f === 'register-form' || f === 'login-form') {
-        var frm_status = $('.' + f + ' .login-status');
+        let frm_status = $(`.${f} .login-status`);
         if (textStatus === 'success') {
             if (dj.status === 'ERROR') {
                 frm_status.html(dj.message);
             } else {
                 frm_status.empty();
                 location.replace('./profile.html');
-                setUserSession(true, dj.data.user.username);
+                // setUserSession(dj.data.user.username);
             }
         } else if (textStatus === 'error') {
             frm_status.html('Error accessing the server.');
@@ -288,63 +296,73 @@ function renderForm(f, dj, textStatus /*, je*/ ) {
 function logout(e) {
     e.preventDefault();
     $.ajax({
-        type: "GET",
-        url: "/logout",
-        cache: false,
-        success: function ( /*data, status, xhr*/ ) {
-            if ($(location).attr('href').split('/').pop() === 'profile.html') {
-                location.replace('./index.html');
+            type: 'GET',
+            url: '/logout',
+            cache: false,
+            success: () => {
+                if ($(location).attr('href').split('/').pop() === 'profile.html') {
+                    location.replace('./index.html');
+                }
             }
-        }
-        /*,
-                error: function(xhr, status, error) {
-                }*/
-    });
+        })
+        .always(setUserSession());
 }
 
 function login(e) {
-    var f = e.target.className,
+    let f = e.target.className,
         obj = {
-            username: $("." + f + " input[name=username]").val(),
-            password: $("." + f + " input[name=password]").val()
+            username: $(`.${f} input[name=username]`).val(),
+            password: $(`.${f} input[name=password]`).val()
         };
     e.preventDefault();
     $.ajax({
-        type: "POST",
-        url: "/login",
-        dataType: "json",
+        type: 'POST',
+        url: '/login',
+        dataType: 'json',
         data: JSON.parse(JSON.stringify(obj))
-        /*,
-                success: function (data, status, xhr) {
-                },
-                error: function(xhr, status, error) {
-                }*/
-    }).always(function (dj, textStatus, je) {
-        renderForm(f, dj, textStatus, je);
+    }).always((dj, textStatus, je) => {
+        renderForm(f, dj, textStatus);
     });
 }
 
 function register(e) {
-    var f = e.target.className,
+    let f = e.target.className,
         obj = {
-            username: $("." + f + " input[name=username]").val(),
-            email: $("." + f + " input[name=email]").val(),
-            password: $("." + f + " input[name=password]").val(),
-            repassword: $("." + f + " input[name=repassword]").val()
+            username: $(`.${f} input[name=username]`).val(),
+            email: $(`.${f} input[name=email]`).val(),
+            password: $(`.${f} input[name=password]`).val(),
+            repassword: $(`.${f} input[name=repassword]`).val()
         };
     e.preventDefault();
     $.ajax({
-        type: "POST",
-        url: "/register",
-        dataType: "json",
+        type: 'POST',
+        url: '/register',
+        dataType: 'json',
         data: JSON.parse(JSON.stringify(obj))
-        /*,
-                success: function (data, status, xhr) {
-                },
-                error: function(xhr, status, error) {
-                }*/
-    }).always(function (dj, textStatus, je) {
-        renderForm(f, dj, textStatus, je);
+    }).always((dj, textStatus, je) => {
+        renderForm(f, dj, textStatus);
+    });
+}
+
+function getTimelines() {
+    $.ajax({
+        type: 'GET',
+        url: '/tmlget',
+        dataType: 'json',
+        cache: false,
+        success: (data, status, xhr) => {
+            let obj = JSON.parse(xhr.responseText);
+            if (obj.status === 'OK' && obj.data.userid) {
+                Object.values(obj.data.timeline).map((t, index) => addTimeline(t, index));
+                $('[data-toggle="tooltip"]').tooltip();
+            } else {
+                // setUserSession();
+            }
+            console.log('data: ' + data + ', status:' + status);
+        },
+        error: () => {
+            // setUserSession();
+        }
     });
 }
 
@@ -433,9 +451,7 @@ function setImageFile(imagefile) {
     if (imagefile) {
         var file = imagefile,
             reader = new FileReader();
-        reader.onloadend = function () {
-            $('.img-wrapper').css('background-image', 'url(' + reader.result + ')');
-        };
+        reader.onloadend = () => $('.img-wrapper').css('background-image', 'url(' + reader.result + ')');
         reader.readAsDataURL(file);
         sender.push(imagefile);
     } else {
@@ -474,6 +490,490 @@ function dragdropImage() {
         e.stopPropagation();
         e.preventDefault();
     });
+}
+
+function enableEvent() { //remove to tours only = check all
+    // $('.top-menu').click(function () {
+    //     var p = $(this);
+    //     $('.navigation').css('top', p.position().top + p.outerHeight() + 'px');
+    //     $('.navigation').css('left', p.position().left + 'px');
+    //     $('.navigation').css('display', 'block');
+    // });
+
+    if (isMainPage()) {
+        $('#slider-list .img:gt(0)').hide();
+        setInterval(() =>
+            $("#slider-list .img:first-child").fadeOut(4000).next("#slider-list .img").fadeIn(4000).end().appendTo("#slider-list"),
+            4000);
+    }
+    $('#search').focusout(() => removeClass('#search'));
+    $('#menu').focusout(() => removeClass('#menu'));
+    $('.like').click(function () { //remove?
+        var obj = this.getElementsByTagName('span')[0],
+            cnt = parseInt(obj.innerHTML, 10);
+        if (Number.isNaN(cnt) || !isFinite(cnt)) {
+            cnt = 0;
+        }
+        cnt++;
+        obj.innerHTML = cnt;
+    });
+    $('#login .login-form input[name=password]').keypress(e => {
+        let isTooltip = $('.tooltip').is(':visible'),
+            s = String.fromCharCode(e.which);
+        if (s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey) {
+            if (!isTooltip) {
+                $(e.target).tooltip('show');
+            }
+        } else if (isTooltip) {
+            $(e.target).tooltip('hide');
+        }
+        $(e.target).blur(e => $(e.target).tooltip('hide')); //check?
+    });
+    $('#login').on('hide.bs.modal', () => {
+        $('.register-form :input').val('');
+        $('.login-form :input').val('');
+        $('.login-status').empty();
+    });
+    $("#blog .blog-form").on("submit", timeline);
+    $(".blog-form button[type=submit]").click(e =>
+        $(e.target).parents('form').data('actionid', $(e.target).attr('value'))
+    );
+    $('#img-btn').change(e => setImageFile(e.target.files[0]));
+    $('#img-clear').click(() => setImageFile());
+    $('#blog').on('show.bs.modal', e => {
+        if ($(e.target).data("btn") === "edit") {
+            $('#btn-img-delete').show();
+            $('#blog .modal-title').text('Edit or delete trip');
+        } else {
+            $('#btn-img-delete').hide();
+            $('#blog .modal-title').text('Add new trip');
+        }
+    });
+    $('#blog').on('hide.bs.modal', () => {
+        $('#blog').data('btn', "");
+        $('.blog-form :input').not(':button').val('');
+        $('.img-wrapper').css('background-image', "");
+        $('.login-status').empty();
+    });
+
+    //    $("#language li a").click(function (e) {
+    ////        alert(window.location.pathname);//document.URL);
+    ////        alert($(location).attr('href'));
+    //        e.relatedTarget.prefentDefault();
+    //    });
+    $('#language > li a').on('click', e => {
+        var url = $(e.target).attr('href') + $('body').attr('data-page') + '.html';
+        e.preventDefault();
+        location.replace(url);
+        //        alert(url);//.split('/').pop() === 
+    });
+    //$(location).attr('href').split('/').pop() === 
+    //        $("#blog").modal("toggle");
+
+    // isLoggedIn();
+    dragdropImage();
+
+    if (isTourPage()) {
+        $('#btn-map').on('click', () => {
+            $('html, body').animate({
+                scrollTop: $('#googleMap').offset().top
+            }, 2000);
+        });
+    }
+
+    if (isMainPage()) {
+        loadGallery();
+    }
+}
+
+$(window).on('load', () => {
+    if (isTourPage() || isMainPage()) {
+        $('.overlay-regular').css('opacity', '0.3');
+        $('.overlay-small').css('opacity', '1');
+    }
+});
+
+$(document).ready(() => {
+    $.when(loadScripts(checkAuthorization))
+        .then(() => {
+            $('#header-top').load('parts/header.html', () => {
+                $("#sign-btn > a").click(() => {
+                    if (isLoggedIn) {
+                        location.replace('./profile.html');
+                    } else {
+                        $('#login').modal('toggle');
+                    }
+                });
+                $('#logout').click(e => logout(e));
+            });
+            if (isMainPage() || isTourPage()) {
+                $('#city-search').load('parts/city_search.html', () => {
+                    getCitiesList().map(item => $('#cities').append(`<option value="${item.name}">`));
+                    $('.city-search-form').submit(citySearch);
+                    let city = getUrlParameter('city');
+                    if (city) {
+                        $('.city-search-form input').val(city);
+                    }
+                    if (isTourPage()) {
+                        $('.city-search-form').submit();
+                    }
+                });
+            }
+            $('#footer').load('parts/footer.html', function () {
+                $(this).addClass('footer d-flex flex-column theme small');
+            });
+            $('#search').load('parts/search_form.html', function () {
+                $(this).addClass('modal fade');
+            });
+            $('#login').load('parts/login_form.html', function () {
+                $(this).addClass('modal fade login-page');
+                $('#login .message a').click(() => {
+                    $('#login form').animate({
+                        height: "toggle",
+                        opacity: "toggle"
+                    }, "slow");
+                });
+                $('#login .login-form').on("submit", login);
+                $("#login .register-form").on("submit", register);
+            });
+            if (isTourPage()) {
+                $('#route').load('parts/route_form.html', function () {
+                    $(this).addClass('modal fade login-page');
+                    // $('#login .login-form').on("submit", login);
+                    // $("#login .register-form").on("submit", register);
+                });
+            }
+            if (isProfilePage()) {
+                getTimelines();
+            }
+
+            // $.getScript('../bootstrap/js/popper.min.js', function() {
+            //     $.getScript('../bootstrap/js/bootstrap.min.js');
+            // }),//.done(() => {alert(1)}),
+            // // $.getScript('../bootstrap/js/bootstrap.min.js'),
+            // $.getScript('../js/tether.min.js')
+            enableEvent();
+        });
+    // $(window).resize();
+});
+
+$(window).scroll(() => {
+    if (isTourPage()) {
+        let fp = $('.float-panel');
+        let pos = fp.offset().top + fp.height();
+        fp.css('visibility', pos > $('#googleMap').offset().top ? 'hidden' : 'visible');
+    }
+});
+
+function isTourPage() {
+    return $('body').attr('id') === 'tours';
+}
+
+function isMainPage() {
+    return $('body').attr('id') === 'e2t';
+}
+
+function isProfilePage() {
+    return $('body').attr('id') === 'profile';
+}
+
+function getCurrentLanguage(value = 'en') {
+    let lng = $('#language');
+
+    return lng ? lng.prev().find('sup').text().toLowerCase() : value;
+}
+
+function getCitiesList(e) {
+    //    e.preventDefault();
+    return [{
+        name: 'Kiev'
+    }, {
+        name: 'Vienna'
+    }];
+}
+
+function citySearch(e) {
+    let obj = {
+        city: $('.city-search-form input').val(),
+        lng: getCurrentLanguage()
+    };
+
+    e.preventDefault();
+    if (!isTourPage()) {
+        location.replace('./tours.html?city=' + obj.city);
+    } else if (obj.city) {
+        $.ajax({
+            type: "GET",
+            url: "/city",
+            cache: false,
+            dataType: "json",
+            data: JSON.parse(JSON.stringify(obj)),
+            success: function (data, status, xhr) {
+                var obj = JSON.parse(xhr.responseText),
+                    city = obj.data;
+                if (obj.status === 'OK') {
+                    $('#city-place').load('parts/city_place.html', () => {
+                        $('#city-place h2').text(`Plan your rest in ${city.name} for 2 simple steps`);
+                    });
+                    $('#city-sights').load('parts/city_sights.html', () => {
+                        $('#city-sights h3').text(`We recommend to visit in ${city.name}`);
+                        markers = [];
+                        markers_checked = [];
+                        setCenter(city.name);
+                        city.places.map(place => $('.list-group').append(getCityPlace(place)));
+                    });
+                    $('#city-route').load('parts/city_route.html', () => {
+                        $('#route').on('show.bs.modal', function (e) {
+                            if (isLoggedIn) {
+                                $('.routeguest').hide();
+                                $('.routeuser').show();
+                            } else {
+                                $('.routeguest').show();
+                                $('.routeuser').hide();
+                            }
+                        });
+                        $('.routeguest a').on('click', () => saveRoute(getCheckMarkers(), true));
+                        $('.routeuser a').on('click', () => saveRoute(getCheckMarkers(), false));
+                        $('.btn-route').on('click', () => {
+                            if (getCheckMarkers().length > 1) {
+                                $('#route').modal("toggle");
+                            } else {
+                                $('#alert-box').load('parts/alert.html');
+                            }
+                        });
+                        $('#btn-clear').on('click', () => {
+                            $('.list-group').children().map(index => {
+                                let item = $($('.list-group').children()[index]).find('input');
+                                item.prop('checked', false);
+                                checkMarker(item);
+                            });
+                        });
+                    });
+                    $('#google').show();
+                    $('body[id=tours] footer').css('position', 'absolute');
+                } else {
+                    clearCityPlace();
+                }
+            }
+        });
+    } else {
+        clearCityPlace();
+    }
+}
+
+function saveRoute(routes, status) {
+    let obj = {
+        locations: routes.map(item => item.position),
+        lng: getCurrentLanguage()
+    };
+
+    $.ajax({
+        type: 'GET',
+        url: '/routes',
+        cache: false,
+        dataType: 'json',
+        data: JSON.parse(JSON.stringify(obj)),
+        success: function (data, status, xhr) {
+            let obj = JSON.parse(xhr.responseText);
+            if (obj.status === 'OK') {
+                // alert("OK");//check register
+                if (status) {
+                    $('#login').modal('toggle');
+                } else {
+                    location.replace('./profile.html');
+                }
+            } else {
+                // alert("OK1");
+            }
+        },
+        error: function (xhr, status, error) {
+            // alert("Error");
+        }
+    });
+}
+
+function drawRoute(markerWay, initmap = map) {
+    let waypts = [];
+    for (let i = 1; i < markerWay.length - 1; i++) {
+        waypts.push({
+            location: markerWay[i].position,
+            stopover: true
+        });
+    }
+    let directionsService = new google.maps.DirectionsService;
+    directionsDisplay = new google.maps.DirectionsRenderer({
+        suppressMarkers: true
+    });
+    directionsService.route({
+        origin: markerWay[0].position,
+        destination: markerWay[markerWay.length - 1].position,
+        waypoints: waypts,
+        optimizeWaypoints: true,
+        travelMode: 'DRIVING'
+    }, (response, status) => {
+        if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+            directionsDisplay.setMap(initmap);
+        } else {
+            window.alert('Directions request failed due to ' + status);
+        }
+    });
+}
+
+function clearCityPlace() {
+    $('#city-place').empty();
+    $('#city-sights').empty();
+    $('#google').hide();
+    $('body[id=tours] footer').css('position', 'fixed');
+    $('#city-route').empty();
+}
+
+function getCheckMarkers() {
+    return markers_checked.filter(item => isExist(item.map));
+}
+
+function checkMarker(target) {
+    let lid = $(target).attr('data-locationid');
+
+    markers_checked[lid].setMap($(target).is(':checked') ? map : null);
+    let markerWay = getCheckMarkers();
+    clearDirections();
+    if (markerWay.length > 1) {
+        drawRoute(markerWay);
+    }
+    $('#markers-count').text(`${markerWay.length} places marked`);
+}
+
+function clearDirections() {
+    if (isExist(directionsDisplay)) {
+        directionsDisplay.setDirections({
+            routes: []
+        });
+        directionsDisplay.setMap(null);
+        directionsDisplay = null;
+    }
+}
+
+function getCityPlace(place) {
+    let item =
+        $('<div>').addClass('list-group-item')
+        .append($('<div>').addClass('media')
+            .append($('<div>').addClass('checkbox pull-left')
+                .append($('<label>').css('font-size', '2.5em')
+                    .append($('<input>').attr('type', 'checkbox')
+                        .attr('data-locationid', markers.length).addClass('checkmarker')
+                        .click(e => checkMarker(e.target))
+                    )
+                    .append($('<span>').addClass('cr')
+                        .append($('<i>').addClass('cr-icon fas fa-check'))
+                    )
+                )
+            )
+            .append($('<div>').addClass('media-body m-2')
+                .append($('<h4>').addClass('media-heading').text(place.label))
+                .append($('<p>').text(place.description))
+            )
+            .append($('<div>').addClass('float-left')
+                .append($('<img>').addClass('media-object fixed-size')
+                    .css('background', `url(${place.imgurl})`).css('background-size', 'cover')
+                    .attr('alt', 'Image').attr('src', '/img/cities/e2t_gradient.png')
+                )
+            )
+        );
+    markers.push(addMarker(place, false));
+    markers_checked.push(addMarker(place, true));
+
+    return item;
+}
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById('googleMap'), {
+        zoom: 15,
+        scrollwheel: true,
+        draggable: true,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        draggableCursor: 'default'
+    });
+    if (isTourPage()) {
+        map.addListener('mouseout', closeMarkers);
+    } else {
+        new google.maps.Marker({
+            position: setCenter(),
+            map: map
+        });
+    }
+}
+
+function closeMarkers() {
+    markers.map(item => {
+        if (item.infowindow)
+            item.infowindow.close();
+    });
+}
+
+function setCenter(address, initmap = map) {
+    let location = {
+        lat: 50.4645706,
+        lng: 30.5190734
+    };
+
+    if (address) {
+        let geocoder = new google.maps.Geocoder();
+        geocoder.geocode({
+            address: address
+        }, (results, status) => {
+            initmap.setCenter(status == google.maps.GeocoderStatus.OK ?
+                results[0].geometry.location : location);
+        });
+    } else {
+        map.setCenter(location);
+    }
+    // map.setZoom(15);
+
+    return location;
+}
+
+function addMarker(place, checked) {
+    let marker = new google.maps.Marker;
+    let latlng = new google.maps.LatLng(place.location[0], place.location[1]);
+    marker.setPosition(latlng);
+    marker.setTitle(place.label);
+    if (!checked) {
+        marker.setIcon({
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: '#4285f4',
+            fillOpacity: 0.4,
+            scale: 10,
+            strokeWeight: 3,
+            strokeColor: '#4285f4'
+        });
+        let infowindow = new google.maps.InfoWindow({
+            content: `<div class="text-center container">
+                <h5 class="ml-3">${place.label}</h5><br/>
+                <div class="custom-control custom-checkbox ml-3">
+                <input type="checkbox" class="custom-control-input infomarker" data-locationid="${markers.length}" id="im${markers.length}">
+                <label class="custom-control-label mt-1" for="im${markers.length}">Add/Remove</label>
+                </div></div>`
+        });
+        marker.infowindow = infowindow;
+        marker.addListener('click', () => {
+            closeMarkers();
+            infowindow.open(map, marker);
+        });
+        google.maps.event.addListener(infowindow, 'domready', () => {
+            let m = markers_checked[$('.infomarker').attr('data-locationid')];
+            $('.infomarker').prop('checked', isExist(m.map));
+            $('.infomarker').click(function () {
+                let lid = $(this).attr('data-locationid');
+                checkMarker(this);
+                $($('.checkmarker')[lid]).prop('checked', $(this).is(':checked'));
+            });
+        });
+        marker.setMap(map);
+
+    }
+
+    return marker;
 }
 
 function loadGallery() {
@@ -635,491 +1135,6 @@ function loadGallery() {
             }
         });
     }
-}
-
-function enableEvent() { //remove to tours only = check all
-    $('top-menu').click(function () {
-        var p = $(this);
-        $('.navigation').css('top', p.position().top + p.outerHeight() + 'px');
-        $('.navigation').css('left', p.position().left + 'px');
-        $('.navigation').css('display', 'block');
-    });
-
-    if (isMainPage()) {
-        $('#slider-list .img:gt(0)').hide();
-        setInterval(() =>
-            $("#slider-list .img:first-child").fadeOut(4000).next("#slider-list .img").fadeIn(4000).end().appendTo("#slider-list"),
-            4000);
-    }
-
-    $('#search').focusout(() => removeClass('#search'));
-    $('#menu').focusout(() => removeClass('#menu'));
-
-    $('.like').click(function () {
-        var obj = this.getElementsByTagName('span')[0],
-            cnt = parseInt(obj.innerHTML, 10);
-        if (Number.isNaN(cnt) || !isFinite(cnt)) {
-            cnt = 0;
-        }
-        cnt++;
-        obj.innerHTML = cnt;
-    });
-    $("#login .login-form input[name=password]").keypress(e => {
-        var isTooltip = $('.tooltip').is(':visible'),
-            s = String.fromCharCode(e.which);
-        if (s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey) {
-            if (!isTooltip) {
-                $(e.target).tooltip('show');
-            }
-        } else if (isTooltip) {
-            $(e.target).tooltip('hide');
-        }
-        $(e.target).blur(e => $(e.target).tooltip('hide'));
-    });
-    $("#logout").click(function (e) {
-        setUserSession(false);
-        logout(e);
-    });
-    $("#login").on("hide.bs.modal", function () {
-        $('.register-form :input').val('');
-        $('.login-form :input').val('');
-        $('.login-status').empty();
-    });
-
-    $("#blog .blog-form").on("submit", timeline);
-    $(".blog-form button[type=submit]").click(function (e) {
-        $(e.target).parents('form').data('actionid', $(e.target).attr('value'));
-    });
-    $('#img-btn').change(e => setImageFile(e.target.files[0]));
-    $('#img-clear').click(() => setImageFile());
-    $('#blog').on('show.bs.modal', e => {
-        if ($(e.target).data("btn") === "edit") {
-            $('#btn-img-delete').show();
-            $('#blog .modal-title').text('Edit or delete trip');
-        } else {
-            $('#btn-img-delete').hide();
-            $('#blog .modal-title').text('Add new trip');
-        }
-    });
-    $('#blog').on('hide.bs.modal', () => {
-        $('#blog').data('btn', "");
-        $('.blog-form :input').not(':button').val('');
-        $('.img-wrapper').css('background-image', "");
-        $('.login-status').empty();
-    });
-
-    //    $("#language li a").click(function (e) {
-    ////        alert(window.location.pathname);//document.URL);
-    ////        alert($(location).attr('href'));
-    //        e.relatedTarget.prefentDefault();
-    //    });
-    $('#language > li a').on('click', function (e) {
-        var url = $(e.target).attr('href') + $('body').attr('data-page') + '.html';
-        e.preventDefault();
-        location.replace(url);
-        //        alert(url);//.split('/').pop() === 
-    });
-    //$(location).attr('href').split('/').pop() === 
-    //        $("#blog").modal("toggle");
-
-    $("#sign-btn > a").click(() => {
-        if (isLoggin)
-            location.replace('./profile.html');
-        else
-            $('#login').modal('toggle');
-    });
-    isLoggedIn();
-    dragdropImage();
-
-    if (isTourPage()) {
-        $('#btn-map').on('click', () => {
-            $('html, body').animate({
-                scrollTop: $('#googleMap').offset().top
-            }, 2000);
-        });
-    }
-    let city = getUrlParameter('city');
-    if (city) {
-        $('.city-search-form input').val(city);
-    }
-    if (isMainPage()) {
-        loadGallery();
-    } else if (isTourPage()) {
-        $('.city-search-form').submit();
-    }
-    // initMap();
-}
-
-$(window).on('load', function () {
-    if (isTourPage() || isMainPage()) {
-        $('.overlay-regular').css('opacity', '0.3');
-        $('.overlay-small').css('opacity', '1');
-    }
-});
-
-$(document).ready(function () {
-    $.when(
-            //        $('#header-top').load('parts/header.html'),
-            //$('head').append( $('<link rel="stylesheet" type="text/css" />').attr('href', 'your stylesheet url') );
-            $('#city-search').load('parts/city_search.html', function () { //remove to tours only
-                getCitiesList().map(item => $('#cities').append(`<option value="${item.name}">`));
-                $('.city-search-form').on("submit", citySearch);
-            }),
-            $('#footer').load('parts/footer.html', function () {
-                $(this).addClass('footer d-flex flex-column theme small');
-            }),
-            $('#search').load('parts/search_form.html', function () {
-                $(this).addClass('modal fade');
-            }),
-            $('#login').load('parts/login_form.html', function () {
-                $(this).addClass('modal fade login-page');
-                $('#login .message a').click(function () {
-                    $('#login form').animate({
-                        height: "toggle",
-                        opacity: "toggle"
-                    }, "slow");
-                });
-                $('#login .login-form').on("submit", login);
-                $("#login .register-form").on("submit", register);
-            }),
-            $('#route').load('parts/route_form.html', function () { //remove to tours only
-                $(this).addClass('modal fade login-page');
-                // $('#login .login-form').on("submit", login);
-                // $("#login .register-form").on("submit", register);
-            }),
-            $.getScript('../bootstrap/js/popper.min.js'),
-            $.getScript('../bootstrap/js/bootstrap.min.js'),
-            $.getScript('../js/tether.min.js')
-        )
-        .then(() => enableEvent());
-
-    $(window).resize();
-});
-
-$(window).scroll(function () {
-    if (isTourPage()) {
-        let fp = $('.float-panel');
-        let pos = fp.offset().top + fp.height();
-        fp.css('visibility', pos > $('#googleMap').offset().top ? 'hidden' : 'visible');
-    }
-});
-
-function isTourPage() {
-    return $('body').attr('id') === 'tours';
-}
-
-function isMainPage() {
-    return $('body').attr('id') === 'e2t';
-}
-
-function getCurrentLanguage(value = 'en') {
-    let lng = $('#language');
-
-    return lng ? lng.prev().find('sup').text().toLowerCase() : value;
-}
-
-function getCitiesList(e) {
-    //    e.preventDefault();
-    return [{
-        name: 'Kiev'
-    }, {
-        name: 'Vienna'
-    }];
-}
-
-function citySearch(e) {
-    let obj = {
-        city: $('.city-search-form input').val(),
-        lng: getCurrentLanguage()
-    };
-
-    e.preventDefault();
-    if (!isTourPage()) {
-        location.replace('./tours.html?city=' + obj.city);
-    } else if (obj.city) {
-        $.ajax({
-            type: "GET",
-            url: "/city",
-            cache: false,
-            dataType: "json",
-            data: JSON.parse(JSON.stringify(obj)),
-            success: function (data, status, xhr) {
-                var obj = JSON.parse(xhr.responseText),
-                    city = obj.data;
-                if (obj.status === 'OK') {
-                    $('#city-place').load('parts/city_place.html', () => {
-                        $('#city-place h2').text(`Plan your rest in ${city.name} for 2 simple steps`);
-                    });
-                    $('#city-sights').load('parts/city_sights.html', () => {
-                        $('#city-sights h3').text(`We recommend to visit in ${city.name}`);
-                        markers = [];
-                        markers_checked = [];
-                        setCenter(city.name);
-                        city.places.map(place => $('.list-group').append(getCityPlace(place)));
-                    });
-                    $('#city-route').load('parts/city_route.html', () => {
-                        $('#route').on('show.bs.modal', function (e) {
-                            if (isLoggin) {
-                                $('.routeguest').hide();
-                                $('.routeuser').show();
-                            } else {
-                                $('.routeguest').show();
-                                $('.routeuser').hide();
-                            }
-                        });
-                        $('.routeguest a').on('click', () => {
-                            //save to session
-                            saveRoute(getCheckMarkers(), true);
-                            // $('#login').modal('toggle');
-                        });
-                        $('.routeuser a').on('click', () => {
-                            //save to mongo
-                            saveRoute(getCheckMarkers(), false);
-                            // location.replace('./profile.html');
-                        });
-                        $('.btn-route').on('click', () => {
-                            if (getCheckMarkers().length > 1) {
-                                $('#route').modal("toggle");
-                            } else {
-                                $('#alert-box').load('parts/alert.html');
-                            }
-                        });
-                        $('#btn-clear').on('click', () => {
-                            $('.list-group').children().map(index => {
-                                let item = $($('.list-group').children()[index]).find('input');
-                                item.prop('checked', false);
-                                checkMarker(item);
-                            });
-                        });
-                    });
-                    $('#google').show();
-                    $('body[id=tours] footer').css('position', 'absolute');
-                } else {
-                    clearCityPlace();
-                }
-            }
-        });
-    } else {
-        clearCityPlace();
-    }
-}
-
-function saveRoute(routes, status) {
-    let obj = {
-        locations: routes.map(item => item.position),
-        lng: getCurrentLanguage()
-    };
-
-    $.ajax({
-        type: 'GET',
-        url: '/routes',
-        cache: false,
-        dataType: 'json',
-        data: JSON.parse(JSON.stringify(obj)),
-        success: function (data, status, xhr) {
-            let obj = JSON.parse(xhr.responseText);
-            if (obj.status === 'OK') {
-                // alert("OK");//check register
-                if (status) {
-                    $('#login').modal('toggle');
-                } else {
-                    location.replace('./profile.html');
-                }
-            } else {
-                // alert("OK1");
-            }
-        },
-        error: function (xhr, status, error) {
-            // alert("Error");
-        }
-    });
-}
-
-function clearCityPlace() {
-    $('#city-place').empty();
-    $('#city-sights').empty();
-    $('#google').hide();
-    $('body[id=tours] footer').css('position', 'fixed');
-    $('#city-route').empty();
-}
-
-function getCheckMarkers() {
-    return markers_checked.filter(item => isExist(item.map));
-}
-
-function checkMarker(target) {
-    let lid = $(target).attr('data-locationid');
-
-    markers_checked[lid].setMap($(target).is(':checked') ? map : null);
-    let markerWay = getCheckMarkers();
-    clearDirections();
-    if (markerWay.length > 1) {
-        drawRoute(markerWay);
-    }
-    $('#markers-count').text(`${markerWay.length} places marked`);
-}
-
-function drawRoute(markerWay, initmap = map) {
-    var waypts = [];
-    for (var i = 1; i < markerWay.length - 1; i++) {
-        waypts.push({
-            location: markerWay[i].position,
-            stopover: true
-        });
-    }
-    var directionsService = new google.maps.DirectionsService;
-    directionsDisplay = new google.maps.DirectionsRenderer({
-        suppressMarkers: true
-    });
-    directionsService.route({
-        origin: markerWay[0].position,
-        destination: markerWay[markerWay.length - 1].position,
-        waypoints: waypts,
-        optimizeWaypoints: true,
-        travelMode: 'DRIVING'
-    }, function (response, status) {
-        if (status === 'OK') {
-            directionsDisplay.setDirections(response);
-            directionsDisplay.setMap(initmap);
-        } else {
-            window.alert('Directions request failed due to ' + status);
-        }
-    });
-}
-
-function clearDirections() {
-    if (isExist(directionsDisplay)) {
-        directionsDisplay.setDirections({
-            routes: []
-        });
-        directionsDisplay.setMap(null);
-        directionsDisplay = null;
-    }
-}
-
-function getCityPlace(place) {
-    let item =
-        $('<div>').addClass('list-group-item')
-        .append($('<div>').addClass('media')
-            .append($('<div>').addClass('checkbox pull-left')
-                .append($('<label>').css('font-size', '2.5em')
-                    .append($('<input>').attr('type', 'checkbox')
-                        .attr('data-locationid', markers.length).addClass('checkmarker')
-                        .click(e => checkMarker(e.target))
-                    )
-                    .append($('<span>').addClass('cr')
-                        .append($('<i>').addClass('cr-icon fas fa-check'))
-                    )
-                )
-            )
-            .append($('<div>').addClass('media-body m-2')
-                .append($('<h4>').addClass('media-heading').text(place.label))
-                .append($('<p>').text(place.description))
-            )
-            .append($('<div>').addClass('float-left')
-                .append($('<img>').addClass('media-object fixed-size')
-                    .css('background', `url(${place.imgurl})`).css('background-size', 'cover')
-                    .attr('alt', 'Image').attr('src', '/img/cities/e2t_gradient.png')
-                )
-            )
-        );
-    markers.push(addMarker(place, false));
-    markers_checked.push(addMarker(place, true));
-
-    return item;
-}
-
-function initMap() {
-    map = new google.maps.Map(document.getElementById('googleMap'), {
-        zoom: 14,
-        scrollwheel: true,
-        draggable: true,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        draggableCursor: 'default'
-    });
-    if (isTourPage()) {
-        map.addListener('mouseout', closeMarkers);
-    } else {
-        new google.maps.Marker({
-            position: setCenter(),
-            map: map
-        });
-    }
-}
-
-function closeMarkers() {
-    markers.map(item => {
-        if (item.infowindow)
-            item.infowindow.close();
-    });
-}
-
-function setCenter(address, initmap = map) {
-    let location = {
-        lat: 50.4645706,
-        lng: 30.5190734
-    };
-
-    if (address) {
-        let geocoder = new google.maps.Geocoder();
-        geocoder.geocode({
-            address: address
-        }, (results, status) => {
-            if (status == google.maps.GeocoderStatus.OK) {
-                initmap.setCenter(results[0].geometry.location);
-            } else {
-                map.setCenter(location);
-            }
-        });
-    } else {
-        map.setCenter(location);
-    }
-    // map.setZoom(15);
-
-    return location;
-}
-
-function addMarker(place, checked) {
-    var marker = new google.maps.Marker;
-    var latlng = new google.maps.LatLng(place.location[0], place.location[1]);
-    marker.setPosition(latlng);
-    marker.setTitle(place.label);
-    if (!checked) {
-        marker.setIcon({
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: '#4285f4',
-            fillOpacity: 0.4,
-            scale: 10,
-            strokeWeight: 3,
-            strokeColor: '#4285f4'
-        });
-        var infowindow = new google.maps.InfoWindow({
-            content: `<div class="text-center container">
-                <h5 class="ml-3">${place.label}</h5><br/>
-                <div class="custom-control custom-checkbox ml-3">
-                <input type="checkbox" class="custom-control-input infomarker" data-locationid="${markers.length}" id="im${markers.length}">
-                <label class="custom-control-label mt-1" for="im${markers.length}">Add/Remove</label>
-                </div></div>`
-        });
-        marker.infowindow = infowindow;
-        marker.addListener('click', function () {
-            closeMarkers();
-            infowindow.open(map, marker);
-        });
-        google.maps.event.addListener(infowindow, 'domready', function () {
-            var m = markers_checked[$('.infomarker').attr('data-locationid')];
-            $('.infomarker').prop('checked', isExist(m.map));
-            $('.infomarker').click(function () {
-                var lid = $(this).attr('data-locationid');
-                checkMarker(this);
-                $($('.checkmarker')[lid]).prop('checked', $(this).is(':checked'));
-            });
-        });
-        marker.setMap(map);
-
-    }
-
-    return marker;
 }
 
 /*function toggleClick(obj) {

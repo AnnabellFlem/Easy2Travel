@@ -1,10 +1,9 @@
 'use strict';
+const fs = require('fs');
 
-export function isExist(element) {
-    return typeof element !== 'undefined' && element !== null;
-}
-
-export function getUrlParameter(param) {
+const definify = path => fs.existsSync(path) ? path : '';
+const isExist = element => typeof element !== 'undefined' && element !== null;
+const getUrlParameter = param => {
     let sPageURL = decodeURIComponent(window.location.search.substring(1)),
         sURLVariables = sPageURL.split('&'),
         parameterName;
@@ -15,4 +14,14 @@ export function getUrlParameter(param) {
             return parameterName[1] === undefined ? true : parameterName[1];
         }
     }
-}
+};
+const getCaseInsensitive = value => new RegExp(`^${value}$`, 'i');
+const validateEmail = email => /^\w+([\-]?\w+)*@\w+([\-]?\w+)*(\.\w{2,3})+$/.test(email);
+
+module.exports = {
+    definify : definify,
+    isExist : isExist,
+    getUrlParameter : getUrlParameter,
+    getCaseInsensitive : getCaseInsensitive,
+    validateEmail : validateEmail
+};
