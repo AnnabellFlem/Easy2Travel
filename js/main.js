@@ -940,6 +940,7 @@ function clearCityPlace() {
     $('#city-sights').empty();
     $('#google').hide();
     $('body[id=tours] footer').css('position', 'fixed');
+    $('#city-route').empty();
 }
 
 function getCheckMarkers() {
@@ -1030,7 +1031,7 @@ function getCityPlace(place) {
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('googleMap'), {
-        zoom: 15,
+        zoom: 14,
         scrollwheel: true,
         draggable: true,
         mapTypeId: google.maps.MapTypeId.ROADMAP,

@@ -28,7 +28,7 @@ function ins() {
         },
 
         {
-            city: 'Vienna',
+            city: 'Відень',
             language: 'ua',
             places: [{
                     label: 'Шенбрунн',
@@ -627,8 +627,8 @@ function ins() {
         },
 
         {
-            city: 'Nice',
-            language: 'en',
+            city: 'Ніцца',
+            language: 'ua',
             places: [{
                     label: 'Музей Матісса в Ніцці',
                     description: 'Музей в віллі XVII століття з картинами Матісса, більшість з яких художник написав в Ніцці.',
