@@ -550,7 +550,7 @@ function enableEvent() { //remove to tours only = check all
         $('.login-status').empty();
     });
 
-    //    $("#language li a").click(function (e) {
+   //    $("#language li a").click(function (e) {
     ////        alert(window.location.pathname);//document.URL);
     ////        alert($(location).attr('href'));
     //        e.relatedTarget.prefentDefault();
@@ -579,6 +579,11 @@ function enableEvent() { //remove to tours only = check all
         loadGallery();
     }
 }
+
+// $('dropdown-item').on('click', () => { !!!!!!!!!!!!!!!!!!!!!!!!!
+//     alert(3);
+// });
+
 
 $(window).on('load', () => {
     if (isTourPage() || isMainPage()) {
