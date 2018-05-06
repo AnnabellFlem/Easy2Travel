@@ -23,7 +23,7 @@ function isExist(element) {
 }
 
 function loadScripts(next) {
-    $.getScript('../bootstrap/js/bootstrap.bundle.min.js', () => {
+    $.getScript('../bootstrap/js/bootstrap.min.js', () => {
         $.getScript('../js/tether.min.js', () => {
             next();
         });
@@ -100,13 +100,13 @@ function getTimelineItem(timeline, position, index) {
     let timeline_date = d.getDate() + "." + d.getMonth() + "." + d.getFullYear();
     let positionClass = isLastInverted ? "" : "timeline-inverted";
     let places = "";
-    let subPlace = item =>
-        `<div class="list-group list-group-flush">
+    let subPlace = (item, index) =>
+        `<div id=${timeline.id}${index} class="list-group list-group-flush">
             <div class="list-group-item">
                 <div class="media">
                     <div class="media-body m-2">
                         <h4 class="media-heading">${item.title}</h4>
-                        <p></p>${item.description}</p>
+                        <p>${item.description}</p>
                     </div>
                     <div class="w-50">
                         <img class="media-object w-75 float-right" src="${item.imgurl}" alt="Image1">
@@ -114,7 +114,7 @@ function getTimelineItem(timeline, position, index) {
                 </div>
             </div>
         </div>`;
-    timeline.body.map(item => places += subPlace(item));
+    timeline.body.map((item, index) => places += subPlace(item, index));
     let item =
         $(`<li id="${timeline.id}" class="${position === undefined || position === null ? positionClass : position}">
         <div class="timeline-badge primary">
@@ -143,8 +143,6 @@ function getTimelineItem(timeline, position, index) {
             </div>
         </div>
     </li>`);
-
-    //$(".timeline-footer a i").on("click", () => alert(1));
 
     // $("<li>").attr("id", timeline.id)
     //     .addClass(position === undefined ? positionClass : position).append(
@@ -234,7 +232,23 @@ function addTimeline(timeline, index) {
             ${ls}
         }
     </script>`));
-    $(".timeline-footer a i").on("click", () => alert(2));
+    $('.timeline-footer a:nth-child(3) i').on('click', e => {
+        let liid = $(e.target).parents('li').attr('id');
+        
+        $('.btn-group .dropdown-menu').empty();
+        for (let i = 0; i < $(`#${liid} .media-heading`).length; i++) {
+            let subplace = `${liid}${i}`;
+            $('.btn-group .dropdown-menu').append(`<a class="dropdown-item" href="#" data-subplace="${subplace}">${$(`#${subplace} .media-heading`).text()}</a>`);
+            $('.btn-group .dropdown-item').on('click', e => {
+                let subplace = $(e.target).attr('data-subplace');
+                $('#blog .modal-header .modal-title').text(`Edit ${timeline.title} trip`);
+                $('#blog .modal-body .media-heading').text($(`#${subplace} .media-heading`).text());
+                $('#blog .modal-body textarea').text($(`#${subplace} p`).text());
+                $('#blog .img-wrapper').css('background-image', `url(${$(`#${subplace} .media-object`).attr('src')})`);
+            });
+        }
+        $('#blog').modal('toggle');
+    });
 }
 
 function checkAuthorization() { ////remove to tours only for profile
@@ -348,6 +362,7 @@ function getTimelines() {
             let obj = JSON.parse(xhr.responseText);
             if (obj.status === 'OK' && obj.data.userid) {
                 Object.values(obj.data.timeline).map((t, index) => addTimeline(t, index));
+                //$.getScript('../bootstrap/js/bootstrap.bundle.min.js', () => 
                 $('[data-toggle="tooltip"]').tooltip();
             } else {
                 // setUserSession();
@@ -443,8 +458,9 @@ function timeline(e) {
 function setImageFile(imagefile) {
     sender = [];
     if (imagefile) {
-        var file = imagefile,
-            reader = new FileReader();
+        let file = imagefile;
+        let reader = new FileReader();
+
         reader.onloadend = () => $('.img-wrapper').css('background-image', 'url(' + reader.result + ')');
         reader.readAsDataURL(file);
         sender.push(imagefile);
@@ -534,15 +550,7 @@ function enableEvent() { //remove to tours only = check all
     );
     $('#img-btn').change(e => setImageFile(e.target.files[0]));
     $('#img-clear').click(() => setImageFile());
-    $('#blog').on('show.bs.modal', e => {
-        if ($(e.target).data("btn") === "edit") {
-            $('#btn-img-delete').show();
-            $('#blog .modal-title').text('Edit or delete trip');
-        } else {
-            $('#btn-img-delete').hide();
-            $('#blog .modal-title').text('Add new trip');
-        }
-    });
+    $('#blog').on('show.bs.modal', () => $($('.btn-group .dropdown-item')[0]).click());
     $('#blog').on('hide.bs.modal', () => {
         $('#blog').data('btn', "");
         $('.blog-form :input').not(':button').val('');
@@ -579,11 +587,6 @@ function enableEvent() { //remove to tours only = check all
         loadGallery();
     }
 }
-
-// $('dropdown-item').on('click', () => { !!!!!!!!!!!!!!!!!!!!!!!!!
-//     alert(3);
-// });
-
 
 $(window).on('load', () => {
     if (isTourPage() || isMainPage()) {
@@ -645,6 +648,11 @@ $(document).ready(() => {
             if (isProfilePage()) {
                 getTimelines();
             }
+
+
+            // $('.dropdown-item').on('click', () => { 
+            //     alert(3);
+            // });
 
             // $.getScript('../bootstrap/js/popper.min.js', function() {
             //     $.getScript('../bootstrap/js/bootstrap.min.js');
@@ -740,8 +748,8 @@ function citySearch(e) {
                                 $('.routeuser').hide();
                             }
                         });
-                        $('.routeguest a').on('click', () => saveRoute(getCheckMarkers(), true));
-                        $('.routeuser a').on('click', () => saveRoute(getCheckMarkers(), false));
+                        $('.routeguest a').on('click', () => saveRoute(getCheckMarkers(), city.name, true));
+                        $('.routeuser a').on('click', () => saveRoute(getCheckMarkers(), city.name, false));
                         $('.btn-route').on('click', () => {
                             if (getCheckMarkers().length > 1) {
                                 $('#route').modal("toggle");
@@ -769,8 +777,9 @@ function citySearch(e) {
     }
 }
 
-function saveRoute(routes, status) {
+function saveRoute(routes, cityname, status) {
     let obj = {
+        title: cityname,
         locations: routes.map(item => item.position),
         lng: getCurrentLanguage()
     };

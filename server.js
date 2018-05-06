@@ -101,59 +101,44 @@ function setStatusMessage(status, msg, data) {
 }
 
 function getTimeline(req, res) {
-    let locations = req.session.locations;
-    console.log(locations);
-    let t = {};
+    let route = req.session.route;
 
-    if (locations) {
-        //save to mongo
-        delete req.session.locations;
-    } //only on profile html?
-    Timeline.find({
-        'userid': req.session.userId
-    }, function (err, timeline) {
-        t = [{
-            id: req.session.userId,
+    if (route) {
+        let timelineData = {
             userid: req.session.userId,
-            title: "Vienna",
-            locations: [
-                [48.1861987, 16.3128606],
-                [48.2076579, 16.3638598]
-            ],
-            body: [{
-                    title: "Vienna",
-                    description: "vv",
-                    imgurl: "/img/trips/cities/hofburg.jpg",
-                    imgsize: 1
-                },
-                {
-                    title: "Kiev",
-                    description: "aa",
-                    imgurl: "/img/trips/cities/hofburg.jpg",
-                    imgsize: 1
-                }
-            ],
-            comments: ["qq", "cc", "ww"],
-            created_at: t.created_at,
-            updated_at: t.updated_at
-        }];
-        if (err) {
-            console.log(err);
-            res.send(setStatusMessage(statusOK, "", {
-                userid: req.session.userId,
-                username: req.session.username
-            }));
-        } else {
-            res.send(setStatusMessage(statusOK, "", {
-                userid: req.session.userId,
-                username: req.session.username,
-                timeline: t
-            }));
-            // sessionId: req.session.userId,
-            // username: req.session.username,
-            // timeline: Timeline.getTimeline(timeline)}));
-        }
-    });
+            title: req.session.route.title,
+            locations: [[47, 13]]//Object.values(req.session.route.locations).map(item => Object.values(item).map(Number))
+        };
+    
+        Timeline.create(timelineData, (err, timeline) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('OK_create');
+                Timeline.find({
+                    'userid': timeline.userid
+                }, (err, timeline) => {
+                    console.log('2 => ' + JSON.stringify(timeline));
+                    if (err) {
+                        console.log(err);
+                        res.send(setStatusMessage(statusOK, "", {
+                            userid: req.session.userId,
+                            username: req.session.username
+                        }));
+                    } else {
+                        res.send(setStatusMessage(statusOK, "", {
+                            userid: req.session.userId,
+                            username: req.session.username,
+                            timeline: Timeline.getTimeline(timeline)
+                        }));
+                    }
+                });
+            }
+        });
+        delete req.session.route;
+    } else { //only on profile html?
+        res.send(setStatusMessage(statusERROR, "Route is undefined."));
+    }
 }
 
 function getError(err) {
@@ -496,8 +481,11 @@ app.get('/tours/:lng', (req, res) => {
 });
 
 app.get('/routes', (req, res) => {
-    req.session.locations = req.query.locations;
-    req.session.languange = req.query.lng;
+    req.session.route = {
+        title: req.query.title,
+        locations: req.query.locations,
+        languange: req.query.lng
+    };
     // console.log(param);
     // if (param) {
     //     res.redirect(`/tours/${req.query.lng}/${param}`);

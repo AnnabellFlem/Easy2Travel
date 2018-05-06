@@ -672,7 +672,7 @@ function ins() {
                 {
                     label: 'Parthenon',
                     description: 'The Parthenon is a former temple, on the Athenian Acropolis, Greece, dedicated to the goddess Athena, whom the people of Athens considered their patron. Construction began in 447 BC when the Athenian Empire was at the peak of its power. It was completed in 438 BC although decoration of the building continued until 432 BC. It is the most important surviving building of Classical Greece, generally considered the zenith of the Doric order. Its decorative sculptures are considered some of the high points of Greek art.',
-                    imgurl: '/img/trips/cities/pantheon.jpg',
+                    imgurl: '/img/trips/cities/parthenon_in_athens.jpg',
                     location: [37.9715285, 23.7245279]
                 }
             ],
@@ -698,7 +698,7 @@ function ins() {
                 {
                     label: 'Парфенон',
                     description: `Парфенон — головний храм Афінського акрополя, присвячений богині Афіні Парфенос, покровительці міста та всієї Аттики; визначна пам'ятка давньогрецького мистецтва. Був зведений до 438 року до н. е. за 10 років. Зазнав руйнування 1687 року під час облоги Акрополя венеціанцями періоду війни з турками.`,
-                    imgurl: '/img/trips/cities/pantheon.jpg',
+                    imgurl: '/img/trips/cities/parthenon_in_athens.jpg',
                     location: [37.9715285, 23.7245279]
                 }
             ],

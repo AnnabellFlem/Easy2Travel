@@ -37,7 +37,7 @@
             <div class="modal-dialog modal-sm1">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Add new trip</h4>
+                        <h4 class="modal-title"></h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
@@ -46,25 +46,21 @@
                               Choose place to edit
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" href="#">Kiev</a>
-                              <a class="dropdown-item" href="#">Vienna</a>
-                              <a class="dropdown-item" href="#">Something else here</a>
                             </div>
                           </div>
                         <div class="mb-3">
-                        <h4 class="media-heading">Kiev</h4>
+                        <h4 class="media-heading"></h4>
                         </div>
                         <textarea name="body" rows="5" placeholder="body" class="form-group form-control"></textarea>
                         <div class="d-flex justify-content-center align-items-center img-wrapper">
                             <label for="img-btn" class="btn btn-outline-success btn-md ">Select Image or Drag and Drop here</label>
                             <input id="img-btn" style="display:none;" type="file" accept="image/*" name="pic">
-                            <button id="img-clear1" class="close far fa-trash-alt" style="position:absolute;bottom:15px;right:15px;margin:0;padding:5px 3px;">
+                            <button id="img-clear" class="close far fa-trash-alt" style="position:absolute;bottom:15px;right:15px;margin:0;padding:5px 3px;">
                             </button>
                         </div>
                     </div>
                     <span class="login-status small text-danger ml-3" style="height: 0px;"></span>
                     <div class="modal-footer">
-                        <button id="btn-img-delete" type="submit" class="btn btn-default" value="1">Delete</button>
                         <button type="submit" class="btn btn-default" value="2">Save</button>
                     </div>
                 </div>
@@ -93,23 +89,6 @@
                     <div class="list-group">
                         <a href="#" class="list-group-item">
                             <div id="google" class="container-fluid mb-2" style="height:180px; border: 1px solid red">
-                                    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI&callback=initm" async defer></script>
-                                    <script>
-                                    function initm() {
-                                        var uluru = {
-                                            lat: -25.363,
-                                            lng: 131.044
-                                        };
-                                        var map = new google.maps.Map(document.getElementById('google'), {
-                                            zoom: 4,
-                                            center: uluru
-                                        });
-                                        var marker = new google.maps.Marker({
-                                            position: uluru,
-                                            map: map
-                                        });
-                                    }
-                                </script> -->
                             </div>
 
                             <div class="media">
