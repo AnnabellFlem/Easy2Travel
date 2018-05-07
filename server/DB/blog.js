@@ -18,15 +18,17 @@ var TimelineSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    locations: [{
-        type: [Number],
+    locations: {
+        type: [
+            [Number]
+        ],
         required: true
-    }],
+    },
     body: [{
         title: {
             type: String,
             required: true
-        },  
+        },
         description: {
             type: String
         },
@@ -37,6 +39,10 @@ var TimelineSchema = new mongoose.Schema({
             type: Number
         }
     }],
+    likes: {
+        type: Number,
+        default: 0
+    },
     comments: [{
         description: {
             type: String
@@ -45,8 +51,8 @@ var TimelineSchema = new mongoose.Schema({
     created_at: Date,
     updated_at: Date
 });
-TimelineSchema.pre('save', function(next) {
-    var currentDate = new Date();
+TimelineSchema.pre('save', function (next) {
+    let currentDate = new Date();
 
     this.updated_at = currentDate;
     if (!this.created_at) {
@@ -55,21 +61,22 @@ TimelineSchema.pre('save', function(next) {
     next();
 });
 
-var Timeline = mongoose.model('Timeline', TimelineSchema);
-var functions = {
-   getTimeline : t => {
+const Timeline = mongoose.model('Timeline', TimelineSchema);
+const functions = {
+    getTimeline: t => {
         return {
             id: t._id,
             userid: t.userid,
             title: t.title,
             locations: t.locations,
             body: t.body,
+            likes: t.likes,
             comments: t.comments,
             created_at: t.created_at,
             updated_at: t.updated_at
         };
     },
-    getObjectId : id => new mongoose.Types.ObjectId(id)
+    getObjectId: id => new mongoose.Types.ObjectId(id)
 };
 module.exports = Timeline;
 for (var key in functions) {

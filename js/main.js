@@ -23,18 +23,23 @@ function isExist(element) {
 }
 
 function loadScripts(next) {
-    $.getScript('../bootstrap/js/bootstrap.min.js', () => {
-        $.getScript('../js/tether.min.js', () => {
-            next();
-        });
-    });
-    // $.getScript('../bootstrap/js/popper.min.js', () => {
-    //     $.getScript('../bootstrap/js/bootstrap.min.js', () => {
-    //         $.getScript('../js/tether.min.js', () => {
-    //             next();
-    //         });
+    // $.cachedScript('../bootstrap/js/bootstrap.bundle.min.js', () => {
+    //     $.getScript('../js/tether.min.js', () => {
+    //         next();
     //     });
     // });
+    /*
+        <script src="../js/jquery.mixitup.min.js"></script>
+        <script src="../js/jPages.min.js"></script>
+    */
+    $.getScript('../bootstrap/js/popper.min.js', () => {
+        $.getScript('../bootstrap/js/bootstrap.min.js', () => {
+            $('[data-toggle="tooltip"]').tooltip();
+            $.getScript('../js/tether.min.js', () => {
+                next();
+            });
+        });
+    });
 }
 
 function getUrlParameter(param) {
@@ -97,7 +102,9 @@ function setUserSession(username) {
 function getTimelineItem(timeline, position, index) {
     let isLastInverted = $('#timeline ul > li:not(.clearfix):last').hasClass('timeline-inverted');
     let d = new Date(timeline.created_at);
-    let timeline_date = d.getDate() + "." + d.getMonth() + "." + d.getFullYear();
+    let timeline_date = ('0' + d.getDate()).slice(-2) + '.' +
+        ('0' + (d.getMonth() + 1)).slice(-2) + '.' +
+        d.getFullYear();
     let positionClass = isLastInverted ? "" : "timeline-inverted";
     let places = "";
     let subPlace = (item, index) =>
@@ -131,7 +138,7 @@ function getTimelineItem(timeline, position, index) {
             ${places}
             <div class="timeline-footer">
                 <a>
-                    <i class="tl-likes far fa-thumbs-up fa-lg">&nbsp;&nbsp;</i>
+                    <i class="tl-likes far fa-thumbs-up fa-lg">${timeline.likes > 0 ? timeline.likes : ''}&nbsp;&nbsp;</i>
                 </a>
                 <a>
                     <i class="tl-comments far fa-comment fa-lg">&nbsp;&nbsp;</i>
@@ -140,9 +147,10 @@ function getTimelineItem(timeline, position, index) {
                     <i class="tl-edit far fa-edit fa-lg"></i>
                 </a>
                 <a class="float-right">${timeline.title} trip</a>
-            </div>
+                </div>
         </div>
     </li>`);
+    //<input type="text" class="float-right">
 
     // $("<li>").attr("id", timeline.id)
     //     .addClass(position === undefined ? positionClass : position).append(
@@ -232,21 +240,39 @@ function addTimeline(timeline, index) {
             ${ls}
         }
     </script>`));
+    $('.timeline-footer a:nth-child(1) i').on('click', e => {
+        let c = $(e.target).attr('data-likes');
+
+        e.preventDefault();
+        $.ajax({
+            type: 'PUT',
+            url: `/tmledit/${timeline.id}/likes`,
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: (data, status, xhr) => {
+                console.log(JSON.stringify(data));
+                if (data.status === 'OK') {
+                    $(e.target).text(data.data.likes);
+                }
+            }
+        });
+    });
     $('.timeline-footer a:nth-child(3) i').on('click', e => {
         let liid = $(e.target).parents('li').attr('id');
-        
+
         $('.btn-group .dropdown-menu').empty();
         for (let i = 0; i < $(`#${liid} .media-heading`).length; i++) {
             let subplace = `${liid}${i}`;
             $('.btn-group .dropdown-menu').append(`<a class="dropdown-item" href="#" data-subplace="${subplace}">${$(`#${subplace} .media-heading`).text()}</a>`);
             $('.btn-group .dropdown-item').on('click', e => {
                 let subplace = $(e.target).attr('data-subplace');
-                $('#blog .modal-header .modal-title').text(`Edit ${timeline.title} trip`);
                 $('#blog .modal-body .media-heading').text($(`#${subplace} .media-heading`).text());
                 $('#blog .modal-body textarea').text($(`#${subplace} p`).text());
                 $('#blog .img-wrapper').css('background-image', `url(${$(`#${subplace} .media-object`).attr('src')})`);
             });
         }
+        $('#blog .modal-header .modal-title').text(`Edit ${timeline.title} trip`);
         $('#blog').modal('toggle');
     });
 }
@@ -359,15 +385,15 @@ function getTimelines() {
         dataType: 'json',
         cache: false,
         success: (data, status, xhr) => {
-            let obj = JSON.parse(xhr.responseText);
-            if (obj.status === 'OK' && obj.data.userid) {
-                Object.values(obj.data.timeline).map((t, index) => addTimeline(t, index));
+            if (data.status === 'OK' && data.data.userid) {
+                Object.values(data.data.timeline).map((t, index) => addTimeline(t, index));
                 //$.getScript('../bootstrap/js/bootstrap.bundle.min.js', () => 
-                $('[data-toggle="tooltip"]').tooltip();
+                // $('[data-toggle="tooltip"]').tooltip();
+                // console.log(Object.values(data.data.timeline));
             } else {
                 // setUserSession();
             }
-            console.log('data: ' + data + ', status:' + status);
+            // console.log('data: ' + JSON.stringify(data) + ', status:' + status);
         },
         error: () => {
             // setUserSession();
@@ -441,7 +467,7 @@ function timeline(e) {
                 var obj = JSON.parse(xhr.responseText);
                 if (obj.status === 'OK') {
                     addTimeline(obj.data);
-                    $('[data-toggle="tooltip"]').tooltip();
+                    // $('[data-toggle="tooltip"]').tooltip();
                     $(f.parentElement).modal("toggle");
                 } else {
                     $('.' + f.className + ' .login-status').html(obj.message);
@@ -539,6 +565,13 @@ function enableEvent() { //remove to tours only = check all
         }
         $(e.target).blur(e => $(e.target).tooltip('hide')); //check?
     });
+    $('#login').on('shown.bs.modal', () => {
+        $('#login form').each((i, e) => {
+            if (e.clientHeight) {
+                $(e).find('input').first().focus();
+            }
+        });
+    });
     $('#login').on('hide.bs.modal', () => {
         $('.register-form :input').val('');
         $('.login-form :input').val('');
@@ -558,7 +591,7 @@ function enableEvent() { //remove to tours only = check all
         $('.login-status').empty();
     });
 
-   //    $("#language li a").click(function (e) {
+    //    $("#language li a").click(function (e) {
     ////        alert(window.location.pathname);//document.URL);
     ////        alert($(location).attr('href'));
     //        e.relatedTarget.prefentDefault();
@@ -584,7 +617,9 @@ function enableEvent() { //remove to tours only = check all
     }
 
     if (isMainPage()) {
-        loadGallery();
+        $.getScript('../js/jquery.mixitup.min.js', () =>
+            $.getScript('../js/jPages.min.js', () => loadGallery())
+        );
     }
 }
 
@@ -603,7 +638,7 @@ $(document).ready(() => {
                     if (isLoggedIn) {
                         location.replace('./profile.html');
                     } else {
-                        $('#login').modal('toggle');
+                        $('#login').modal(); //'toggle');
                     }
                 });
                 $('#logout').click(e => logout(e));
@@ -703,8 +738,7 @@ function getCitiesList() {
             }
             console.log('data: ' + data + ', status:' + status);
         },
-        error: () => {
-        }
+        error: () => {}
     });
 }
 

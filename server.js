@@ -107,38 +107,41 @@ function getTimeline(req, res) {
         let timelineData = {
             userid: req.session.userId,
             title: req.session.route.title,
-            locations: [[47, 13]]//Object.values(req.session.route.locations).map(item => Object.values(item).map(Number))
+            locations: Object.values(req.session.route.locations).map(item => Object.values(item).map(Number))
         };
-    
+
+        delete req.session.route;
         Timeline.create(timelineData, (err, timeline) => {
             if (err) {
                 console.log(err);
             } else {
                 console.log('OK_create');
-                Timeline.find({
-                    'userid': timeline.userid
-                }, (err, timeline) => {
-                    console.log('2 => ' + JSON.stringify(timeline));
-                    if (err) {
-                        console.log(err);
-                        res.send(setStatusMessage(statusOK, "", {
-                            userid: req.session.userId,
-                            username: req.session.username
-                        }));
-                    } else {
-                        res.send(setStatusMessage(statusOK, "", {
-                            userid: req.session.userId,
-                            username: req.session.username,
-                            timeline: Timeline.getTimeline(timeline)
-                        }));
-                    }
-                });
+                getTimelineByUserId(req, res, timeline.userid);
             }
         });
-        delete req.session.route;
     } else { //only on profile html?
-        res.send(setStatusMessage(statusERROR, "Route is undefined."));
+        getTimelineByUserId(req, res, req.session.userId);
     }
+}
+
+function getTimelineByUserId(req, res, userid) {
+    Timeline.find({
+        'userid': userid
+    }, (err, timeline) => {
+        if (err) {
+            console.log(err);
+            res.send(setStatusMessage(statusOK, "", {
+                userid: req.session.userId,
+                username: req.session.username
+            }));
+        } else {
+            res.send(setStatusMessage(statusOK, "", {
+                userid: req.session.userId,
+                username: req.session.username,
+                timeline: timeline.map(item => Timeline.getTimeline(item))
+            }));
+        }
+    });
 }
 
 function getError(err) {
@@ -230,7 +233,7 @@ app.get('/', (req, res) => {
 //res.sendFile('index1.html', { root: path.join(__dirname, //'../public') });
 
 app.get('/isloggedin', (req, res) => {
-    console.log('[' + new Date() + ']: userId => ' + req.session.userId);
+    console.log(`[${new Date()}]: userId => ${req.session.userId}`);
     //    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
     //    console.log(fullUrl);
     //'/foo/bar/baz/asdf/quux.html'.split('/').pop()    
@@ -408,6 +411,26 @@ app.put('/tmledit/:tlsId', (req, res) => {
     });
 });
 
+app.put('/tmledit/:tlsId/likes', (req, res) => {
+    Timeline.findOneAndUpdate({
+            '_id': Timeline.getObjectId(req.params.tlsId)
+        }, {
+            $inc: {
+                likes: 1
+            }
+        }, {
+            fields: "likes",
+            new: true
+        },
+        (err, likes) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send(setStatusMessage(statusOK, "", likes));
+            }
+        });
+});
+
 app.get('/city', (req, res) => {
     let param = req.query.city;
 
@@ -465,19 +488,19 @@ app.get('/tours/:lng/:city', (req, res) => {
 
 app.get('/tours/:lng', (req, res) => {
     Place.find({
-        language: req.params.lng
-    },
-    'city',
-    (err, cities) => {
-        if (err) {
-            console.log(err);
-            res.send(setStatusMessage(statusERROR, "", {
-                message: "Cities not found."
-            }));
-        } else {
-            res.send(setStatusMessage(statusOK, "", cities));
-        }
-    });
+            language: req.params.lng
+        },
+        'city',
+        (err, cities) => {
+            if (err) {
+                console.log(err);
+                res.send(setStatusMessage(statusERROR, "", {
+                    message: "Cities not found."
+                }));
+            } else {
+                res.send(setStatusMessage(statusOK, "", cities));
+            }
+        });
 });
 
 app.get('/routes', (req, res) => {
