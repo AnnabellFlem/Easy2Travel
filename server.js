@@ -100,6 +100,24 @@ function setStatusMessage(status, msg, data) {
     return status;
 }
 
+function getPlaceByLocation(l) {
+    console.log(l);
+    Place.findOne({
+        'places.location': l
+    },
+   'places',
+    (err, place) => {
+        if (err) {
+            return err;
+        } else if (place) {
+            place.places.forEach(item => {
+                if (item.location[0] === l[0] && item.location[1] === l[1])
+                console.log(item.label);
+            });
+        }
+    });
+}
+
 function getTimeline(req, res) {
     let route = req.session.route;
 
@@ -107,8 +125,10 @@ function getTimeline(req, res) {
         let timelineData = {
             userid: req.session.userId,
             title: req.session.route.title,
-            locations: Object.values(req.session.route.locations).map(item => Object.values(item).map(Number))
+            locations: Object.values(req.session.route.locations).map(item => Object.values(item).map(Number)),
+            body: []
         };
+        timelineData.locations.map(item => getPlaceByLocation(item));
 
         delete req.session.route;
         Timeline.create(timelineData, (err, timeline) => {
@@ -131,8 +151,8 @@ function getTimelineByUserId(req, res, userid) {
         if (err) {
             console.log(err);
             res.send(setStatusMessage(statusOK, "", {
-                userid: req.session.userId,
-                username: req.session.username
+                userid: req.session.userId,//delete?? and move to Timeline!
+                username: req.session.username//??delete??
             }));
         } else {
             res.send(setStatusMessage(statusOK, "", {

@@ -1,13 +1,14 @@
 /*jslint maxerr: 10, es6, node, single, for, multivar, bitwise, white, this, devel, browser*/
+'use strict';
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 mongoose.connect("mongodb://localhost:27017/e2t", {
-  useMongoClient: true
+    useMongoClient: true
 });
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-var PlaceSchema = new mongoose.Schema({
+const PlaceSchema = new mongoose.Schema({
     city: {
         type: String,
         required: true
@@ -36,9 +37,8 @@ var PlaceSchema = new mongoose.Schema({
     created_at: Date,
     updated_at: Date
 });
-PlaceSchema.pre('save', function(next) {
-    "use strict";
-    var currentDate = new Date();
+PlaceSchema.pre('save', function (next) {
+    let currentDate = new Date();
 
     this.updated_at = currentDate;
     if (!this.created_at) {
@@ -47,27 +47,26 @@ PlaceSchema.pre('save', function(next) {
     next();
 });
 
-var Place = mongoose.model('Place', PlaceSchema);
-var functions = {
-//    getTimeline : function(t) {
-//         "use strict";
-//         return {
-//             id: t._id,
-//             userid: t.userid,
-//             title: t.title,
-//             body: t.body,
-//             imgurl: t.imgurl,
-//             imgsize: t.imgsize,
-//             created_at: t.created_at,
-//             updated_at: t.updated_at
-//         };
-//     },
-//     getObjectId : function(id) {
-//         "use strict";
-//         return new mongoose.Types.ObjectId(id);
-//     return mongoose.Types.ObjectId(id); //
-//     }
+const Place = mongoose.model('Place', PlaceSchema);
+const functions = {
+    getPlaceByLocation: l => {
+        Place.findOne({
+            'places.location': l
+        },
+       'places',
+        (err, place) => {
+            if (err) {
+                return err;
+            } else {
+                place.places.forEach(item => {
+                    if (item.location[0] === l[0] && item.location[1] === l[1])
+                        console.log(item.label);
+                });
+            }
+        });
+    }
 };
+
 module.exports = Place;
 for (var key in functions) {
     module.exports[key] = functions[key];

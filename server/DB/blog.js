@@ -8,7 +8,7 @@ mongoose.connect("mongodb://localhost:27017/e2t", {
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-var TimelineSchema = new mongoose.Schema({
+const TimelineSchema = new mongoose.Schema({
     userid: {
         type: mongoose.Schema.ObjectId,
         required: true
@@ -35,7 +35,7 @@ var TimelineSchema = new mongoose.Schema({
         imgurl: {
             type: String
         },
-        imgsize: {
+        imgsize: {//delete?
             type: Number
         }
     }],
@@ -78,6 +78,7 @@ const functions = {
     },
     getObjectId: id => new mongoose.Types.ObjectId(id)
 };
+
 module.exports = Timeline;
 for (var key in functions) {
     module.exports[key] = functions[key];

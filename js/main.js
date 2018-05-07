@@ -241,8 +241,6 @@ function addTimeline(timeline, index) {
         }
     </script>`));
     $('.timeline-footer a:nth-child(1) i').on('click', e => {
-        let c = $(e.target).attr('data-likes');
-
         e.preventDefault();
         $.ajax({
             type: 'PUT',
@@ -251,7 +249,7 @@ function addTimeline(timeline, index) {
             processData: false,
             cache: false,
             success: (data, status, xhr) => {
-                console.log(JSON.stringify(data));
+                // console.log(JSON.stringify(data));
                 if (data.status === 'OK') {
                     $(e.target).text(data.data.likes);
                 }
@@ -290,7 +288,7 @@ function checkAuthorization() { ////remove to tours only for profile
             } else {
                 setUserSession();
             }
-            console.log('data: ' + data + ', status:' + status);
+            // console.log('data: ' + data + ', status:' + status);
         },
         error: () => {
             setUserSession();
@@ -422,7 +420,7 @@ function timeline(e) {
                         $('#' + tlsId).remove();
                         $(f.parentElement).modal("toggle");
                     }
-                    console.log('data: ' + data + ', status:' + status);
+                    // console.log('data: ' + data + ', status:' + status);
                 }
                 /*,
                                 error: function(xhr, status, error) {
@@ -447,7 +445,7 @@ function timeline(e) {
                     } else {
                         $('.' + f.className + ' .login-status').html(obj.message);
                     }
-                    console.log('data: ' + data + ', status:' + status);
+                    // console.log('data: ' + data + ', status:' + status);
                 }
                 /*,
                                 error: function(xhr, status, error) {
@@ -472,7 +470,7 @@ function timeline(e) {
                 } else {
                     $('.' + f.className + ' .login-status').html(obj.message);
                 }
-                console.log('data: ' + data + ', status:' + status);
+                // console.log('data: ' + data + ', status:' + status);
             }
             /*,
                         error: function(xhr, status, error) {
@@ -736,7 +734,7 @@ function getCitiesList() {
             if (obj.status === 'OK' && obj.data) {
                 Object.values(obj.data).map(item => $('#cities').append(`<option value="${item.city}">`));
             }
-            console.log('data: ' + data + ', status:' + status);
+            // console.log('data: ' + data + ', status:' + status);
         },
         error: () => {}
     });
@@ -818,29 +816,26 @@ function saveRoute(routes, cityname, status) {
         lng: getCurrentLanguage()
     };
 
-    $.ajax({
-        type: 'GET',
-        url: '/routes',
-        cache: false,
-        dataType: 'json',
-        data: JSON.parse(JSON.stringify(obj)),
-        success: function (data, status, xhr) {
-            let obj = JSON.parse(xhr.responseText);
-            if (obj.status === 'OK') {
-                // alert("OK");//check register
-                if (status) {
-                    $('#login').modal('toggle');
-                } else {
-                    location.replace('./profile.html');
-                }
-            } else {
-                // alert("OK1");
-            }
-        },
-        error: function (xhr, status, error) {
-            // alert("Error");
-        }
-    });
+    console.log(JSON.stringify(obj.locations));
+    routes.map(item => console.log('=> ' + item.position));
+
+    // $.ajax({
+    //     type: 'GET',
+    //     url: '/routes',
+    //     cache: false,
+    //     dataType: 'json',
+    //     data: JSON.parse(JSON.stringify(obj)),
+    //     success: function (data, status, xhr) {
+    //         let obj = JSON.parse(xhr.responseText);
+    //         if (obj.status === 'OK') {
+    //             if (status) {
+    //                 $('#login').modal('toggle');
+    //             } else {
+    //                 location.replace('./profile.html');
+    //             }
+    //         }
+    //     }
+    // });
 }
 
 function drawRoute(markerWay, initmap = map) {
@@ -973,7 +968,7 @@ function setCenter(address, initmap = map) {
         geocoder.geocode({
             address: address
         }, (results, status) => {
-            initmap.setCenter(status == google.maps.GeocoderStatus.OK ?
+            initmap.setCenter(status === google.maps.GeocoderStatus.OK ?
                 results[0].geometry.location : location);
         });
     } else {
