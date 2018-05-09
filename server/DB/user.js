@@ -1,14 +1,16 @@
 /*jslint maxerr: 10, es6, node, single, for, multivar, bitwise, white, this, devel, browser*/
+'use strict';
 
-var mongoose = require('mongoose');
+//import {mongoose} from 'mongoose';
+const mongoose = require('mongoose');
 //var crypto = require('crypto')
-mongoose.connect("mongodb://localhost:27017/e2t", {
-  useMongoClient: true
+mongoose.connect('mongodb://localhost:27017/e2t', {
+    useMongoClient: true
 });
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-var UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         unique: true,
@@ -28,10 +30,9 @@ var UserSchema = new mongoose.Schema({
     created_at: Date,
     updated_at: Date
 });
-var User = mongoose.model('User', UserSchema);
-UserSchema.pre('save', function(next) {
-    "use strict";
-    var currentDate = new Date();
+const User = mongoose.model('User', UserSchema);
+UserSchema.pre('save', next => {
+    let currentDate = new Date();
 
     this.updated_at = currentDate;
     if (!this.created_at) {
@@ -39,15 +40,14 @@ UserSchema.pre('save', function(next) {
     }
     next();
 });
-UserSchema.statics.authenticate = function (email, password, callback) {
-    "use strict";
+UserSchema.statics.authenticate = (email, password, callback) => {
     User.findOne({email: email})
         .exec(function (err, user) {
         if (err) {
             return callback(err);
         }
         if (!user) {
-            var e = new Error('User not found.');
+            let e = new Error('User not found.');
             e.status = 401;
             return callback(e);
         }

@@ -51,7 +51,7 @@ const TimelineSchema = new mongoose.Schema({
     created_at: Date,
     updated_at: Date
 });
-TimelineSchema.pre('save', function (next) {
+TimelineSchema.pre('save', next => {
     let currentDate = new Date();
 
     this.updated_at = currentDate;

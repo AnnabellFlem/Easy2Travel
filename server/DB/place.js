@@ -37,7 +37,7 @@ const PlaceSchema = new mongoose.Schema({
     created_at: Date,
     updated_at: Date
 });
-PlaceSchema.pre('save', function (next) {
+PlaceSchema.pre('save', next => {
     let currentDate = new Date();
 
     this.updated_at = currentDate;
@@ -64,7 +64,8 @@ const functions = {
                 });
             }
         });
-    }
+    },
+    getObjectId: id => new mongoose.Types.ObjectId(id)
 };
 
 module.exports = Place;

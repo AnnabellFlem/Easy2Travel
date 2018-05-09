@@ -23,15 +23,6 @@ function isExist(element) {
 }
 
 function loadScripts(next) {
-    // $.cachedScript('../bootstrap/js/bootstrap.bundle.min.js', () => {
-    //     $.getScript('../js/tether.min.js', () => {
-    //         next();
-    //     });
-    // });
-    /*
-        <script src="../js/jquery.mixitup.min.js"></script>
-        <script src="../js/jPages.min.js"></script>
-    */
     $.getScript('../bootstrap/js/popper.min.js', () => {
         $.getScript('../bootstrap/js/bootstrap.min.js', () => {
             $('[data-toggle="tooltip"]').tooltip();
@@ -220,7 +211,7 @@ function addTimeline(timeline, index) {
     $('#timeline ul').find(' > li:first-child').after(getTimelineItem(timeline, null, index)); //newest to oldest?
     timeline.locations.map(item => {
         ls += `m = new google.maps.Marker({
-                position: new google.maps.LatLng(${item[0]}, ${item[1]}),
+                position: {lat: ${item[0]}, lng: ${item[1]}},
                 map: map
             });
             ways.push(m);
@@ -249,7 +240,6 @@ function addTimeline(timeline, index) {
             processData: false,
             cache: false,
             success: (data, status, xhr) => {
-                // console.log(JSON.stringify(data));
                 if (data.status === 'OK') {
                     $(e.target).text(data.data.likes);
                 }
@@ -288,7 +278,6 @@ function checkAuthorization() { ////remove to tours only for profile
             } else {
                 setUserSession();
             }
-            // console.log('data: ' + data + ', status:' + status);
         },
         error: () => {
             setUserSession();
@@ -305,7 +294,6 @@ function renderForm(f, dj, textStatus) {
             } else {
                 frm_status.empty();
                 location.replace('./profile.html');
-                // setUserSession(dj.data.user.username);
             }
         } else if (textStatus === 'error') {
             frm_status.html('Error accessing the server.');
@@ -385,16 +373,7 @@ function getTimelines() {
         success: (data, status, xhr) => {
             if (data.status === 'OK' && data.data.userid) {
                 Object.values(data.data.timeline).map((t, index) => addTimeline(t, index));
-                //$.getScript('../bootstrap/js/bootstrap.bundle.min.js', () => 
-                // $('[data-toggle="tooltip"]').tooltip();
-                // console.log(Object.values(data.data.timeline));
-            } else {
-                // setUserSession();
             }
-            // console.log('data: ' + JSON.stringify(data) + ', status:' + status);
-        },
-        error: () => {
-            // setUserSession();
         }
     });
 }
@@ -414,17 +393,12 @@ function timeline(e) {
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function (data, status, xhr) {
-                    var obj = JSON.parse(xhr.responseText);
-                    if (obj.status === 'OK') {
-                        $('#' + tlsId).remove();
+                success: (data, status, xhr) => {
+                    if (data.status === 'OK') {
+                        $(`#${tlsId}`).remove();
                         $(f.parentElement).modal("toggle");
                     }
-                    // console.log('data: ' + data + ', status:' + status);
                 }
-                /*,
-                                error: function(xhr, status, error) {
-                                }*/
             });
         } else {
             form_data = new FormData(f);
@@ -438,12 +412,11 @@ function timeline(e) {
                 processData: false,
                 data: form_data,
                 success: function (data, status, xhr) {
-                    var obj = JSON.parse(xhr.responseText);
-                    if (obj.status === 'OK') {
-                        $('#' + tlsId).replaceWith(getTimelineItem(obj.data, $('#' + tlsId)[0].className));
+                    if (data.status === 'OK') {
+                        $('#' + tlsId).replaceWith(getTimelineItem(data.data, $('#' + tlsId)[0].className));
                         $(f.parentElement).modal("toggle");
                     } else {
-                        $('.' + f.className + ' .login-status').html(obj.message);
+                        $('.' + f.className + ' .login-status').html(data.message);
                     }
                     // console.log('data: ' + data + ', status:' + status);
                 }
@@ -462,19 +435,13 @@ function timeline(e) {
             processData: false,
             data: form_data,
             success: function (data, status, xhr) {
-                var obj = JSON.parse(xhr.responseText);
-                if (obj.status === 'OK') {
-                    addTimeline(obj.data);
-                    // $('[data-toggle="tooltip"]').tooltip();
+                if (data.status === 'OK') {
+                    addTimeline(data.data);
                     $(f.parentElement).modal("toggle");
                 } else {
-                    $('.' + f.className + ' .login-status').html(obj.message);
+                    $('.' + f.className + ' .login-status').html(data.message);
                 }
-                // console.log('data: ' + data + ', status:' + status);
             }
-            /*,
-                        error: function(xhr, status, error) {
-                        }*/
         });
     }
 }
@@ -542,15 +509,15 @@ function enableEvent() { //remove to tours only = check all
     }
     $('#search').focusout(() => removeClass('#search'));
     $('#menu').focusout(() => removeClass('#menu'));
-    $('.like').click(function () { //remove?
-        var obj = this.getElementsByTagName('span')[0],
-            cnt = parseInt(obj.innerHTML, 10);
-        if (Number.isNaN(cnt) || !isFinite(cnt)) {
-            cnt = 0;
-        }
-        cnt++;
-        obj.innerHTML = cnt;
-    });
+    // $('.like').click(function () {
+    //     var obj = this.getElementsByTagName('span')[0],
+    //         cnt = parseInt(obj.innerHTML, 10);
+    //     if (Number.isNaN(cnt) || !isFinite(cnt)) {
+    //         cnt = 0;
+    //     }
+    //     cnt++;
+    //     obj.innerHTML = cnt;
+    // });
     $('#login .login-form input[name=password]').keypress(e => {
         let isTooltip = $('.tooltip').is(':visible'),
             s = String.fromCharCode(e.which);
@@ -600,12 +567,7 @@ function enableEvent() { //remove to tours only = check all
         location.replace(url);
         //        alert(url);//.split('/').pop() === 
     });
-    //$(location).attr('href').split('/').pop() === 
-    //        $("#blog").modal("toggle");
-
-    // isLoggedIn();
     dragdropImage();
-
     if (isTourPage()) {
         $('#btn-map').on('click', () => {
             $('html, body').animate({
@@ -613,7 +575,6 @@ function enableEvent() { //remove to tours only = check all
             }, 2000);
         });
     }
-
     if (isMainPage()) {
         $.getScript('../js/jquery.mixitup.min.js', () =>
             $.getScript('../js/jPages.min.js', () => loadGallery())
@@ -674,24 +635,15 @@ $(document).ready(() => {
             if (isTourPage()) {
                 $('#route').load('parts/route_form.html', function () {
                     $(this).addClass('modal fade login-page');
-                    // $('#login .login-form').on("submit", login);
-                    // $("#login .register-form").on("submit", register);
                 });
             }
             if (isProfilePage()) {
                 getTimelines();
             }
 
-
             // $('.dropdown-item').on('click', () => { 
             //     alert(3);
             // });
-
-            // $.getScript('../bootstrap/js/popper.min.js', function() {
-            //     $.getScript('../bootstrap/js/bootstrap.min.js');
-            // }),//.done(() => {alert(1)}),
-            // // $.getScript('../bootstrap/js/bootstrap.min.js'),
-            // $.getScript('../js/tether.min.js')
             enableEvent();
         });
     // $(window).resize();
@@ -730,13 +682,10 @@ function getCitiesList() {
         dataType: 'json',
         cache: false,
         success: (data, status, xhr) => {
-            let obj = JSON.parse(xhr.responseText);
-            if (obj.status === 'OK' && obj.data) {
-                Object.values(obj.data).map(item => $('#cities').append(`<option value="${item.city}">`));
+            if (data.status === 'OK' && data.data) {
+                Object.values(data.data).map(item => $('#cities').append(`<option value="${item.city}">`));
             }
-            // console.log('data: ' + data + ', status:' + status);
-        },
-        error: () => {}
+        }
     });
 }
 
@@ -757,9 +706,8 @@ function citySearch(e) {
             dataType: "json",
             data: JSON.parse(JSON.stringify(obj)),
             success: function (data, status, xhr) {
-                var obj = JSON.parse(xhr.responseText),
-                    city = obj.data;
-                if (obj.status === 'OK') {
+                let city = data.data;
+                if (data.status === 'OK') {
                     $('#city-place').load('parts/city_place.html', () => {
                         $('#city-place h2').text(`Plan your rest in ${city.name} for 2 simple steps`);
                     });
@@ -812,37 +760,33 @@ function citySearch(e) {
 function saveRoute(routes, cityname, status) {
     let obj = {
         title: cityname,
-        locations: routes.map(item => item.position),
+        locationid: routes.map(item => item.markerid),
         lng: getCurrentLanguage()
     };
 
-    console.log(JSON.stringify(obj.locations));
-    routes.map(item => console.log('=> ' + item.position));
-
-    // $.ajax({
-    //     type: 'GET',
-    //     url: '/routes',
-    //     cache: false,
-    //     dataType: 'json',
-    //     data: JSON.parse(JSON.stringify(obj)),
-    //     success: function (data, status, xhr) {
-    //         let obj = JSON.parse(xhr.responseText);
-    //         if (obj.status === 'OK') {
-    //             if (status) {
-    //                 $('#login').modal('toggle');
-    //             } else {
-    //                 location.replace('./profile.html');
-    //             }
-    //         }
-    //     }
-    // });
+    $.ajax({
+        type: 'GET',
+        url: '/routes',
+        cache: false,
+        dataType: 'json',
+        data: JSON.parse(JSON.stringify(obj)),
+        success: function (data, status, xhr) {
+            if (data.status === 'OK') {
+                if (status) {
+                    $('#login').modal('toggle');
+                } else {
+                    location.replace('./profile.html');
+                }
+            }
+        }
+    });
 }
 
 function drawRoute(markerWay, initmap = map) {
     let waypts = [];
     for (let i = 1; i < markerWay.length - 1; i++) {
         waypts.push({
-            location: markerWay[i].position,
+            location: markerWay[i].marker.position,
             stopover: true
         });
     }
@@ -851,8 +795,8 @@ function drawRoute(markerWay, initmap = map) {
         suppressMarkers: true
     });
     directionsService.route({
-        origin: markerWay[0].position,
-        destination: markerWay[markerWay.length - 1].position,
+        origin: markerWay[0].marker.position,
+        destination: markerWay[markerWay.length - 1].marker.position,
         waypoints: waypts,
         optimizeWaypoints: true,
         travelMode: 'DRIVING'
@@ -875,13 +819,13 @@ function clearCityPlace() {
 }
 
 function getCheckMarkers() {
-    return markers_checked.filter(item => isExist(item.map));
+    return markers_checked.filter(item => isExist(item.marker.map));
 }
 
 function checkMarker(target) {
     let lid = $(target).attr('data-locationid');
 
-    markers_checked[lid].setMap($(target).is(':checked') ? map : null);
+    markers_checked[lid].marker.setMap($(target).is(':checked') ? map : null);
     let markerWay = getCheckMarkers();
     clearDirections();
     if (markerWay.length > 1) {
@@ -952,8 +896,8 @@ function initMap() {
 
 function closeMarkers() {
     markers.map(item => {
-        if (item.infowindow)
-            item.infowindow.close();
+        if (item.marker.infowindow)
+            item.marker.infowindow.close();
     });
 }
 
@@ -974,15 +918,14 @@ function setCenter(address, initmap = map) {
     } else {
         map.setCenter(location);
     }
-    // map.setZoom(15);
 
     return location;
 }
 
 function addMarker(place, checked) {
     let marker = new google.maps.Marker;
-    let latlng = new google.maps.LatLng(place.location[0], place.location[1]);
-    marker.setPosition(latlng);
+
+    marker.setPosition({lat: place.location[0], lng: place.location[1]});
     marker.setTitle(place.label);
     if (!checked) {
         marker.setIcon({
@@ -1007,19 +950,21 @@ function addMarker(place, checked) {
             infowindow.open(map, marker);
         });
         google.maps.event.addListener(infowindow, 'domready', () => {
-            let m = markers_checked[$('.infomarker').attr('data-locationid')];
-            $('.infomarker').prop('checked', isExist(m.map));
+            $('.infomarker').prop('checked',
+                isExist(markers_checked[$('.infomarker').attr('data-locationid')].marker.map));
             $('.infomarker').click(function () {
-                let lid = $(this).attr('data-locationid');
                 checkMarker(this);
-                $($('.checkmarker')[lid]).prop('checked', $(this).is(':checked'));
+                $($('.checkmarker')[$(this).attr('data-locationid')]).prop('checked', $(this).is(':checked'));
             });
         });
         marker.setMap(map);
 
     }
 
-    return marker;
+    return {
+        markerid: place._id,
+        marker: marker
+    };
 }
 
 function loadGallery() {

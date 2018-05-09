@@ -1,13 +1,11 @@
-/*jslint maxerr: 10, es6, node, single, for, multivar, bitwise, white, this, devel, browser*/
-
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 mongoose.connect("mongodb://localhost:27017/e2t", {
   useMongoClient: true
 });
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-var CountrySchema = new mongoose.Schema({
+const CountrySchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -40,7 +38,7 @@ var CountrySchema = new mongoose.Schema({
 });
 CountrySchema.pre('save', function(next) {
     "use strict";
-    var currentDate = new Date();
+    let currentDate = new Date();
 
     this.updated_at = currentDate;
     if (!this.created_at) {
@@ -49,8 +47,8 @@ CountrySchema.pre('save', function(next) {
     next();
 });
 
-var Country = mongoose.model('Country', CountrySchema);
-var functions = {
+const Country = mongoose.model('Country', CountrySchema);
+const functions = {
 //    getTimeline : function(t) {
 //         "use strict";
 //         return {

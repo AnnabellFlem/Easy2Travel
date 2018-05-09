@@ -82,6 +82,31 @@ passport.deserializeUser((id, done) => {
 });
 
 app.listen(port, () => {
+    Place.findOne({
+        'places': {
+            $elemMatch: {
+                '_id': Place.getObjectId('5af037a1344f2f2400adc86f')
+            }
+        },
+
+
+    },
+    'places',
+    function(err, count) {
+        if (err)
+            console.log('err');
+            else
+        console.log('count: ' + count.places.length);//.filter(item => item._id === '5af037a1344f2f2400adc86f').length);
+        count.places.map(item => {
+            if (item._id.equals(Place.getObjectId('5af037a1344f2f2400adc86f')))
+                console.log(11);
+            else 
+            console.log(22);
+            console.log(item._id.toString());
+        });//.filter(item => item._id === '5af037a1344f2f2400adc86f').length);
+        // Object.values(count).map(item => console.log('=> ' + JSON.stringify(item)));
+    });
+    
     console.log('Listening on port ' + port);
 });
 
@@ -100,35 +125,84 @@ function setStatusMessage(status, msg, data) {
     return status;
 }
 
+// function getPlaceByLocation(l) {
+//     Place.findOne({
+//         'places.location': l
+//     },
+//    'places',
+//     (err, place) => {
+//         if (err) {
+//             console.log(err);
+//         } else if (place) {
+//             place.places.forEach(item => {
+//                 if (item.location[0] === l[0] && item.location[1] === l[1])
+//                 console.log(item.label);
+//             });
+//         }
+//     });
+// }
+
 function getPlaceByLocation(l) {
-    console.log(l);
-    Place.findOne({
+    return Place.findOne({
         'places.location': l
-    },
-   'places',
-    (err, place) => {
-        if (err) {
-            return err;
-        } else if (place) {
-            place.places.forEach(item => {
-                if (item.location[0] === l[0] && item.location[1] === l[1])
-                console.log(item.label);
-            });
-        }
     });
 }
 
 function getTimeline(req, res) {
     let route = req.session.route;
+    let userid = req.session.userId;
+    let tml = Timeline.find({
+        'userid': userid
+    });
+
+    console.log(1234);
+    User.count({}, function(err, count) {
+        console.log('count: ' + count);
+    });
+    User.find({},
+        function (err, p) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(p);
+            }
+        }
+    );
 
     if (route) {
         let timelineData = {
-            userid: req.session.userId,
+            userid: userid,
             title: req.session.route.title,
-            locations: Object.values(req.session.route.locations).map(item => Object.values(item).map(Number)),
+            //            locations: Object.values(req.session.route.locations).map(item => Object.values(item).map(Number)),
+            locationid: Object.values(req.session.route.locationid),
             body: []
         };
-        timelineData.locations.map(item => getPlaceByLocation(item));
+        // timelineData.locationid.map(item => {
+        // });
+
+
+        timelineData.locationid.map(item => {
+            let aa = Place.findOne({
+                'places': {
+                    $elemMatch: {
+                        '_id': Place.getObjectId(item)
+                    }
+                }
+            }); //getPlaceByLocation(item);
+            console.log(Place.getObjectId(item));
+            aa
+                .catch(err => console.log(err))
+                .then(place => {
+                    if (place) {
+                        place.places.forEach(item => {
+                            if (item.location[0] === l[0] && item.location[1] === l[1])
+                                timelineData.body.push({
+                                    title: item.label
+                                });
+                        });
+                    }
+                });
+        });
 
         delete req.session.route;
         Timeline.create(timelineData, (err, timeline) => {
@@ -136,32 +210,34 @@ function getTimeline(req, res) {
                 console.log(err);
             } else {
                 console.log('OK_create');
-                getTimelineByUserId(req, res, timeline.userid);
+                getTimelineByUserId(userid, tml);
+                // res.send(setStatusMessage(statusOK, "", {
+                //     userid: req.session.userId,
+                //     username: req.session.username,
+                //     timeline: timeline.map(item => Timeline.getTimeline(item))
+                // }));
             }
         });
     } else { //only on profile html?
-        getTimelineByUserId(req, res, req.session.userId);
+        getTimelineByUserId(userid, tml);
     }
 }
 
-function getTimelineByUserId(req, res, userid) {
-    Timeline.find({
-        'userid': userid
-    }, (err, timeline) => {
-        if (err) {
-            console.log(err);
-            res.send(setStatusMessage(statusOK, "", {
-                userid: req.session.userId,//delete?? and move to Timeline!
-                username: req.session.username//??delete??
-            }));
-        } else {
-            res.send(setStatusMessage(statusOK, "", {
-                userid: req.session.userId,
-                username: req.session.username,
-                timeline: timeline.map(item => Timeline.getTimeline(item))
-            }));
-        }
-    });
+function getTimelineByUserId(userid, tml) {
+    tml
+        .catch(err => console.log(err))
+        .then(timeline => {
+            timeline.map(item => Timeline.getTimeline(item));
+        });
+    // Timeline.find({
+    //     'userid': userid
+    // }, (err, timeline) => {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         timeline.map(item => Timeline.getTimeline(item));
+    //     }
+    // });
 }
 
 function getError(err) {
@@ -526,15 +602,10 @@ app.get('/tours/:lng', (req, res) => {
 app.get('/routes', (req, res) => {
     req.session.route = {
         title: req.query.title,
-        locations: req.query.locations,
+        locationid: req.query.locationid,
         languange: req.query.lng
     };
-    // console.log(param);
-    // if (param) {
-    //     res.redirect(`/tours/${req.query.lng}/${param}`);
-    // } else {
     res.send(setStatusMessage(statusOK));
-    // }
 });
 
 app.use((err, req, res, next) => {
