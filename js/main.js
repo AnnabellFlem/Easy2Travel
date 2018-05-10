@@ -22,6 +22,10 @@ function isExist(element) {
     return typeof element !== 'undefined' && element !== null;
 }
 
+function stringifyItem(item) {
+    return isExist(item) ? item : '';
+}
+
 function loadScripts(next) {
     $.getScript('../bootstrap/js/popper.min.js', () => {
         $.getScript('../bootstrap/js/bootstrap.min.js', () => {
@@ -90,12 +94,15 @@ function setUserSession(username) {
     }
 }
 
-function getTimelineItem(timeline, position, index) {
-    let isLastInverted = $('#timeline ul > li:not(.clearfix):last').hasClass('timeline-inverted');
-    let d = new Date(timeline.created_at);
-    let timeline_date = ('0' + d.getDate()).slice(-2) + '.' +
+function formatDate(d) {
+    return ('0' + d.getDate()).slice(-2) + '.' +
         ('0' + (d.getMonth() + 1)).slice(-2) + '.' +
         d.getFullYear();
+}
+
+function getTimelineItem(timeline, position, index) {
+    let isLastInverted = $('#timeline ul > li:not(.clearfix):last').hasClass('timeline-inverted');
+    let timeline_date = formatDate(new Date(timeline.created_at));
     let positionClass = isLastInverted ? "" : "timeline-inverted";
     let places = "";
     let subPlace = (item, index) =>
@@ -104,10 +111,10 @@ function getTimelineItem(timeline, position, index) {
                 <div class="media">
                     <div class="media-body m-2">
                         <h4 class="media-heading">${item.title}</h4>
-                        <p>${item.description}</p>
+                        <p>${stringifyItem(item.description)}</p>
                     </div>
                     <div class="w-50">
-                        <img class="media-object w-75 float-right" src="${item.imgurl}" alt="Image1">
+                        <img class="media-object w-75 float-right" src="${stringifyItem(item.imgurl)}" alt="Image1">
                     </div>
                 </div>
             </div>
@@ -208,10 +215,11 @@ function getTimelineItem(timeline, position, index) {
 
 function addTimeline(timeline, index) {
     let ls = "";
+    console.log(timeline.body);
     $('#timeline ul').find(' > li:first-child').after(getTimelineItem(timeline, null, index)); //newest to oldest?
-    timeline.locations.map(item => {
+    timeline.body.map(item => {
         ls += `m = new google.maps.Marker({
-                position: {lat: ${item[0]}, lng: ${item[1]}},
+                position: {lat: ${item.location[0]}, lng: ${item.location[1]}},
                 map: map
             });
             ways.push(m);
@@ -371,7 +379,7 @@ function getTimelines() {
         dataType: 'json',
         cache: false,
         success: (data, status, xhr) => {
-            if (data.status === 'OK' && data.data.userid) {
+            if (data.status === 'OK' && data.data.timeline) {
                 Object.values(data.data.timeline).map((t, index) => addTimeline(t, index));
             }
         }
@@ -925,7 +933,10 @@ function setCenter(address, initmap = map) {
 function addMarker(place, checked) {
     let marker = new google.maps.Marker;
 
-    marker.setPosition({lat: place.location[0], lng: place.location[1]});
+    marker.setPosition({
+        lat: place.location[0],
+        lng: place.location[1]
+    });
     marker.setTitle(place.label);
     if (!checked) {
         marker.setIcon({

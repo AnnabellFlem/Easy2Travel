@@ -1,4 +1,3 @@
-/*jslint maxerr: 10, es6, node, single, for, multivar, bitwise, white, this, devel, browser*/
 'use strict';
 
 const mongoose = require('mongoose');
@@ -49,22 +48,6 @@ PlaceSchema.pre('save', next => {
 
 const Place = mongoose.model('Place', PlaceSchema);
 const functions = {
-    getPlaceByLocation: l => {
-        Place.findOne({
-            'places.location': l
-        },
-       'places',
-        (err, place) => {
-            if (err) {
-                return err;
-            } else {
-                place.places.forEach(item => {
-                    if (item.location[0] === l[0] && item.location[1] === l[1])
-                        console.log(item.label);
-                });
-            }
-        });
-    },
     getObjectId: id => new mongoose.Types.ObjectId(id)
 };
 

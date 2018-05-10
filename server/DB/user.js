@@ -1,9 +1,9 @@
-/*jslint maxerr: 10, es6, node, single, for, multivar, bitwise, white, this, devel, browser*/
 'use strict';
 
 //import {mongoose} from 'mongoose';
 const mongoose = require('mongoose');
 //var crypto = require('crypto')
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/e2t', {
     useMongoClient: true
 });

@@ -82,31 +82,6 @@ passport.deserializeUser((id, done) => {
 });
 
 app.listen(port, () => {
-    Place.findOne({
-        'places': {
-            $elemMatch: {
-                '_id': Place.getObjectId('5af037a1344f2f2400adc86f')
-            }
-        },
-
-
-    },
-    'places',
-    function(err, count) {
-        if (err)
-            console.log('err');
-            else
-        console.log('count: ' + count.places.length);//.filter(item => item._id === '5af037a1344f2f2400adc86f').length);
-        count.places.map(item => {
-            if (item._id.equals(Place.getObjectId('5af037a1344f2f2400adc86f')))
-                console.log(11);
-            else 
-            console.log(22);
-            console.log(item._id.toString());
-        });//.filter(item => item._id === '5af037a1344f2f2400adc86f').length);
-        // Object.values(count).map(item => console.log('=> ' + JSON.stringify(item)));
-    });
-    
     console.log('Listening on port ' + port);
 });
 
@@ -125,119 +100,71 @@ function setStatusMessage(status, msg, data) {
     return status;
 }
 
-// function getPlaceByLocation(l) {
-//     Place.findOne({
-//         'places.location': l
-//     },
-//    'places',
-//     (err, place) => {
-//         if (err) {
-//             console.log(err);
-//         } else if (place) {
-//             place.places.forEach(item => {
-//                 if (item.location[0] === l[0] && item.location[1] === l[1])
-//                 console.log(item.label);
-//             });
-//         }
-//     });
-// }
-
-function getPlaceByLocation(l) {
-    return Place.findOne({
-        'places.location': l
-    });
-}
-
 function getTimeline(req, res) {
     let route = req.session.route;
     let userid = req.session.userId;
-    let tml = Timeline.find({
-        'userid': userid
-    });
-
-    console.log(1234);
-    User.count({}, function(err, count) {
-        console.log('count: ' + count);
-    });
-    User.find({},
-        function (err, p) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(p);
-            }
-        }
-    );
 
     if (route) {
+        let locationid = route.locationid;
         let timelineData = {
             userid: userid,
-            title: req.session.route.title,
-            //            locations: Object.values(req.session.route.locations).map(item => Object.values(item).map(Number)),
-            locationid: Object.values(req.session.route.locationid),
+            title: route.title,
             body: []
         };
-        // timelineData.locationid.map(item => {
-        // });
-
-
-        timelineData.locationid.map(item => {
-            let aa = Place.findOne({
+        Place.findOne({
                 'places': {
                     $elemMatch: {
-                        '_id': Place.getObjectId(item)
+                        '_id': {
+                            $in: locationid
+                        }
                     }
-                }
-            }); //getPlaceByLocation(item);
-            console.log(Place.getObjectId(item));
-            aa
-                .catch(err => console.log(err))
-                .then(place => {
-                    if (place) {
-                        place.places.forEach(item => {
-                            if (item.location[0] === l[0] && item.location[1] === l[1])
+                },
+            },
+            'places',
+            (err, place) => {
+                if (err) {
+                    console.log(err);
+                    res.send(setStatusMessage(statusERROR, err));
+                } else {
+                    place.places.map(item => {
+                        locationid
+                            .filter(e => item._id.equals(e))
+                            .map(e => {
                                 timelineData.body.push({
+                                    locationid: e,
+                                    location: item.location,
                                     title: item.label
                                 });
-                        });
-                    }
-                });
-        });
+                            });
+                    });
+
+                    Timeline.create(timelineData, (err, timeline) => {
+                        if (err) {
+                            console.log(err);
+                            res.send(setStatusMessage(statusERROR, err));
+                        } else {
+                            console.log('OK_create');
+                            res.send(setStatusMessage(statusOK, "", [{
+                                timeline: Timeline.getTimeline(timeline)
+                            }]));
+                        }
+                    });
+                }
+            });
 
         delete req.session.route;
-        Timeline.create(timelineData, (err, timeline) => {
-            if (err) {
+    } else {
+        Timeline.getTimelineByUserId(userid)
+            .then(timeline => {
+                res.send(setStatusMessage(statusOK, "", {
+                    timeline: timeline.map(t => Timeline.getTimeline(t))
+                }));
+            })
+            .catch(err => {
                 console.log(err);
-            } else {
-                console.log('OK_create');
-                getTimelineByUserId(userid, tml);
-                // res.send(setStatusMessage(statusOK, "", {
-                //     userid: req.session.userId,
-                //     username: req.session.username,
-                //     timeline: timeline.map(item => Timeline.getTimeline(item))
-                // }));
-            }
-        });
-    } else { //only on profile html?
-        getTimelineByUserId(userid, tml);
+                res.send(setStatusMessage(statusERROR, err));
+            });
     }
-}
-
-function getTimelineByUserId(userid, tml) {
-    tml
-        .catch(err => console.log(err))
-        .then(timeline => {
-            timeline.map(item => Timeline.getTimeline(item));
-        });
-    // Timeline.find({
-    //     'userid': userid
-    // }, (err, timeline) => {
-    //     if (err) {
-    //         console.log(err);
-    //     } else {
-    //         timeline.map(item => Timeline.getTimeline(item));
-    //     }
-    // });
 }
 
 function getError(err) {

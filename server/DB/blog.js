@@ -1,7 +1,7 @@
-/*jslint maxerr: 10, es6, node, single, for, multivar, bitwise, white, this, devel, browser*/
 'use strict';
 
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/e2t", {
     useMongoClient: true
 });
@@ -18,13 +18,15 @@ const TimelineSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    locations: {
-        type: [
-            [Number]
-        ],
-        required: true
-    },
     body: [{
+        locationid: {
+            type: mongoose.Schema.ObjectId,
+            required: true
+        },
+        location: {
+            type: [Number],
+            required: true
+        },
         title: {
             type: String,
             required: true
@@ -34,14 +36,10 @@ const TimelineSchema = new mongoose.Schema({
         },
         imgurl: {
             type: String
-        },
-        imgsize: {//delete?
-            type: Number
         }
     }],
     likes: {
-        type: Number,
-        default: 0
+        type: [mongoose.Schema.ObjectId]
     },
     comments: [{
         description: {
@@ -63,12 +61,16 @@ TimelineSchema.pre('save', next => {
 
 const Timeline = mongoose.model('Timeline', TimelineSchema);
 const functions = {
+    getTimelineByUserId: userid => {
+        return Timeline.find({
+            'userid': userid
+        }).exec();
+    },
     getTimeline: t => {
         return {
             id: t._id,
             userid: t.userid,
             title: t.title,
-            locations: t.locations,
             body: t.body,
             likes: t.likes,
             comments: t.comments,
