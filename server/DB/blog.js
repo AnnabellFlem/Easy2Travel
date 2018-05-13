@@ -18,7 +18,7 @@ const TimelineSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    body: [{
+    places: [{
         locationid: {
             type: mongoose.Schema.ObjectId,
             required: true
@@ -49,7 +49,7 @@ const TimelineSchema = new mongoose.Schema({
     created_at: Date,
     updated_at: Date
 });
-TimelineSchema.pre('save', next => {
+TimelineSchema.pre('save', function(next) {
     let currentDate = new Date();
 
     this.updated_at = currentDate;
@@ -71,7 +71,7 @@ const functions = {
             id: t._id,
             userid: t.userid,
             title: t.title,
-            body: t.body,
+            places: t.places,
             likes: t.likes,
             comments: t.comments,
             created_at: t.created_at,

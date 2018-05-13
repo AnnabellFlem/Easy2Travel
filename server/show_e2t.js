@@ -9,15 +9,15 @@ MongoClient.connect(url, function (err, db) {
   //   db.close();
   // });
 
-  // db.collection("timelines").find({}).toArray(function (err, result) {
+  db.collection("timelines").find({}).toArray(function (err, result) {
+    if (err) throw err;
+    console.log(JSON.stringify(result));
+    db.close();
+  });
+
+  // db.collection("places").find({}).toArray(function (err, result) {
   //   if (err) throw err;
   //   console.log(result);
   //   db.close();
   // });
-
-  db.collection("places").find({}).toArray(function (err, result) {
-    if (err) throw err;
-    console.log(result);
-    db.close();
-  });
 });

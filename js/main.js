@@ -100,28 +100,35 @@ function formatDate(d) {
         d.getFullYear();
 }
 
+function getSubPlace(item) {
+    return `<div id="${item._id}" class="list-group list-group-flush location">
+        <div class="list-group-item container">
+            <div class="media row">
+                <div class="media-body m-2 col-8">
+                    <h4 class="media-heading">${item.title}</h4>
+                    <p>${stringifyItem(item.description)}</p>
+                </div>
+                <div class="media-object col-4" style="height: 100px;
+                    background-image: url(${isExist(item.imgurl) ? `${stringifyItem(item.imgurl)}` : ""});
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: cover">
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
+
 function getTimelineItem(timeline, position, index) {
     let isLastInverted = $('#timeline ul > li:not(.clearfix):last').hasClass('timeline-inverted');
     let timeline_date = formatDate(new Date(timeline.created_at));
     let positionClass = isLastInverted ? "" : "timeline-inverted";
     let places = "";
-    let subPlace = (item, index) =>
-        `<div id=${timeline.id}${index} class="list-group list-group-flush">
-            <div class="list-group-item">
-                <div class="media">
-                    <div class="media-body m-2">
-                        <h4 class="media-heading">${item.title}</h4>
-                        <p>${stringifyItem(item.description)}</p>
-                    </div>
-                    <div class="w-50">
-                        <img class="media-object w-75 float-right" src="${stringifyItem(item.imgurl)}" alt="Image1">
-                    </div>
-                </div>
-            </div>
-        </div>`;
-    timeline.body.map((item, index) => places += subPlace(item, index));
+
+    let subPlace = item => getSubPlace(item);
+    timeline.places.map((item, index) => places += subPlace(item, index));
     let item =
-        $(`<li id="${timeline.id}" class="${position === undefined || position === null ? positionClass : position}">
+        $(`<li id="${timeline.id}" class="${isExist(position) ? position : positionClass}">
         <div class="timeline-badge primary">
             <a>
                 <i class="far fa-circle fa-lg" data-toggle="tooltip" data-placement="${isLastInverted ? "right" : "left"}" title="${timeline_date}"></i>
@@ -130,7 +137,7 @@ function getTimelineItem(timeline, position, index) {
         <div class="timeline-panel">
             <div class="list-group list-group-flush">
                 <a href="#" class="list-group-item">
-                    <div id="google${index}" class="container-fluid" style="height:180px;"></div>
+                    <div id="google${index}" class="container-fluid googlemap" style="height:180px;"></div>
                 </a>
             </div>
             ${places}
@@ -214,62 +221,43 @@ function getTimelineItem(timeline, position, index) {
 }
 
 function addTimeline(timeline, index) {
-    let ls = "";
-    console.log(timeline.body);
-    $('#timeline ul').find(' > li:first-child').after(getTimelineItem(timeline, null, index)); //newest to oldest?
-    timeline.body.map(item => {
-        ls += `m = new google.maps.Marker({
-                position: {lat: ${item.location[0]}, lng: ${item.location[1]}},
-                map: map
-            });
-            ways.push(m);
-            drawRoute(ways, map);`;
-    });
-    $('#timeline ul').append(
-        $(`
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI&callback=init" async defer></script>
-        <script>
-        function init() {
-            let ways = [];
-            let m;
-            let map = new google.maps.Map(document.getElementById('google${index}'), {
-                zoom: 12
-            });
-            setCenter("${timeline.title}", map);
-            ${ls}
-        }
-    </script>`));
+    $('#timeline ul').prepend(getTimelineItem(timeline, null, index));
     $('.timeline-footer a:nth-child(1) i').on('click', e => {
-        e.preventDefault();
-        $.ajax({
-            type: 'PUT',
-            url: `/tmledit/${timeline.id}/likes`,
-            contentType: false,
-            processData: false,
-            cache: false,
-            success: (data, status, xhr) => {
-                if (data.status === 'OK') {
-                    $(e.target).text(data.data.likes);
-                }
-            }
-        });
+        // e.preventDefault();
+        // $.ajax({
+        //     type: 'PUT',
+        //     url: `/tmledit/${timeline.id}/likes`,
+        //     contentType: false,
+        //     processData: false,
+        //     cache: false,
+        //     success: (data, status, xhr) => {
+        //         if (data.status === 'OK') {
+        //             $(e.target).text(data.data.likes);
+        //         }
+        //     }
+        // });
     });
-    $('.timeline-footer a:nth-child(3) i').on('click', e => {
+    $('.timeline-footer a:nth-child(3) i').on('click', e => { //attr data chenge to data?
         let liid = $(e.target).parents('li').attr('id');
 
         $('.btn-group .dropdown-menu').empty();
-        for (let i = 0; i < $(`#${liid} .media-heading`).length; i++) {
-            let subplace = `${liid}${i}`;
-            $('.btn-group .dropdown-menu').append(`<a class="dropdown-item" href="#" data-subplace="${subplace}">${$(`#${subplace} .media-heading`).text()}</a>`);
+        $(`#${liid} .location`).each((index, element) => {
+            $('.btn-group .dropdown-menu').append(`<a class="dropdown-item" href="#" data-subplace="${element.id}">${$(`#${element.id} .media-heading`).text()}</a>`);
             $('.btn-group .dropdown-item').on('click', e => {
-                let subplace = $(e.target).attr('data-subplace');
-                $('#blog .modal-body .media-heading').text($(`#${subplace} .media-heading`).text());
-                $('#blog .modal-body textarea').text($(`#${subplace} p`).text());
-                $('#blog .img-wrapper').css('background-image', `url(${$(`#${subplace} .media-object`).attr('src')})`);
+                let subplace = $(e.target).data('subplace');
+                let img = $(`#${subplace} .media-object`).css('background-image');
+
+                $('#blog').data('subplace', subplace);
+                $('#blog .modal-body .media-heading').text($(e.target).text());
+                $('#blog .modal-body textarea').val($(`#${subplace} p`).text());
+                if (isExist(img)) {
+                    $('#blog .img-wrapper').css('background-image', img);
+                }
             });
-        }
+        });
         $('#blog .modal-header .modal-title').text(`Edit ${timeline.title} trip`);
-        $('#blog').modal('toggle');
+        $('#blog').data('timeline', liid);
+        $('#blog').modal('toggle');//toggle del?
     });
 }
 
@@ -380,78 +368,131 @@ function getTimelines() {
         cache: false,
         success: (data, status, xhr) => {
             if (data.status === 'OK' && data.data.timeline) {
-                Object.values(data.data.timeline).map((t, index) => addTimeline(t, index));
+                let timelines = Object.values(data.data.timeline);
+                let maps = "";
+                let ways = "";
+
+                timelines.map((t, index) => addTimeline(t, index));
+                timelines.map((t, index) => {
+                    ways = "";
+                    t.places.map(w => {
+                        ways += `
+                            ways${index}.push(new google.maps.Marker({
+                                position: {lat: ${w.location[0]}, lng: ${w.location[1]}},
+                                map: map${index}
+                            }));`;
+                    });
+                    maps += `
+                        let ways${index} = [];
+                        let directions${index};
+                        let map${index} = new google.maps.Map(document.getElementById('google${index}'), {
+                            zoom: 12
+                        });
+                        setCenter("${t.title}", map${index});
+                        ${ways}
+                        drawRoute(ways${index}, map${index}, directions${index});`;
+                });
+
+                $('#timeline ul').append(
+                    $(`
+                        <script>
+                            function init() {
+                                ${maps}
+                            }
+                        </script>
+                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI&callback=init" async defer></script>`)
+                );
             }
         }
     });
 }
 
 function timeline(e) {
-    var f = e.target,
-        val = $('#blog form').data('actionid'),
-        tlsId = $(e.target.parentElement).data("timeline"),
-        form_data;
+    let f = e.target;
+    let timeline = $(f.parentElement).data("timeline");
+    let subplace = $(f.parentElement).data("subplace");
+    let form_data;
 
     e.preventDefault();
-    if ($(e.target.parentElement).data('btn') === "edit") {
-        if (val === "1") {
-            $.ajax({
-                type: 'DELETE',
-                url: '/tmldelete/' + tlsId,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: (data, status, xhr) => {
-                    if (data.status === 'OK') {
-                        $(`#${tlsId}`).remove();
-                        $(f.parentElement).modal("toggle");
-                    }
-                }
-            });
-        } else {
-            form_data = new FormData(f);
-            if (!sender.length) {
-                form_data.set('pic', undefined);
-            }
-            $.ajax({
-                type: "PUT",
-                url: "/tmledit/" + tlsId,
-                contentType: false,
-                processData: false,
-                data: form_data,
-                success: function (data, status, xhr) {
-                    if (data.status === 'OK') {
-                        $('#' + tlsId).replaceWith(getTimelineItem(data.data, $('#' + tlsId)[0].className));
-                        $(f.parentElement).modal("toggle");
-                    } else {
-                        $('.' + f.className + ' .login-status').html(data.message);
-                    }
-                    // console.log('data: ' + data + ', status:' + status);
-                }
-                /*,
-                                error: function(xhr, status, error) {
-                                }*/
-            });
-        }
-    } else {
-        form_data = new FormData(f);
-        form_data.set('pic', sender[0]);
-        $.ajax({
-            type: "POST",
-            url: "/timeline",
-            contentType: false,
-            processData: false,
-            data: form_data,
-            success: function (data, status, xhr) {
-                if (data.status === 'OK') {
-                    addTimeline(data.data);
-                    $(f.parentElement).modal("toggle");
-                } else {
-                    $('.' + f.className + ' .login-status').html(data.message);
-                }
-            }
-        });
+    form_data = new FormData(f);
+    if (!sender.length) {
+        form_data.set('pic', undefined);
     }
+    $.ajax({
+        type: 'PUT',
+        url: `/tmledit/${timeline}/${subplace}`,
+        contentType: false,
+        processData: false,
+        data: form_data,
+        success: function (data, status, xhr) {
+            if (data.status === 'OK') {
+                let timeline = Object.values(data.data.timeline)[0];
+                timeline.places.map(item => {
+                    $(`#${item._id}`).replaceWith(getSubPlace(item));
+                });
+                $(f.parentElement).modal('toggle');
+            } else {
+                $('.' + f.className + ' .login-status').html(data.message);
+                console.log(2);
+            }
+        }
+    });
+
+    // // if ($(e.target.parentElement).data('btn') === "edit") {
+    //     if (val === "1") {//delete val?
+    //         $.ajax({
+    //             type: 'DELETE',
+    //             url: '/tmldelete/' + tlsId,
+    //             cache: false,
+    //             contentType: false,
+    //             processData: false,
+    //             success: (data, status, xhr) => {
+    //                 if (data.status === 'OK') {
+    //                     $(`#${tlsId}`).remove();
+    //                     $(f.parentElement).modal("toggle");
+    //                 }
+    //             }
+    //         });
+    //     } else {
+    //         form_data = new FormData(f);
+    //         if (!sender.length) {
+    //             form_data.set('pic', undefined);
+    //         }
+    //         $.ajax({
+    //             type: "PUT",
+    //             url: "/tmledit/" + tlsId,
+    //             contentType: false,
+    //             processData: false,
+    //             data: form_data,
+    //             success: function (data, status, xhr) {
+    //                 if (data.status === 'OK') {
+    //                     $('#' + tlsId).replaceWith(getTimelineItem(data.data, $('#' + tlsId)[0].className));
+    //                     $(f.parentElement).modal("toggle");
+    //                 } else {
+    //                     $('.' + f.className + ' .login-status').html(data.message);
+    //                 }
+    //             }
+    //         });
+    //     }
+    // } else {
+    //     form_data = new FormData(f);
+    //     form_data.set('pic', sender[0]);
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/timeline",
+    //         contentType: false,
+    //         processData: false,
+    //         data: form_data,
+    //         success: function (data, status, xhr) {
+    //             if (data.status === 'OK') {
+    //                 addTimeline(data.data);
+    //                 $(f.parentElement).modal("toggle");
+    //             } else {
+    //                 $('.' + f.className + ' .login-status').html(data.message);
+    //             }
+    //         }
+    //     });
+    // }
 }
 
 function setImageFile(imagefile) {
@@ -705,7 +746,9 @@ function citySearch(e) {
 
     e.preventDefault();
     if (!isTourPage()) {
-        location.replace(`./tours.html?city=${obj.city}`);
+        if (obj.city) {
+            location.replace(`./tours.html?city=${obj.city}`);
+        }
     } else if (obj.city) {
         $.ajax({
             type: "GET",
@@ -790,30 +833,30 @@ function saveRoute(routes, cityname, status) {
     });
 }
 
-function drawRoute(markerWay, initmap = map) {
+function drawRoute(markerWay, initmap = map, routeDisplay = directionsDisplay) {
     let waypts = [];
     for (let i = 1; i < markerWay.length - 1; i++) {
         waypts.push({
-            location: markerWay[i].marker.position,
+            location: markerWay[i].position,
             stopover: true
         });
     }
     let directionsService = new google.maps.DirectionsService;
-    directionsDisplay = new google.maps.DirectionsRenderer({
+    routeDisplay = new google.maps.DirectionsRenderer({
         suppressMarkers: true
     });
     directionsService.route({
-        origin: markerWay[0].marker.position,
-        destination: markerWay[markerWay.length - 1].marker.position,
+        origin: markerWay[0].position,
+        destination: markerWay[markerWay.length - 1].position,
         waypoints: waypts,
         optimizeWaypoints: true,
         travelMode: 'DRIVING'
     }, (response, status) => {
         if (status === 'OK') {
-            directionsDisplay.setDirections(response);
-            directionsDisplay.setMap(initmap);
+            routeDisplay.setDirections(response);
+            routeDisplay.setMap(initmap);
         } else {
-            window.alert('Directions request failed due to ' + status);
+            window.alert('Directions request failed due to ' + status); //message or ..?
         }
     });
 }
@@ -831,13 +874,13 @@ function getCheckMarkers() {
 }
 
 function checkMarker(target) {
-    let lid = $(target).attr('data-locationid');
+    let lid = $(target).data('locationid');
 
     markers_checked[lid].marker.setMap($(target).is(':checked') ? map : null);
     let markerWay = getCheckMarkers();
     clearDirections();
     if (markerWay.length > 1) {
-        drawRoute(markerWay);
+        drawRoute(markerWay.map(item => item.marker));
     }
     $('#markers-count').text(`${markerWay.length} places marked`);
 }
@@ -962,10 +1005,10 @@ function addMarker(place, checked) {
         });
         google.maps.event.addListener(infowindow, 'domready', () => {
             $('.infomarker').prop('checked',
-                isExist(markers_checked[$('.infomarker').attr('data-locationid')].marker.map));
+                isExist(markers_checked[$('.infomarker').data('locationid')].marker.map));
             $('.infomarker').click(function () {
                 checkMarker(this);
-                $($('.checkmarker')[$(this).attr('data-locationid')]).prop('checked', $(this).is(':checked'));
+                $($('.checkmarker')[$(this).data('locationid')]).prop('checked', $(this).is(':checked'));
             });
         });
         marker.setMap(map);

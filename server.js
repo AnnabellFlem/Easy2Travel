@@ -1,6 +1,3 @@
-/*global require*/
-/*eslint-disable no-console */
-/*jslint maxerr: 10, es6, node, single, for, bitwise, multivar, white, this, browser*/
 'use strict';
 
 const express = require('express');
@@ -61,7 +58,7 @@ app.use('/bootstrap/css', express.static('bootstrap/css'));
 app.use('/bootstrap/js', express.static('bootstrap/js'));
 app.use('/en', express.static('en'));
 app.use('/ua', express.static('ua'));
-//app.use('/blog', express.static('blog'));
+app.use('/blog', express.static('blog'));
 app.use(express.static(__dirname + '/en')); //??
 app.use(session({
     secret: 'e2t',
@@ -109,7 +106,7 @@ function getTimeline(req, res) {
         let timelineData = {
             userid: userid,
             title: route.title,
-            body: []
+            places: []
         };
         Place.findOne({
                 'places': {
@@ -130,7 +127,7 @@ function getTimeline(req, res) {
                         locationid
                             .filter(e => item._id.equals(e))
                             .map(e => {
-                                timelineData.body.push({
+                                timelineData.places.push({
                                     locationid: e,
                                     location: item.location,
                                     title: item.label
@@ -143,10 +140,10 @@ function getTimeline(req, res) {
                             console.log(err);
                             res.send(setStatusMessage(statusERROR, err));
                         } else {
-                            console.log('OK_create');
-                            res.send(setStatusMessage(statusOK, "", [{
-                                timeline: Timeline.getTimeline(timeline)
-                            }]));
+                            console.log('Timeline created.');
+                            res.send(setStatusMessage(statusOK, "", {
+                                timeline: [Timeline.getTimeline(timeline)]
+                            }));
                         }
                     });
                 }
@@ -155,11 +152,10 @@ function getTimeline(req, res) {
         delete req.session.route;
     } else {
         Timeline.getTimelineByUserId(userid)
-            .then(timeline => {
+            .then(timeline =>
                 res.send(setStatusMessage(statusOK, "", {
                     timeline: timeline.map(t => Timeline.getTimeline(t))
-                }));
-            })
+                })))
             .catch(err => {
                 console.log(err);
                 res.send(setStatusMessage(statusERROR, err));
@@ -345,7 +341,7 @@ app.get('/tmlget', (req, res) => {
 });
 
 app.post('/timeline', (req, res) => {
-    upload(req, res, err => {
+    upload(req, res, err => { //correct BODY->places!!!
         if (err) {
             console.log(err);
         }
@@ -394,43 +390,39 @@ app.delete('/tmldelete/:tlsId', (req, res) => {
     });
 });
 
-app.put('/tmledit/:tlsId', (req, res) => {
+app.put('/tmledit/:tlId/:placeId', (req, res) => {
     upload(req, res, err => {
         if (err) {
             console.log(err);
         }
-        let timelineData = {};
-        if (req.file) {
-            timelineData = {
-                title: req.body.title,
-                body: req.body.body,
-                imgurl: '.' + req.file.destination + req.file.filename,
-                imgsize: req.file.size
-            };
-        } else {
-            timelineData = {
-                title: req.body.title,
-                body: req.body.body,
-                imgurl: undefined,
-                imgsize: 0
-            };
-        }
-        if (timelineData.title) {
-            Timeline.findOneAndUpdate({
-                '_id': Timeline.getObjectId(req.params.tlsId)
-            }, timelineData, {
-                new: true
-            }, (err, timeline) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('OK_updated');
-                    res.send(setStatusMessage(statusOK, "", Timeline.getTimeline(timeline)));
-                }
-            });
-        } else {
-            res.send(setStatusMessage(statusERROR, "Title not defined."));
-        }
+        let timelineData = {
+            description: req.body.description,
+            imgurl: req.file ? '.' + req.file.destination + req.file.filename : undefined
+        };
+        // console.log('t: ' + req.params.tlsId + ', s: ' + req.params.placeIndex);
+        // console.log(req.params);
+        // console.log(req.body);
+        Timeline.findOneAndUpdate({
+            '_id': Timeline.getObjectId(req.params.tlId),
+            'places._id': Timeline.getObjectId(req.params.placeId)
+        }, {
+            $set: {
+                "places.$.description": timelineData.description,
+                "places.$.imgurl": timelineData.imgurl
+            }
+        }, {
+            new: true,
+            upsert: true
+        }, (err, timeline) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Timeline updated');
+                res.send(setStatusMessage(statusOK, "", {
+                    timeline: [Timeline.getTimeline(timeline)]
+                }));
+            }
+        });
     });
 });
 
