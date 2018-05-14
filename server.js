@@ -163,6 +163,37 @@ function getTimeline(req, res) {
     }
 }
 
+function getAllTimeline(res) {
+    Timeline.find({})
+        .sort({
+            created_at: -1
+        })
+        .exec((err, timeline) => {
+            if (err) {
+                console.log(err);
+                res.send(setStatusMessage(statusERROR, err));
+            } else {
+                User.find({}, (err, user) => {
+                    if (err) {
+                        console.log(err);
+                        res.send(setStatusMessage(statusERROR, err));
+                    } else {
+                        console.log(timeline);
+                        res.send(setStatusMessage(statusOK, "", {
+                            timeline: timeline.map(t => {
+                                let tl = Timeline.getTimeline(t);
+
+                                tl.username = user.filter(u => t.userid.equals(u._id))[0].username;
+
+                                return tl;
+                            })
+                        }));
+                    }
+                });
+            }
+        });
+}
+
 function getError(err) {
     switch (err.code) {
         case 11000:
@@ -214,7 +245,7 @@ function validate(userData) {
         setStatusMessage(statusERROR, "Name can't be empty.");
         return false;
     }
-    if (!validateEmail(userData.email)) {
+    if (!Util.validateEmail(userData.email)) {
         setStatusMessage(statusERROR, "Invalid email address.");
         return false;
     }
@@ -262,9 +293,6 @@ app.get('/isloggedin', (req, res) => {
         userid: req.session.userId,
         username: req.session.username
     }));
-    // if (req.session.userId) {
-    //     getTimeline(req, res);
-    // }
 });
 
 app.get('/profile', (req, res) => {
@@ -338,6 +366,10 @@ app.get('/tmlget', (req, res) => {
     } else {
         res.send(setStatusMessage(statusERROR, "Unauthorized access."));
     }
+});
+
+app.get('/tmlgetall', (req, res) => {
+    getAllTimeline(res);
 });
 
 app.post('/timeline', (req, res) => {
@@ -492,11 +524,7 @@ app.get('/tours/:lng/:city', (req, res) => {
                     };
                 }
             }
-            // users will be documents with age>1 and further filtered by query sent as query params from FE 
-            //res.status(200).json(users);
-
             res.send(setStatusMessage(statusOK, "", cityPlace));
-            //            res.send(setStatusMessage(statusOK, "", cityPlace));
         }
     });
 });

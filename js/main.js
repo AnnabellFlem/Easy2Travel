@@ -1,5 +1,3 @@
-/*global $, window*/
-/*jslint maxerr: 10, es6, node, single, for, multivar, bitwise, white, this, devel, browser*/
 'use strict';
 //const util = require('util');
 // import * as util from 'util';
@@ -38,16 +36,21 @@ function loadScripts(next) {
 }
 
 function getUrlParameter(param) {
-    let sPageURL = decodeURIComponent(window.location.search.substring(1)),
-        sURLVariables = sPageURL.split('&'),
-        parameterName;
+    let sPageURL = decodeURIComponent(window.location.search.substring(1));
+    let parameterName;
 
-    for (let i = 0; i < sURLVariables.length; i++) {
-        parameterName = sURLVariables[i].split('=');
+    sPageURL.split('&').map(item => {
+        parameterName = item.split('=');
         if (parameterName[0] === param) {
             return parameterName[1] === undefined ? true : parameterName[1];
         }
-    }
+    });
+    // for (let i = 0; i < sURLVariables.length; i++) {
+    //     parameterName = sURLVariables[i].split('=');
+    //     if (parameterName[0] === param) {
+    //         return parameterName[1] === undefined ? true : parameterName[1];
+    //     }
+    // }
 }
 
 /*function setProfile() {
@@ -128,12 +131,12 @@ function getTimelineItem(timeline, position, index) {
     let subPlace = item => getSubPlace(item);
     timeline.places.map((item, index) => places += subPlace(item, index));
     let item =
-        $(`<li id="${timeline.id}" class="${isExist(position) ? position : positionClass}">
+        `${isProfilePage() ? `<li id="${timeline.id}" class="${isExist(position) ? position : positionClass}">
         <div class="timeline-badge primary">
             <a>
                 <i class="far fa-circle fa-lg" data-toggle="tooltip" data-placement="${isLastInverted ? "right" : "left"}" title="${timeline_date}"></i>
             </a>
-        </div>
+        </div>` : ''}
         <div class="timeline-panel">
             <div class="list-group list-group-flush">
                 <a href="#" class="list-group-item">
@@ -148,15 +151,15 @@ function getTimelineItem(timeline, position, index) {
                 <a>
                     <i class="tl-comments far fa-comment fa-lg">&nbsp;&nbsp;</i>
                 </a>
-                <a>
-                    <i class="tl-edit far fa-edit fa-lg"></i>
-                </a>
-                <a class="float-right">${timeline.title} trip</a>
+                ${isProfilePage() ? `<a><i class="tl-edit far fa-edit fa-lg"></i></a>` : ''}
+                <a class="float-right">${timeline.title} trip<p>${isExist(timeline.username) ? `${timeline.username}` : '&nbsp;'}</p></a>
                 </div>
         </div>
-    </li>`);
-    //<input type="text" class="float-right">
+        ${isProfilePage() ? '</li>' : ''}`;
 
+    //<input type="text" class="form-control">
+    //<a class="float-right">${timeline.title} trip<p>@username</p></a>
+    //                <a class="float-right"><input type="text" class="form-control"><p>@username</p></a>
     // $("<li>").attr("id", timeline.id)
     //     .addClass(position === undefined ? positionClass : position).append(
     //     $("<div>").addClass("timeline-badge primary").append(
@@ -217,7 +220,15 @@ function getTimelineItem(timeline, position, index) {
     //         )
     // );
 
-    return item;
+    // console.log(item);
+    return $(item);
+}
+
+function addAllTimeline(timeline, index) {
+    $('#timeline-list')
+        .append(
+            $('<div class="col col-sm-4 p-5 timeline-panel">')
+                .append(getTimelineItem(timeline, null, index)));
 }
 
 function addTimeline(timeline, index) {
@@ -237,7 +248,7 @@ function addTimeline(timeline, index) {
         //     }
         // });
     });
-    $('.timeline-footer a:nth-child(3) i').on('click', e => { //attr data chenge to data?
+    $('.timeline-footer a:nth-child(3) i').on('click', e => {
         let liid = $(e.target).parents('li').attr('id');
 
         $('.btn-group .dropdown-menu').empty();
@@ -257,7 +268,7 @@ function addTimeline(timeline, index) {
         });
         $('#blog .modal-header .modal-title').text(`Edit ${timeline.title} trip`);
         $('#blog').data('timeline', liid);
-        $('#blog').modal('toggle');//toggle del?
+        $('#blog').modal('toggle');
     });
 }
 
@@ -372,6 +383,9 @@ function getTimelines() {
                 let maps = "";
                 let ways = "";
 
+                if (timelines.length) {
+                    $('footer').css('position', 'absolute');
+                }
                 timelines.map((t, index) => addTimeline(t, index));
                 timelines.map((t, index) => {
                     ways = "";
@@ -402,6 +416,56 @@ function getTimelines() {
                         </script>
                         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI&callback=init" async defer></script>`)
                 );
+            }
+        }
+    });
+}
+
+function getAllTimelines() {
+    $.ajax({
+        type: 'GET',
+        url: '/tmlgetall',
+        dataType: 'json',
+        cache: false,
+        success: (data, status, xhr) => {
+            if (data.status === 'OK' && data.data.timeline) {
+                let timelines = Object.values(data.data.timeline);
+                // let maps = "";
+                // let ways = "";
+
+                if (timelines.length) {
+                    $('footer').css('position', 'absolute');
+                }
+               timelines.map((t, index) => addAllTimeline(t, index));
+                // timelines.map((t, index) => {
+                //     ways = "";
+                //     t.places.map(w => {
+                //         ways += `
+                //             ways${index}.push(new google.maps.Marker({
+                //                 position: {lat: ${w.location[0]}, lng: ${w.location[1]}},
+                //                 map: map${index}
+                //             }));`;
+                //     });
+                //     maps += `
+                //         let ways${index} = [];
+                //         let directions${index};
+                //         let map${index} = new google.maps.Map(document.getElementById('google${index}'), {
+                //             zoom: 12
+                //         });
+                //         setCenter("${t.title}", map${index});
+                //         ${ways}
+                //         drawRoute(ways${index}, map${index}, directions${index});`;
+                // });
+
+                // $('#timeline ul').append(
+                //     $(`
+                //         <script>
+                //             function init() {
+                //                 ${maps}
+                //             }
+                //         </script>
+                //         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI&callback=init" async defer></script>`)
+                // );
             }
         }
     });
@@ -611,7 +675,7 @@ function enableEvent() { //remove to tours only = check all
     //        e.relatedTarget.prefentDefault();
     //    });
     $('#language > li a').on('click', e => {
-        var url = $(e.target).attr('href') + $('body').attr('data-page') + '.html';
+        var url = $(e.target).attr('href') + $('body').data('page') + '.html';
         e.preventDefault();
         location.replace(url);
         //        alert(url);//.split('/').pop() === 
@@ -646,7 +710,7 @@ $(document).ready(() => {
                     if (isLoggedIn) {
                         location.replace('./profile.html');
                     } else {
-                        $('#login').modal(); //'toggle');
+                        $('#login').modal();
                     }
                 });
                 $('#logout').click(e => logout(e));
@@ -689,6 +753,9 @@ $(document).ready(() => {
             if (isProfilePage()) {
                 getTimelines();
             }
+            if (isTripPage()) {
+                getAllTimelines();
+            }
 
             // $('.dropdown-item').on('click', () => { 
             //     alert(3);
@@ -724,6 +791,10 @@ function getCurrentLanguage(value = 'en') {
     return lng ? lng.prev().find('sup').text().toLowerCase() : value;
 }
 
+function isTripPage() {
+    return $('body').attr('id') === 'trips';
+}
+
 function getCitiesList() {
     $.ajax({
         type: 'GET',
@@ -751,13 +822,14 @@ function citySearch(e) {
         }
     } else if (obj.city) {
         $.ajax({
-            type: "GET",
-            url: "/city",
+            type: 'GET',
+            url: '/city',
             cache: false,
-            dataType: "json",
+            dataType: 'json',
             data: JSON.parse(JSON.stringify(obj)),
             success: function (data, status, xhr) {
                 let city = data.data;
+
                 if (data.status === 'OK') {
                     $('#city-place').load('parts/city_place.html', () => {
                         $('#city-place h2').text(`Plan your rest in ${city.name} for 2 simple steps`);
@@ -798,6 +870,9 @@ function citySearch(e) {
                     });
                     $('#google').show();
                     $('body[id=tours] footer').css('position', 'absolute');
+                } else if (data.status === 'ERROR') {
+                    clearCityPlace();
+                    $('#city-place').load('parts/city_error.html');
                 } else {
                     clearCityPlace();
                 }
@@ -1205,10 +1280,10 @@ function clickPage(obj) {
 //    removeClass('#login');
 //});
 //Verify Form
-/*function isValidValue(obj) {
+function isValidValue(obj) {
     return obj.value !== null && obj.value !== "";
 }
-function validateText(obj) {
+/*function validateText(obj) {
     var i;
     
     for (i = 0; i < obj.length; i += 1) {
@@ -1244,37 +1319,43 @@ function validateUrl(obj) {
     return obj.value === null || obj.value === "" || pattern.test(obj.value);
 }
 
+*/
 function validateRadio(obj) {
     var i;
-    
+
     for (i = 0; i < obj.length; i += 1) {
         if (obj[i].checked) {
             return true;
         }
     }
-//    obj.focus();
     return false;
 }
+
 function validateCheck(obj) {
     var i;
-  
+
     for (i = 0; i < obj.length; i += 1) {
         if (obj[i].checked) {
             return true;
         }
     }
-//    obj.focus();
     return false;
 }
+
 function getElementType(obj) {
-    var type = "";
-    
-    if (obj.tagName === "INPUT") { return obj.type; }
-    if (obj.tagName === "SELECT") { return obj.tagName; }
-    if (obj[0].tagName === "INPUT") { return obj[0].type; }
-    if (obj[0].tagName === "SELECT") { return obj[0].tagName; }
-    return type;
+    if (obj.tagName === "INPUT") {
+        return obj.type;
+    } else if (obj.tagName === "SELECT") {
+        return obj.tagName;
+    } else if (obj[0].tagName === "INPUT") {
+        return obj[0].type;
+    } else if (obj[0].tagName === "SELECT") {
+        return obj[0].tagName;
+    }
+
+    return "";
 }
+
 function validateField(form, field) {
     var res = true;
     if (field.length > 0) {
@@ -1299,39 +1380,37 @@ function validateField(form, field) {
                     res = false;
                 }
                 break;
-            default :
+            default:
                 if (!validateText(field)) {
                     res = false;
                 }
         }
-    }
-    else {
+    } else {
         switch (getElementType(field)) {
-            case 'radio' :
+            case 'radio':
                 if (!field.checked) {
                     res = false;
                 }
                 break;
-            case 'checkbox' :
+            case 'checkbox':
                 if (!field.checked) {
                     res = false;
                 }
                 break;
-            case 'text' :
+            case 'text':
                 if (!isValidValue(field)) {
                     res = false;
                 }
                 break;
-            default :
+            default:
                 if (!isValidValue(field)) {
                     res = false;
                 }
-//                break;
         }
     }
     return res;
 }
-function validateRequiredFields(form) {
+/*function validateRequiredFields(form) {
     var i, requiredFields, isValid = true;
     
     requiredFields = form.querySelectorAll(
@@ -1348,28 +1427,32 @@ function validateRequiredFields(form) {
     return isValid;
 }
 
+*/
 function getFormElements(form) {
     return form.querySelectorAll(
         "input:not(:disabled):not([readonly]):not([type=hidden]):not([type=submit])," +
         "select:not(:disabled):not([readonly])," +
         "textarea:not(:disabled):not([readonly])");
 }
+
 function getFormFields(form) {
     var i, formFields, fields = [];
-    
+
     formFields = getFormElements(form);
-    for (i = 0; i < formFields.length; i += 1) {
-		if (fields.indexOf(formFields[i].name) === -1) {
+    for (i = 0; i < formFields.length; i++) {
+        if (fields.indexOf(formFields[i].name) === -1) {
             fields.push(formFields[i].name);
         }
-	}
+    }
     return fields;
 }
+
 function getFormValidFieldsCount(form) {
-    var i, j = 0, fields;
-    
+    var i, j = 0,
+        fields;
+
     fields = getFormFields(form);
-    for (i = 0; i < fields.length; i += 1) {
+    for (i = 0; i < fields.length; i++) {
         if (validateField(form, form.elements[fields[i]])) {
             j += 1;
         }
@@ -1378,14 +1461,14 @@ function getFormValidFieldsCount(form) {
 }
 
 function verify(form) {
-//    alert("1: text = " + validateReason(form.t3));
-//    alert("2: radio = " + validateRadio(form.f1));
-//    alert("3: tel = " + validateTel(form.tel));
-//    alert("4: email = " + validateEmail(form.email));
-//    alert("5: url = " + validateUrl(form.url));
-//    alert("6: check = " + validateCheck(form.a2));
-//    alert("7: required = " + validateRequiredFields(form));
-//    alert(getFormFields(form));
-    return false;    
+    // form.preventDefault();
+    //    alert("1: text = " + validateReason(form.t3));
+    //    alert("2: radio = " + validateRadio(form.f1));
+    //    alert("3: tel = " + validateTel(form.tel));
+    //    alert("4: email = " + validateEmail(form.email));
+    //    alert("5: url = " + validateUrl(form.url));
+    //    alert("6: check = " + validateCheck(form.a2));
+    //    alert("7: required = " + validateRequiredFields(form));
+    //    alert(getFormFields(form));
+    return true;
 }
-*/
