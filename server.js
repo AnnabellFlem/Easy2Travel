@@ -178,7 +178,6 @@ function getAllTimeline(res) {
                         console.log(err);
                         res.send(setStatusMessage(statusERROR, err));
                     } else {
-                        console.log(timeline);
                         res.send(setStatusMessage(statusOK, "", {
                             timeline: timeline.map(t => {
                                 let tl = Timeline.getTimeline(t);
@@ -448,6 +447,7 @@ app.put('/tmledit/:tlId/:placeId', (req, res) => {
         }, (err, timeline) => {
             if (err) {
                 console.log(err);
+                next();
             } else {
                 console.log('Timeline updated');
                 res.send(setStatusMessage(statusOK, "", {
@@ -458,20 +458,20 @@ app.put('/tmledit/:tlId/:placeId', (req, res) => {
     });
 });
 
-app.put('/tmledit/:tlsId/likes', (req, res) => {
-    Timeline.findOneAndUpdate({
-            '_id': Timeline.getObjectId(req.params.tlsId)
-        }, {
-            $inc: {
-                likes: 1
-            }
+app.put('/tmllikes/:tlId', (req, res) => {
+    Timeline.findByIdAndUpdate(Timeline.getObjectId(req.params.tlId), {
+            $push: {
+                likes: Timeline.getObjectId(req.session.userId)
+            }//{$pull: {friends: friend}},
         }, {
             fields: "likes",
-            new: true
+            new: true,
+            upsert: true
         },
         (err, likes) => {
             if (err) {
                 console.log(err);
+                res.send(setStatusMessage(statusERROR, err));
             } else {
                 res.send(setStatusMessage(statusOK, "", likes));
             }

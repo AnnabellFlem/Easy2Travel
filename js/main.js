@@ -36,21 +36,16 @@ function loadScripts(next) {
 }
 
 function getUrlParameter(param) {
-    let sPageURL = decodeURIComponent(window.location.search.substring(1));
-    let parameterName;
+    const parameterValue = [];
 
-    sPageURL.split('&').map(item => {
-        parameterName = item.split('=');
-        if (parameterName[0] === param) {
-            return parameterName[1] === undefined ? true : parameterName[1];
+    decodeURIComponent(window.location.search.substring(1)).split('&').map(item => {
+        let parameter = item.split('=');
+        if (parameter[0] === param) {
+            parameterValue.push(parameter[1]);
         }
     });
-    // for (let i = 0; i < sURLVariables.length; i++) {
-    //     parameterName = sURLVariables[i].split('=');
-    //     if (parameterName[0] === param) {
-    //         return parameterName[1] === undefined ? true : parameterName[1];
-    //     }
-    // }
+
+    return parameterValue;
 }
 
 /*function setProfile() {
@@ -137,7 +132,7 @@ function getTimelineItem(timeline, position, index) {
                 <i class="far fa-circle fa-lg" data-toggle="tooltip" data-placement="${isLastInverted ? "right" : "left"}" title="${timeline_date}"></i>
             </a>
         </div>` : ''}
-        <div class="timeline-panel">
+        <div class="timeline-panel ${isTripPage() ? 'card' : ''}">
             <div class="list-group list-group-flush">
                 <a href="#" class="list-group-item">
                     <div id="google${index}" class="container-fluid googlemap" style="height:180px;"></div>
@@ -146,7 +141,7 @@ function getTimelineItem(timeline, position, index) {
             ${places}
             <div class="timeline-footer">
                 <a>
-                    <i class="tl-likes far fa-thumbs-up fa-lg">${timeline.likes > 0 ? timeline.likes : ''}&nbsp;&nbsp;</i>
+                    <i class="tl-likes far fa-thumbs-up fa-lg">${timeline.likes.length > 0 ? timeline.likes.length : ''}&nbsp;&nbsp;</i>
                 </a>
                 <a>
                     <i class="tl-comments far fa-comment fa-lg">&nbsp;&nbsp;</i>
@@ -227,8 +222,47 @@ function getTimelineItem(timeline, position, index) {
 function addAllTimeline(timeline, index) {
     $('#timeline-list')
         .append(
-            $('<div class="col col-sm-4 p-5 timeline-panel">')
-                .append(getTimelineItem(timeline, null, index)));
+            $('<div class="col col-sm-4 timeline-panel mb-2">')
+            .append(getTimelineItem(timeline, null, index)));
+    $('.timeline-footer a:nth-child(1) i').on('click', e => {
+        if (!isLoggedIn) {
+            let fn = () => $('.alert a').click(() => {
+                $('.alert').alert('close');
+                $('#login').modal();
+            });
+
+            showAlert(`<strong>Warning!</strong> Only registered users can put likes.
+            <a href="#" class="alert-link">Login</a>`, fn);
+        } else {
+            e.preventDefault();
+            $.ajax({
+                type: 'PUT',
+                url: `/tmllikes/${timeline.id}`,
+                contentType: false,
+                processData: false,
+                cache: false,
+                success: (data, status, xhr) => {
+                    if (data.status === 'OK') {
+                        let likes = data.data.likes;
+                        $(e.target).text(likes.length);
+                    } else {
+                        console.log(2);
+                    }
+                }
+            });
+        }
+    });
+    $('.timeline-footer a:nth-child(2) i').on('click', e => {
+        if (!isLoggedIn) {
+            let fn = () => $('.alert a').click(() => {
+                $('.alert').alert('close');
+                $('#login').modal();
+            });
+
+            showAlert(`<strong>Warning!</strong> Only registered users can post comments.
+            <a href="#" class="alert-link">Login</a>`, fn);
+        }
+    });
 }
 
 function addTimeline(timeline, index) {
@@ -248,7 +282,7 @@ function addTimeline(timeline, index) {
         //     }
         // });
     });
-    $('.timeline-footer a:nth-child(3) i').on('click', e => {
+    $('.timeline-footer a:nth-child(3) i').click(e => {
         let liid = $(e.target).parents('li').attr('id');
 
         $('.btn-group .dropdown-menu').empty();
@@ -266,8 +300,10 @@ function addTimeline(timeline, index) {
                 }
             });
         });
-        $('#blog .modal-header .modal-title').text(`Edit ${timeline.title} trip`);
+        //tree times????
+        $('#blog .modal-header .modal-title').text(`Edit ${$(`#${liid} .timeline-footer >a:last`).text()}`);
         $('#blog').data('timeline', liid);
+        console.log("aa");
         $('#blog').modal('toggle');
     });
 }
@@ -378,47 +414,52 @@ function getTimelines() {
         dataType: 'json',
         cache: false,
         success: (data, status, xhr) => {
-            if (data.status === 'OK' && data.data.timeline) {
-                let timelines = Object.values(data.data.timeline);
-                let maps = "";
-                let ways = "";
+            let timelines = Object.values(data.data.timeline);
 
+            if (data.status === 'OK' && timelines) {
                 if (timelines.length) {
                     $('footer').css('position', 'absolute');
                 }
                 timelines.map((t, index) => addTimeline(t, index));
-                timelines.map((t, index) => {
-                    ways = "";
-                    t.places.map(w => {
-                        ways += `
-                            ways${index}.push(new google.maps.Marker({
-                                position: {lat: ${w.location[0]}, lng: ${w.location[1]}},
-                                map: map${index}
-                            }));`;
-                    });
-                    maps += `
-                        let ways${index} = [];
-                        let directions${index};
-                        let map${index} = new google.maps.Map(document.getElementById('google${index}'), {
-                            zoom: 12
-                        });
-                        setCenter("${t.title}", map${index});
-                        ${ways}
-                        drawRoute(ways${index}, map${index}, directions${index});`;
-                });
-
-                $('#timeline ul').append(
-                    $(`
-                        <script>
-                            function init() {
-                                ${maps}
-                            }
-                        </script>
-                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI&callback=init" async defer></script>`)
-                );
+                appendMaps(timelines, '#timeline ul');
             }
         }
     });
+}
+
+function appendMaps(items, dest) {
+    let maps = "";
+    let ways = "";
+
+    items.map((t, index) => {
+        ways = "";
+        t.places.map(w => {
+            ways += `
+                ways${index}.push(new google.maps.Marker({
+                    position: {lat: ${w.location[0]}, lng: ${w.location[1]}},
+                    map: map${index}
+                }));`;
+        });
+        maps += `
+            let ways${index} = [];
+            let directions${index};
+            let map${index} = new google.maps.Map(document.getElementById('google${index}'), {
+                zoom: 12
+            });
+            setCenter("${t.title}", map${index});
+            ${ways}
+            drawRoute(ways${index}, map${index}, directions${index});`;
+    });
+
+    $(dest).append(
+        $(`
+            <script>
+                function init() {
+                    ${maps}
+                }
+            </script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI&callback=init" async defer></script>`)
+    );
 }
 
 function getAllTimelines() {
@@ -428,44 +469,14 @@ function getAllTimelines() {
         dataType: 'json',
         cache: false,
         success: (data, status, xhr) => {
-            if (data.status === 'OK' && data.data.timeline) {
-                let timelines = Object.values(data.data.timeline);
-                // let maps = "";
-                // let ways = "";
+            let timelines = Object.values(data.data.timeline);
 
+            if (data.status === 'OK' && timelines) {
                 if (timelines.length) {
                     $('footer').css('position', 'absolute');
                 }
-               timelines.map((t, index) => addAllTimeline(t, index));
-                // timelines.map((t, index) => {
-                //     ways = "";
-                //     t.places.map(w => {
-                //         ways += `
-                //             ways${index}.push(new google.maps.Marker({
-                //                 position: {lat: ${w.location[0]}, lng: ${w.location[1]}},
-                //                 map: map${index}
-                //             }));`;
-                //     });
-                //     maps += `
-                //         let ways${index} = [];
-                //         let directions${index};
-                //         let map${index} = new google.maps.Map(document.getElementById('google${index}'), {
-                //             zoom: 12
-                //         });
-                //         setCenter("${t.title}", map${index});
-                //         ${ways}
-                //         drawRoute(ways${index}, map${index}, directions${index});`;
-                // });
-
-                // $('#timeline ul').append(
-                //     $(`
-                //         <script>
-                //             function init() {
-                //                 ${maps}
-                //             }
-                //         </script>
-                //         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI&callback=init" async defer></script>`)
-                // );
+                timelines.map((t, index) => addAllTimeline(t, index));
+                appendMaps(timelines, '#timeline-list');
             }
         }
     });
@@ -497,7 +508,6 @@ function timeline(e) {
                 $(f.parentElement).modal('toggle');
             } else {
                 $('.' + f.className + ' .login-status').html(data.message);
-                console.log(2);
             }
         }
     });
@@ -857,7 +867,7 @@ function citySearch(e) {
                             if (getCheckMarkers().length > 1) {
                                 $('#route').modal("toggle");
                             } else {
-                                $('#alert-box').load('parts/alert.html');
+                                showAlert('<strong>Warning!</strong> You should check at least 2 places to create a route.');
                             }
                         });
                         $('#btn-clear').on('click', () => {
@@ -881,6 +891,16 @@ function citySearch(e) {
     } else {
         clearCityPlace();
     }
+}
+
+function showAlert(message, callback) {
+    $('#alert-box').load('parts/alert.html', () => {
+            $('.alert').append(message);
+            if (callback)
+                callback();
+        })
+        .hide()
+        .fadeIn(300);
 }
 
 function saveRoute(routes, cityname, status) {
