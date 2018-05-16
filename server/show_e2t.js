@@ -11,7 +11,7 @@ MongoClient.connect(url, function (err, db) {
 
   db.collection("timelines").find({}).toArray(function (err, result) {
     if (err) throw err;
-    console.log(JSON.stringify(result));
+    console.log(`Length: ${result.length}\n${JSON.stringify(result)}`);
     db.close();
   });
 

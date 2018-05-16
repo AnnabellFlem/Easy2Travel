@@ -50,8 +50,6 @@ app.use(bodyParser.urlencoded({
 
 app.use('/css', express.static('css'));
 app.use('/fontawesome', express.static('fontawesome'));
-//app.use('/fontawesome/css', express.static('font-awesome/css'));
-//app.use('/fontawesome/fonts', express.static('font-awesome/fonts'));
 app.use('/img', express.static('img'));
 app.use('/js', express.static('js'));
 app.use('/bootstrap/css', express.static('bootstrap/css'));
@@ -76,10 +74,6 @@ passport.deserializeUser((id, done) => {
     User.findById(id, (err, user) => {
         done(err, user);
     });
-});
-
-app.listen(port, () => {
-    console.log('Listening on port ' + port);
 });
 
 function setStatusMessage(status, msg, data) {
@@ -108,6 +102,7 @@ function getTimeline(req, res) {
             title: route.title,
             places: []
         };
+        delete req.session.route;
         Place.findOne({
                 'places': {
                     $elemMatch: {
@@ -148,8 +143,6 @@ function getTimeline(req, res) {
                     });
                 }
             });
-
-        delete req.session.route;
     } else {
         Timeline.getTimelineByUserId(userid)
             .then(timeline =>
@@ -459,23 +452,40 @@ app.put('/tmledit/:tlId/:placeId', (req, res) => {
 });
 
 app.put('/tmllikes/:tlId', (req, res) => {
-    Timeline.findByIdAndUpdate(Timeline.getObjectId(req.params.tlId), {
-            $push: {
-                likes: Timeline.getObjectId(req.session.userId)
-            }//{$pull: {friends: friend}},
-        }, {
-            fields: "likes",
-            new: true,
-            upsert: true
-        },
-        (err, likes) => {
-            if (err) {
-                console.log(err);
-                res.send(setStatusMessage(statusERROR, err));
+    let userId = req.session.userId;
+
+    Timeline.findById(req.params.tlId, (err, timeline) => {
+        if (err) {
+            console.log(err);
+            res.send(setStatusMessage(statusERROR, err));
+        } else {
+            let ls = timeline.likes;
+            let index = ls.indexOf(userId);
+
+            if (index === -1) {
+                ls.push(userId);
             } else {
-                res.send(setStatusMessage(statusOK, "", likes));
+                ls = ls.filter(e => !e.equals(userId));
             }
-        });
+            Timeline.findByIdAndUpdate(timeline._id, {
+                    $set: {
+                        likes: ls
+                    }
+                }, {
+                    fields: "likes",
+                    new: true,
+                    upsert: true
+                },
+                (err, items) => {
+                    if (err) {
+                        console.log(err);
+                        res.send(setStatusMessage(statusERROR, err));
+                    } else {
+                        res.send(setStatusMessage(statusOK, "", items.likes));
+                    }
+                });
+        }
+    });
 });
 
 app.get('/city', (req, res) => {
@@ -546,16 +556,30 @@ app.get('/tours/:lng', (req, res) => {
         });
 });
 
-app.get('/routes', (req, res) => {
+app.get('/routes/:action', (req, res) => {
     req.session.route = {
         title: req.query.title,
         locationid: req.query.locationid,
         languange: req.query.lng
     };
-    res.send(setStatusMessage(statusOK));
+    switch (req.params.action) {
+        case 'save':
+            if (req.session.userId) {
+                getTimeline(req, res);
+            } else {
+                res.send(setStatusMessage(statusERROR)); //new Error()
+            }
+            break;
+        default:
+            res.send(setStatusMessage(statusOK));
+    }
 });
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
+});
+
+app.listen(port, () => {
+    console.log('Listening on port ' + port);
 });

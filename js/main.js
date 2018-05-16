@@ -10,6 +10,8 @@ let markers_checked = [];
 let directionsDisplay;
 let isLoggedIn = false;
 
+let likesCount = count => count || '';
+
 function removeClass(obj) {
     if ($(obj).hasClass('responsive')) {
         $(obj).removeClass('responsive');
@@ -118,14 +120,14 @@ function getSubPlace(item) {
 }
 
 function getTimelineItem(timeline, position, index) {
-    let isLastInverted = $('#timeline ul > li:not(.clearfix):last').hasClass('timeline-inverted');
+    let isLastInverted = $('#timeline ul > li:not(.clearfix):first').hasClass('timeline-inverted');
     let timeline_date = formatDate(new Date(timeline.created_at));
     let positionClass = isLastInverted ? "" : "timeline-inverted";
     let places = "";
 
     let subPlace = item => getSubPlace(item);
     timeline.places.map((item, index) => places += subPlace(item, index));
-    let item =
+   let item =
         `${isProfilePage() ? `<li id="${timeline.id}" class="${isExist(position) ? position : positionClass}">
         <div class="timeline-badge primary">
             <a>
@@ -141,10 +143,10 @@ function getTimelineItem(timeline, position, index) {
             ${places}
             <div class="timeline-footer">
                 <a>
-                    <i class="tl-likes far fa-thumbs-up fa-lg">${timeline.likes.length > 0 ? timeline.likes.length : ''}&nbsp;&nbsp;</i>
+                    <i class="tl-likes far fa-thumbs-up fa-lg">${likesCount(timeline.likes.length)}</i>
                 </a>
                 <a>
-                    <i class="tl-comments far fa-comment fa-lg">&nbsp;&nbsp;</i>
+                    <i class="tl-comments far fa-comment fa-lg">&nbsp; ${timeline.created_at}&nbsp;</i>
                 </a>
                 ${isProfilePage() ? `<a><i class="tl-edit far fa-edit fa-lg"></i></a>` : ''}
                 <a class="float-right">${timeline.title} trip<p>${isExist(timeline.username) ? `${timeline.username}` : '&nbsp;'}</p></a>
@@ -220,11 +222,13 @@ function getTimelineItem(timeline, position, index) {
 }
 
 function addAllTimeline(timeline, index) {
+    let item = getTimelineItem(timeline, null, index);
+
     $('#timeline-list')
         .append(
             $('<div class="col col-sm-4 timeline-panel mb-2">')
-            .append(getTimelineItem(timeline, null, index)));
-    $('.timeline-footer a:nth-child(1) i').on('click', e => {
+            .append(item));
+    item.find('.timeline-footer a:nth-child(1) i').on('click', e => {
         if (!isLoggedIn) {
             let fn = () => $('.alert a').click(() => {
                 $('.alert').alert('close');
@@ -243,8 +247,9 @@ function addAllTimeline(timeline, index) {
                 cache: false,
                 success: (data, status, xhr) => {
                     if (data.status === 'OK') {
-                        let likes = data.data.likes;
-                        $(e.target).text(likes.length);
+                        let likes = data.data;
+
+                        $(e.target).text(likesCount(likes.length));
                     } else {
                         console.log(2);
                     }
@@ -252,7 +257,7 @@ function addAllTimeline(timeline, index) {
             });
         }
     });
-    $('.timeline-footer a:nth-child(2) i').on('click', e => {
+    item.find('.timeline-footer a:nth-child(2) i').on('click', e => {
         if (!isLoggedIn) {
             let fn = () => $('.alert a').click(() => {
                 $('.alert').alert('close');
@@ -266,8 +271,11 @@ function addAllTimeline(timeline, index) {
 }
 
 function addTimeline(timeline, index) {
-    $('#timeline ul').prepend(getTimelineItem(timeline, null, index));
-    $('.timeline-footer a:nth-child(1) i').on('click', e => {
+    let item = getTimelineItem(timeline, null, index);
+
+    $('#timeline ul').prepend(item);
+    item.find('.timeline-footer a:nth-child(1) i').on('click', e => {
+        console.log(135);
         // e.preventDefault();
         // $.ajax({
         //     type: 'PUT',
@@ -282,7 +290,7 @@ function addTimeline(timeline, index) {
         //     }
         // });
     });
-    $('.timeline-footer a:nth-child(3) i').click(e => {
+    item.find('.timeline-footer a:nth-child(3) i').click(e => {
         let liid = $(e.target).parents('li').attr('id');
 
         $('.btn-group .dropdown-menu').empty();
@@ -300,15 +308,13 @@ function addTimeline(timeline, index) {
                 }
             });
         });
-        //tree times????
         $('#blog .modal-header .modal-title').text(`Edit ${$(`#${liid} .timeline-footer >a:last`).text()}`);
         $('#blog').data('timeline', liid);
-        console.log("aa");
         $('#blog').modal('toggle');
     });
 }
 
-function checkAuthorization() { ////remove to tours only for profile
+function checkAuthorization() {
     $.ajax({
         type: 'GET',
         url: '/isloggedin',
@@ -758,6 +764,10 @@ $(document).ready(() => {
             if (isTourPage()) {
                 $('#route').load('parts/route_form.html', function () {
                     $(this).addClass('modal fade login-page');
+                    $('.route-form .modal-footer button').click(e => {
+                        e.preventDefault();
+                        saveRoute(getCheckMarkers());
+                    });
                 });
             }
             if (isProfilePage()) {
@@ -843,6 +853,7 @@ function citySearch(e) {
                 if (data.status === 'OK') {
                     $('#city-place').load('parts/city_place.html', () => {
                         $('#city-place h2').text(`Plan your rest in ${city.name} for 2 simple steps`);
+                        $('#city-place h2').data('cityname', city.name);
                     });
                     $('#city-sights').load('parts/city_sights.html', () => {
                         $('#city-sights h3').text(`We recommend to visit in ${city.name}`);
@@ -861,8 +872,14 @@ function citySearch(e) {
                                 $('.routeuser').hide();
                             }
                         });
-                        $('.routeguest a').on('click', () => saveRoute(getCheckMarkers(), city.name, true));
-                        $('.routeuser a').on('click', () => saveRoute(getCheckMarkers(), city.name, false));
+                        $('.routeguest a').on('click', () => saveRoute(getCheckMarkers(), true));
+                        $('.routeuser a').on('click', () => saveRoute(getCheckMarkers(), false));
+                        // $('.route-form .modal-footer button').click(e => {
+                        //     e.preventDefault();
+                        //     console.log(123);
+                        //     // $('.route-form .modal-footer button').off('click');
+                        //     //saveRoute(getCheckMarkers(), city.name);
+                        // });
                         $('.btn-route').on('click', () => {
                             if (getCheckMarkers().length > 1) {
                                 $('#route').modal("toggle");
@@ -903,21 +920,21 @@ function showAlert(message, callback) {
         .fadeIn(300);
 }
 
-function saveRoute(routes, cityname, status) {
+function saveRoute(routes, status) {
     let obj = {
-        title: cityname,
+        title: $('#city-place h2').data('cityname'),
         locationid: routes.map(item => item.markerid),
         lng: getCurrentLanguage()
     };
 
     $.ajax({
         type: 'GET',
-        url: '/routes',
+        url: `/routes/${isExist(status) ? 'init' : 'save'}`,
         cache: false,
         dataType: 'json',
         data: JSON.parse(JSON.stringify(obj)),
-        success: function (data, status, xhr) {
-            if (data.status === 'OK') {
+        success: (data, status, xhr) => {
+            if (data.status === 'OK' && !isExist(data.data)) {
                 if (status) {
                     $('#login').modal('toggle');
                 } else {
@@ -976,6 +993,7 @@ function checkMarker(target) {
     clearDirections();
     if (markerWay.length > 1) {
         drawRoute(markerWay.map(item => item.marker));
+        $('.alert').alert('close');
     }
     $('#markers-count').text(`${markerWay.length} places marked`);
 }

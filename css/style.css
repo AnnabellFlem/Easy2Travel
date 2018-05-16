@@ -1909,3 +1909,9 @@ body[id="e2t"] .overlay-small {
   width: 100%;
   bottom: 0;
 }
+
+.fa-thumbs-up:hover,
+.fa-comment:hover,
+.fa-edit:hover {
+  color: #4c6a92;
+}

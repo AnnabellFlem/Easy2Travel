@@ -49,7 +49,7 @@ const TimelineSchema = new mongoose.Schema({
     created_at: Date,
     updated_at: Date
 });
-TimelineSchema.pre('save', function(next) {
+TimelineSchema.pre('save', function (next) {
     let currentDate = new Date();
 
     this.updated_at = currentDate;
@@ -63,8 +63,11 @@ const Timeline = mongoose.model('Timeline', TimelineSchema);
 const functions = {
     getTimelineByUserId: userid => {
         return Timeline.find({
-            'userid': userid
-        }).exec();
+                'userid': userid
+            }).sort({
+                created_at: 1
+            })
+            .exec();
     },
     getTimeline: t => {
         return {
