@@ -1837,7 +1837,11 @@ body[id=profile] footer {
   z-index: 1040;
 }
 
-.tabs li:hover>div {
+/* .tabs li:hover>div {
+  display: flex !important;
+} */
+.tabs li:hover >div {
+  /* top: 100px; */
   display: flex !important;
 }
 
