@@ -64,7 +64,8 @@ const functions = {
     getTimelineByUserId: userid => {
         return Timeline.find({
                 'userid': userid
-            }).sort({
+            })
+            .sort({
                 created_at: 1
             })
             .exec();

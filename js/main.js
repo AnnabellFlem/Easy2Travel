@@ -9,6 +9,7 @@ let markers = [];
 let markers_checked = [];
 let directionsDisplay;
 let isLoggedIn = false;
+let timelineTo = 3;
 
 let likesCount = count => count || '';
 
@@ -127,7 +128,7 @@ function getTimelineItem(timeline, position, index) {
 
     let subPlace = item => getSubPlace(item);
     timeline.places.map((item, index) => places += subPlace(item, index));
-   let item =
+    let item =
         `${isProfilePage() ? `<li id="${timeline.id}" class="${isExist(position) ? position : positionClass}">
         <div class="timeline-badge primary">
             <a>
@@ -146,7 +147,7 @@ function getTimelineItem(timeline, position, index) {
                     <i class="tl-likes far fa-thumbs-up fa-lg">${likesCount(timeline.likes.length)}</i>
                 </a>
                 <a>
-                    <i class="tl-comments far fa-comment fa-lg">&nbsp; ${timeline.created_at}&nbsp;</i>
+                    <i class="tl-comments far fa-comment fa-lg">&nbsp;&nbsp;</i>
                 </a>
                 ${isProfilePage() ? `<a><i class="tl-edit far fa-edit fa-lg"></i></a>` : ''}
                 <a class="float-right">${timeline.title} trip<p>${isExist(timeline.username) ? `${timeline.username}` : '&nbsp;'}</p></a>
@@ -433,28 +434,30 @@ function getTimelines() {
     });
 }
 
-function appendMaps(items, dest) {
+function appendMaps(items, dest, indexTo = items.length) {
     let maps = "";
     let ways = "";
 
     items.map((t, index) => {
-        ways = "";
-        t.places.map(w => {
-            ways += `
-                ways${index}.push(new google.maps.Marker({
-                    position: {lat: ${w.location[0]}, lng: ${w.location[1]}},
-                    map: map${index}
-                }));`;
-        });
-        maps += `
-            let ways${index} = [];
-            let directions${index};
-            let map${index} = new google.maps.Map(document.getElementById('google${index}'), {
-                zoom: 12
+        if (index >= indexTo - 3 && index < indexTo) {
+            ways = "";
+            t.places.map(w => {
+                ways += `
+                    ways${index}.push(new google.maps.Marker({
+                        position: {lat: ${w.location[0]}, lng: ${w.location[1]}},
+                        map: map${index}
+                    }));`;
             });
-            setCenter("${t.title}", map${index});
-            ${ways}
-            drawRoute(ways${index}, map${index}, directions${index});`;
+            maps += `
+                let ways${index} = [];
+                let directions${index};
+                let map${index} = new google.maps.Map(document.getElementById('google${index}'), {
+                    zoom: 12
+                });
+                setCenter("${t.title}", map${index});
+                ${ways}
+                drawRoute(ways${index}, map${index}, directions${index});`;
+            }
     });
 
     $(dest).append(
@@ -478,11 +481,27 @@ function getAllTimelines() {
             let timelines = Object.values(data.data.timeline);
 
             if (data.status === 'OK' && timelines) {
+                const createTimelines = timelines => {
+                    timelines.map((t, index) => {
+                        // if (index >= timelineTo - 3 && index < timelineTo) {
+                            addAllTimeline(t, index);
+                         //}
+                    });
+                    appendMaps(timelines, '#timeline-list');//, timelineTo);
+                };
+
                 if (timelines.length) {
                     $('footer').css('position', 'absolute');
                 }
-                timelines.map((t, index) => addAllTimeline(t, index));
-                appendMaps(timelines, '#timeline-list');
+                createTimelines(timelines);                
+                // if (timelineTo < timelines.length) {
+                //     $('#panel-more').load('parts/more_fewer.html .panel-more', e => {
+                //         $('#panel-more button').click(() => {
+                //             timelineTo += 3;
+                //             createTimelines(timelines);
+                //         });
+                //     });
+                // }
             }
         }
     });

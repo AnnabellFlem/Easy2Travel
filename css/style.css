@@ -1340,6 +1340,10 @@ body[id=e2t]>div[class~="container-block"]:nth-child(even) {
   border-bottom: 5px solid #ffffff;
 }
 
+.tabs a > i:hover{
+  color: orange
+}
+
 .tabs li {
   float: left;
 }
@@ -1823,6 +1827,7 @@ body[id=profile] footer {
 }
 
 .dropdown-overlay {
+  /* top: 50px; */
   display: none !important;
   position: relative;
   width: 500px;
@@ -1914,4 +1919,22 @@ body[id="e2t"] .overlay-small {
 .fa-comment:hover,
 .fa-edit:hover {
   color: #4c6a92;
+}
+
+.col-img .panel-fewer,
+.col-img .panel-more {
+  font-family: "Roboto", sans-serif;
+}
+
+.col-img .panel-fewer>button,
+.col-img .panel-more>button {
+  color: #8ea6c5 !important;
+  border-color: #8ea6c5;
+}
+
+.col-img .panel-fewer>button:hover,
+.col-img .panel-more>button:hover {
+  color: #fff;
+  background-color: #4c6a92;
+  border-color: #4c6a92;
 }
