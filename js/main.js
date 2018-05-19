@@ -10,8 +10,10 @@ let markers_checked = [];
 let directionsDisplay;
 let isLoggedIn = false;
 let timelineTo = 3;
+let lang;
+let countriesList = [];
 
-let likesCount = count => count || '';
+const likesCount = count => count || '';
 
 function removeClass(obj) {
     if ($(obj).hasClass('responsive')) {
@@ -146,15 +148,22 @@ function getTimelineItem(timeline, position, index) {
                 <a>
                     <i class="tl-likes far fa-thumbs-up fa-lg">${likesCount(timeline.likes.length)}</i>
                 </a>
-                <a>
+                <a data-toggle="collapse" data-target="#comment${index}" aria-expanded="false" aria-controls="comment${index}">
                     <i class="tl-comments far fa-comment fa-lg">&nbsp;&nbsp;</i>
                 </a>
                 ${isProfilePage() ? `<a><i class="tl-edit far fa-edit fa-lg"></i></a>` : ''}
-                <a class="float-right">${timeline.title} trip<p>${isExist(timeline.username) ? `${timeline.username}` : '&nbsp;'}</p></a>
-                </div>
+                ${commentItem(index)}
+                <a class="float-right">${timeline.title} trip<p>${isExist(timeline.username) ? `@${timeline.username}` : '&nbsp;'}</p></a>
+            </div>
         </div>
         ${isProfilePage() ? '</li>' : ''}`;
-
+    /*
+                    <div id="comment${index}" class="collapse">
+                        <div class="card card-body">
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                        </div>
+                    </div>
+    */
     //<input type="text" class="form-control">
     //<a class="float-right">${timeline.title} trip<p>@username</p></a>
     //                <a class="float-right"><input type="text" class="form-control"><p>@username</p></a>
@@ -231,13 +240,14 @@ function addAllTimeline(timeline, index) {
             .append(item));
     item.find('.timeline-footer a:nth-child(1) i').on('click', e => {
         if (!isLoggedIn) {
-            let fn = () => $('.alert a').click(() => {
+            let fn = () => $('.alert a').on('click', () => {
                 $('.alert').alert('close');
                 $('#login').modal();
             });
 
-            showAlert(`<strong>Warning!</strong> Only registered users can put likes.
-            <a href="#" class="alert-link">Login</a>`, fn);
+            showAlert(`${lang === 'en' ? '<strong>Warning!</strong> Only registered users can put likes.' : 
+                '<strong>Попередження!</strong> Тільки зареєстровані користувачі можуть ставити вподобання.'}
+                <a href="#" class="alert-link">Login</a>`, fn);
         } else {
             e.preventDefault();
             $.ajax({
@@ -260,12 +270,12 @@ function addAllTimeline(timeline, index) {
     });
     item.find('.timeline-footer a:nth-child(2) i').on('click', e => {
         if (!isLoggedIn) {
-            let fn = () => $('.alert a').click(() => {
+            let fn = () => $('.alert a').on('click', () => {
                 $('.alert').alert('close');
                 $('#login').modal();
             });
-
-            showAlert(`<strong>Warning!</strong> Only registered users can post comments.
+            showAlert(`${lang === 'en' ? '<strong>Warning!</strong> Only registered users can post comments.' :
+            '<strong>Попереждення!</strong> Тільки зареєстровані користувачі можуть залишати коментарі.'}
             <a href="#" class="alert-link">Login</a>`, fn);
         }
     });
@@ -291,7 +301,7 @@ function addTimeline(timeline, index) {
         //     }
         // });
     });
-    item.find('.timeline-footer a:nth-child(3) i').click(e => {
+    item.find('.timeline-footer a:nth-child(3) i').on('click', e => {
         let liid = $(e.target).parents('li').attr('id');
 
         $('.btn-group .dropdown-menu').empty();
@@ -313,6 +323,40 @@ function addTimeline(timeline, index) {
         $('#blog').data('timeline', liid);
         $('#blog').modal('toggle');
     });
+}
+
+function commentItem(index) {
+    let comment =
+        `<div id="comment${index}" class="comments collapse">
+            <div class="comment-wrap">
+                <div class="photo">
+                    <div class="avatar" style="background-image: url('/img/large/travel.jpg')"></div>
+                </div>
+                <div class="comment-block">
+                    <form action="">
+                        <textarea name="" cols="30" rows="3" placeholder="Add comment..."></textarea>
+                    </form>
+                </div>
+            </div>
+            <div class="comment-wrap">
+                <div class="photo">
+                    <div class="avatar" style="background-image: url('/img/large/travel.jpg')"></div>
+                </div>
+                <div class="comment-block">
+                    <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto temporibus iste nostrum dolorem natus
+                    </p>
+                    <div class="bottom-comment">
+                        <div class="comment-date">Aug 24, 2014 @ 2:35 PM</div>
+                        <ul class="comment-actions">
+                            <li class="complain">Complain</li>
+                            <li class="reply">Reply</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+
+    return comment;
 }
 
 function checkAuthorization() {
@@ -457,7 +501,7 @@ function appendMaps(items, dest, indexTo = items.length) {
                 setCenter("${t.title}", map${index});
                 ${ways}
                 drawRoute(ways${index}, map${index}, directions${index});`;
-            }
+        }
     });
 
     $(dest).append(
@@ -483,25 +527,50 @@ function getAllTimelines() {
             if (data.status === 'OK' && timelines) {
                 const createTimelines = timelines => {
                     timelines.map((t, index) => {
-                        // if (index >= timelineTo - 3 && index < timelineTo) {
+                        if (index >= timelineTo - 3 && index < timelineTo) {
                             addAllTimeline(t, index);
-                         //}
+                        }
                     });
-                    appendMaps(timelines, '#timeline-list');//, timelineTo);
+                    appendMaps(timelines, '#timeline-list', timelineTo);
+                };
+                const showMore = () => {
+                    if (timelineTo < timelines.length) {
+                        $('#panel-more').load('parts/more_fewer.html .panel-more', () => {
+                            $('#panel-more button').on('click', () => {
+                                timelineTo += 3;
+                                $('#timeline-list').empty();
+                                window.google = {};
+                                createTimelines(timelines);
+                                if (timelineTo >= timelines.length) {
+                                    $('#panel-more').empty();
+                                }
+                                showFewer();
+                            });
+                        });
+                    }
+                };
+                const showFewer = () => {
+                    if (timelineTo > 3) {
+                        $('#panel-fewer').load('parts/more_fewer.html .panel-fewer', () => {
+                            $('#panel-fewer button').on('click', () => {
+                                timelineTo -= 3;
+                                $('#timeline-list').empty();
+                                window.google = {};
+                                createTimelines(timelines);
+                                if (timelineTo <= 3) {
+                                    $('#panel-fewer').empty();
+                                }
+                                showMore();
+                            });
+                        });
+                    }
                 };
 
                 if (timelines.length) {
                     $('footer').css('position', 'absolute');
                 }
-                createTimelines(timelines);                
-                // if (timelineTo < timelines.length) {
-                //     $('#panel-more').load('parts/more_fewer.html .panel-more', e => {
-                //         $('#panel-more button').click(() => {
-                //             timelineTo += 3;
-                //             createTimelines(timelines);
-                //         });
-                //     });
-                // }
+                createTimelines(timelines);
+                showMore();
             }
         }
     });
@@ -691,11 +760,11 @@ function enableEvent() { //remove to tours only = check all
         $('.login-status').empty();
     });
     $("#blog .blog-form").on("submit", timeline);
-    $(".blog-form button[type=submit]").click(e =>
+    $(".blog-form button[type=submit]").on('click', e =>
         $(e.target).parents('form').data('actionid', $(e.target).attr('value'))
     );
     $('#img-btn').change(e => setImageFile(e.target.files[0]));
-    $('#img-clear').click(() => setImageFile());
+    $('#img-clear').on('click', () => setImageFile());
     $('#blog').on('show.bs.modal', () => $($('.btn-group .dropdown-item')[0]).click());
     $('#blog').on('hide.bs.modal', () => {
         $('#blog').data('btn', "");
@@ -741,19 +810,23 @@ $(document).ready(() => {
     $.when(loadScripts(checkAuthorization))
         .then(() => {
             $('#header-top').load('parts/header.html', () => {
-                $("#sign-btn > a").click(() => {
+                lang = getCurrentLanguage();
+                if (isGuidePage()) {
+                    getCountries();
+                }
+                $("#sign-btn > a").on('click', () => {
                     if (isLoggedIn) {
                         location.replace('./profile.html');
                     } else {
                         $('#login').modal();
                     }
                 });
-                $('#logout').click(e => logout(e));
+                $('#logout').on('click', e => logout(e));
             });
             if (isMainPage() || isTourPage()) {
                 $('#city-search').load('parts/city_search.html', () => {
                     getCitiesList();
-                    $('.city-search-form').submit(citySearch);
+                    $('.city-search-form').on('submit', citySearch);
                     let city = getUrlParameter('city');
                     if (city) {
                         $('.city-search-form input').val(city);
@@ -771,7 +844,7 @@ $(document).ready(() => {
             });
             $('#login').load('parts/login_form.html', function () {
                 $(this).addClass('modal fade login-page');
-                $('#login .message a').click(() => {
+                $('#login .message a').on('click', () => {
                     $('#login form').animate({
                         height: "toggle",
                         opacity: "toggle"
@@ -783,7 +856,7 @@ $(document).ready(() => {
             if (isTourPage()) {
                 $('#route').load('parts/route_form.html', function () {
                     $(this).addClass('modal fade login-page');
-                    $('.route-form .modal-footer button').click(e => {
+                    $('.route-form .modal-footer button').on('click', e => {
                         e.preventDefault();
                         saveRoute(getCheckMarkers());
                     });
@@ -812,6 +885,10 @@ $(window).scroll(() => {
     }
 });
 
+function isGuidePage() {
+    return $('body').attr('id') === 'guide';
+}
+
 function isTourPage() {
     return $('body').attr('id') === 'tours';
 }
@@ -826,7 +903,6 @@ function isProfilePage() {
 
 function getCurrentLanguage(value = 'en') {
     let lng = $('#language');
-
     return lng ? lng.prev().find('sup').text().toLowerCase() : value;
 }
 
@@ -837,7 +913,7 @@ function isTripPage() {
 function getCitiesList() {
     $.ajax({
         type: 'GET',
-        url: `/tours/${getCurrentLanguage()}`,
+        url: `/tours/${lang}`,
         dataType: 'json',
         cache: false,
         success: (data, status, xhr) => {
@@ -848,10 +924,115 @@ function getCitiesList() {
     });
 }
 
+function getCountries() {
+    $.ajax({
+        type: 'GET',
+        url: `/guide/${lang}`, // all func to header lang!!!!!
+        dataType: 'json',
+        cache: false,
+        success: (data, status, xhr) => {
+            if (data.status === 'OK' && data.data) {
+                let counties = data.data;
+
+                counties.map((item, index) => setCountryItem(item, index));
+            } else {
+                console.log("22");
+            }
+        }
+    });
+}
+
+function setCountryItem(country, index) {
+    let id;
+    let uniqueList = [];
+    let cities = "";
+    let item;
+
+    uniqueList = countriesList.filter(item => item.letter === country.name[0]);
+    if (uniqueList.length) {
+        id = uniqueList[0].id;
+    } else {
+        $('#countries-list').append(
+            `<li>
+                <a href="#" title="">${country.name[0]}</a>
+                <ul id="letter${index}">
+                </ul>
+            </li>`
+        );
+        id = `letter${index}`;
+    }
+    country.cities.map(item => {
+        cities +=
+            `<li class="panel-leaf">
+                <a href="#" id="${item._id}" class="tab-link">${item.name}</a>
+            </li>`;
+    });
+    $(`#${id}`).append(
+        `<li>
+            <a href="#" id="${country._id}" class="tab-link">${country.name}&nbsp;&nbsp;
+            </a>
+            <ul class="panel-inside">
+                ${cities}
+            </ul>
+        </li>`
+    );
+    $(`#${country._id}`).on('click', () => showGuide(`country${index}`));
+    $('.tabs').after(
+        `<div id="country${index}" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="${country.imgurl}" alt="">
+            </figure>
+            <div>
+                <p><strong>${country.name} Travel Guide</strong><br><br>
+                ${country.description}
+                </p>
+            </div>
+        </div>`
+    );
+    country.cities.map((item, index) => {
+        $(`#${item._id}`).on('click', () => showGuide(`city${item._id}`));
+        $('.tabs').after(
+            `<div id="city${item._id}" class="col-img-item col-img-item-right tab-item mt-5">
+                <figure class="mr-2">
+                    <img src="${item.imgurl}" alt="">
+                </figure>
+                <div>
+                    <p><strong>${item.name} Travel Guide</strong><br><br>
+                    ${item.description}
+                    </p>
+                </div>
+            </div>`
+        );
+    });
+
+    if (country.name === 'Ukraine') {
+        $(`#${country._id}`).click();
+    }
+
+    countriesList.push({
+        letter: country.name[0],
+        id: `letter${index}`
+    });
+}
+
+function showGuide(id) {
+    let i, item, tablinks;
+
+    item = document.getElementsByClassName("tab-item");
+    for (i = 0; i < item.length; i++) {
+        item[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tab-link");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(id).style.display = "block";
+}
+
 function citySearch(e) {
     let obj = {
         city: $('.city-search-form input').val(),
-        lng: getCurrentLanguage()
+        lng: lang
     };
 
     e.preventDefault();
@@ -871,11 +1052,17 @@ function citySearch(e) {
 
                 if (data.status === 'OK') {
                     $('#city-place').load('parts/city_place.html', () => {
-                        $('#city-place h2').text(`Plan your rest in ${city.name} for 2 simple steps`);
+                        $('#city-place h2').text(lang === 'en' ?
+                            `Plan your rest in ${city.name} for 2 simple steps` :
+                            `Сплануйте вашу подорож у ${city.name} в два прості кроки`
+                        );
                         $('#city-place h2').data('cityname', city.name);
                     });
                     $('#city-sights').load('parts/city_sights.html', () => {
-                        $('#city-sights h3').text(`We recommend to visit in ${city.name}`);
+                        $('#city-sights h3').text(lang === 'en' ?
+                            `We recommend to visit in ${city.name}` :
+                            `Ми рекомендуємо відвідати ${city.name} та такі пам'ятки`
+                        );
                         markers = [];
                         markers_checked = [];
                         setCenter(city.name);
@@ -903,7 +1090,10 @@ function citySearch(e) {
                             if (getCheckMarkers().length > 1) {
                                 $('#route').modal("toggle");
                             } else {
-                                showAlert('<strong>Warning!</strong> You should check at least 2 places to create a route.');
+                                showAlert(lang === 'en' ?
+                                    '<strong>Warning!</strong> You should check at least 2 places to create a route.' :
+                                    '<strong>Попереждення!</strong> Ви повинні обрати хоча б два місця, щоб створити маршрут.'
+                                );
                             }
                         });
                         $('#btn-clear').on('click', () => {
@@ -943,7 +1133,7 @@ function saveRoute(routes, status) {
     let obj = {
         title: $('#city-place h2').data('cityname'),
         locationid: routes.map(item => item.markerid),
-        lng: getCurrentLanguage()
+        lng: lang
     };
 
     $.ajax({
@@ -1035,7 +1225,7 @@ function getCityPlace(place) {
                 .append($('<label>').css('font-size', '2.5em')
                     .append($('<input>').attr('type', 'checkbox')
                         .attr('data-locationid', markers.length).addClass('checkmarker')
-                        .click(e => checkMarker(e.target))
+                        .on('click', e => checkMarker(e.target))
                     )
                     .append($('<span>').addClass('cr')
                         .append($('<i>').addClass('cr-icon fas fa-check'))
@@ -1138,7 +1328,7 @@ function addMarker(place, checked) {
         google.maps.event.addListener(infowindow, 'domready', () => {
             $('.infomarker').prop('checked',
                 isExist(markers_checked[$('.infomarker').data('locationid')].marker.map));
-            $('.infomarker').click(function () {
+            $('.infomarker').on('click', function () {
                 checkMarker(this);
                 $($('.checkmarker')[$(this).data('locationid')]).prop('checked', $(this).is(':checked'));
             });

@@ -1,8 +1,8 @@
-const Place = require('./db/place');
+const Country = require('./db/country');
 
 function ins() {
     var gd = [{
-            country: 'Austria',
+            name: 'Austria',
             description: 'Despite its small size, Austria has a long-established international reputation, which is why most visitors arrive with heads full of Habsburg, Mozart and Alpine visions. Some expectations are delightfully met – the mountain scenery is breathtakingly real, there are the omnipresent fingerprints of the old empire in Vienna, and home-grown musical icons Mozart, Schubert and Strauss are championed everywhere – but Austria also has a few surprises up its sleeve in the form of contemporary art, cutting-edge architecture and innovative cuisine.Austria is frequently cited as one of the best places to live in Europe, and it is not difficult to see why. Remarkably safe and clean, it offers plenty of affordable culture, natural beauty and elegant Baroque and neoclassical architecture, as well as an efficient public transport system.',
             imgurl: '/img/trips/au.jpg',
             cities: [{
@@ -20,7 +20,7 @@ function ins() {
         },
 
         {
-            country: 'Aвстрія',
+            name: 'Aвстрія',
             description: `Aвстрія - це центральноєвропейська країна з імперською історією, архітектурою в стилі бароко, гірськими селами і альпійським ландшафтом. Державна мова тут німецький. Столиця Австрії - Відень - розташована на річці Дунай. Відень примітна своїми палацами Шенбрунн і Хофбург, а також тим, що в ній жили такі відомі люди, як Вольфганг Амадей Моцарт, Йоганн Штраус і Зигмунд Фрейд. Популярними пам'ятками Австрії є Богемський ліс на півночі країни, озеро Траунзе і розташовані на сході виноградники.`,
             imgurl: '/img/trips/au.jpg',
             cities: [{
@@ -38,8 +38,8 @@ function ins() {
         },
 
         {
-            country: 'Andorra',
-            description: '',
+            name: 'Andorra',
+            description: 'Tucked away in the eastern Pyrenees, the tiny Principality of Andorra is a land of narrow valleys and mountainous landscapes that’s popular for skiing and trekking. Its pretty villages and hamlets – dotted along the main road that traverses the country – are filled with Romanesque churches and houses, built in a unique, local style and preserved through the country’s seclusion. Tracing its roots back to Ancient Greek times and Polybius’ mention of Iberian Andosinos, Andorra is not short of history. Tradition has it that Charlemagne rewarded the Andorrans for fending off the Moors by granting them a charter. It’s this peculiar independence, somehow enduring over the ages against successive threats, that has allowed Andorra’s beautiful architecture to remain so unspoiled.',
             imgurl: '/img/trips/ad.jpg',
             cities: [{
                 name: 'Andorra la Vella',
@@ -50,7 +50,7 @@ function ins() {
         },
 
         {
-            country: 'Андорра',
+            name: 'Андорра',
             description: 'Андорра - це маленьке незалежне князівство, розташоване на Піренеях між Францією та Іспанією. Воно є відомою зоною безмитної торгівлі, а також приваблює туристів своїми гірськолижними курортами. У столиці держави, місті Андорра-ла-Велья, багато бутиків, ювелірних магазинів і торгових центрів. Більшість з них зосереджена на проспекті Мерічель. Також в столиці є старий квартал, в якому знаходиться романська церква Санта-Колома з круглою дзвонярській вежею.',
             imgurl: '/img/trips/ad.jpg',
             cities: [{
@@ -62,7 +62,7 @@ function ins() {
         },
 
         {
-            country: 'Bulgaria',
+            name: 'Bulgaria',
             description: `Bulgaria's spectacular mountains, golden beaches and vibrant cities have begun attracting hordes of eager - eyed tourists over the past few years, and with them much has been transformed in this crossroads between the Mediterranean and Eastern Europe.The country 's mammoth changes have seen its cities and resorts undergoing construction booms galore, tempting buyers from Western Europe with relatively cheap property and stunning landscapes.Bulgaria's beautiful beach and ski resorts are expanding quickly as a result and have lured visitors away from more expensive European destinations with low - priced lift passes and accommodation options.The main cities have shrugged off their weary Communist - era image and have become vibrant and attractive, with well - kept boulevards, varied shopping and lively nightlife.In contrast, many towns and villages have preserved the authentic Bulgarian spirit and hospitality and the country is especially proud of its rich folklore traditions.`,
             imgurl: '/img/trips/blg.jpg',
             cities: [{
@@ -74,7 +74,7 @@ function ins() {
         },
 
         {
-            country: 'Болгарія',
+            name: 'Болгарія',
             description: `Болгарія - балканська держава з різноманітним рельєфом. На його території знаходиться узбережжя Чорного моря, рівнини, гори і річки, одна з яких - Дунай. У Болгарії відчувається вплив грецької, слов'янської, османської та перської культур.Країна багата на спадщину ЮНЕСКО.Тут збереглася традиційна музика і безліч танців, костюмів і ремесел.У V столітті до нашої ери біля підніжжя куполоподібного гірського масиву Вітоша була заснована столиця держави - Софія.`,
             imgurl: '/img/trips/blg.jpg',
             cities: [{
@@ -86,7 +86,7 @@ function ins() {
         },
 
         {
-            country: 'Czech Republic',
+            name: 'Czech Republic',
             description: 'Nestled in the center of Europe, the Czech Republic is a country steeped in history. It’s been populated for thousands of years and is a land dotted with castles, medieval towns, beautiful mountains, ancient ruins, and world-class wineries. The country sees more and more tourists each year but they mostly stick to Prague. Once you escape that beautiful (but crowded) city you’ll find an inexpensive country with some of the most beautiful and rugged landscape in this part of Europe. I love taking the train from place to place and just staring out the window. If you visit, you’ll probably be coming for Prague but be sure to leave the city and see the rest of what the country has to offer! It’s too often overlooked!',
             imgurl: '/img/trips/cr.jpg',
             cities: [{
@@ -106,7 +106,7 @@ function ins() {
         },
 
         {
-            country: 'Чеська Республіка',
+            name: 'Чеська Республіка',
             description: `Чеська Республіка, більш відома як Чехія, - країна в Центральній Європі, яка славиться своїми вишукано прикрашеними замками, багатою історією і пивом. За головні визначні пам'ятки Праги, столиці країни, є Празький Град IX століття - добре збереглася середньовічна частина міста - і Карлів міст з його статуями.Ческі - Крумлов, невелике місто в Південній Богемії, примітний своєю архітектурою, в якій поєднується готика, ренесанс і бароко.У його старовинних будівлях відкрито безліч магазинів і ресторанів.`,
             imgurl: '/img/trips/cr.jpg',
             cities: [{
@@ -126,7 +126,7 @@ function ins() {
         },
 
         {
-            country: 'Italy',
+            name: 'Italy',
             description: 'Italy’s great food, beautiful countryside, fabulous wine, and long history make it an excellent country to visit. I fall in love with it every time I go. The vineyards in Tuscany, the history of Florence, the ancient streets in Rome, the laid back nature of Southern Italy, the gorgeous Cinque Terre, and the romantic canals in Venice all make the country irresistible. Italy leaves no one underwhelmed and, with so much to do and see, it would take a lifetime to complete. Italy is best seen slowly – just like the attitude of the country – so don’t rush it in one visit and try to do too much. Relax, take in the scenery, and enjoy a latte.',
             imgurl: '/img/trips/it.jpg',
             cities: [{
@@ -146,7 +146,7 @@ function ins() {
         },
 
         {
-            country: 'Італія',
+            name: 'Італія',
             description: 'Італія - середземноморська держава в Південній Європі з довгою береговою лінією, що справив величезний вплив на західну культуру і кухню. На території столиці країни, Рима, знаходиться держава Ватикан, а також всесвітньо відомі музеї і стародавні руїни. Інші великі міста Італії - Флоренція, де можна побачити шедеври епохи Відродження, наприклад статую Давида роботи Мікеланджело і собор Дуомо, створений за проектом архітектора Брунеллески, а також місто каналів Венеція і столиця моди Мілан',
             imgurl: '/img/trips/it.jpg',
             cities: [{
@@ -166,7 +166,7 @@ function ins() {
         },
 
         {
-            country: 'France',
+            name: 'France',
             description: 'You could spend a lifetime’s worth of holidays in France and still not feel you’d done the country justice. It remains the planet’s most visited tourist destination, meriting its standing with an almost overwhelming mass of historical treasures, storybook landscapes and cultural idiosyncrasies.The teeming glam of Paris makes for one hell of a centrepiece, matching any city on the planet for ambiance, individuality and set-piece sights. But the real beauty of France, in many ways, lies elsewhere. The country’s natural gifts are striking, with white sands, hulking mountains and swathes of rolling countryside. It’s a land that has inspired dreamers and drinkers, revolutionaries and artists. Little wonder that Francophiles (and it’s telling that even the country’s devotees have a given word to describe them) are found the world over.',
             imgurl: '/img/trips/fr.jpg',
             cities: [{
@@ -182,7 +182,7 @@ function ins() {
         },
 
         {
-            country: 'Франція',
+            name: 'Франція',
             description: `Франція - це країна в Західній Європі, на території якої знаходяться середньовічні міста, альпійські села і пляжі Середземного моря. Париж, столиця держави, славиться своїми будинками моди, найстаршими художніми музеями, в числі яких Лувр, і пам'ятками, такими як Ейфелева вежа.Франція відома своїми винами і вишуканою кухнею.Наскальний живопис в печері Ласко, амфітеатр Трьох Галій в Ліоні і величезний Версальський палац свідчать про багату історію цих місць.`,
             imgurl: '/img/trips/fr.jpg',
             cities: [{
@@ -198,9 +198,9 @@ function ins() {
         },
 
         {
-            country: 'Greece',
+            name: 'Greece',
             description: 'A flavourful melting pot of sparkling nightspots, fresh seafood, sizzling Mediterranean passion and mythical legend, Greece is a fascinating and enchanting destination.The country has long held appeal for travellers, who decamp to its shores to lounge on beaches, explore ancient relics and take advantage of the legendary Grecian hospitality.Yet despite its popularity, there is still an undiscovered feel to parts of Greece with Mount Olympus, the Peloponnese coast and some of the more remote islands slipping, for now at least, under the radar of mass tourism.The first port of call for most visitors is Athens, the country’s stunning capital, which combines a modern centre with the stark ancient beauty of the Parthenon and a position overlooking a cerulean stretch of the Saronic Gulf.',
-            imgurl: '/img/trips/gr.jpg',
+            imgurl: '/img/trips/gre.jpg',
             cities: [{
                 name: 'Athens',
                 description: 'Athens - the capital of modern Greece and the center of ancient Greek civilization, which was famous for its power in the era of antiquity. Above the city rises the Acropolis - built in the 5th century. BC fortress, which is crowned by the Temple Parthenon with its famous colonnade. The exposition of the Museum of the Acropolis and the National Archaeological Museum presents sculptures, vases, jewelry and other items of material culture of Ancient Greece.',
@@ -214,7 +214,7 @@ function ins() {
         },
 
         {
-            country: 'Греція',
+            name: 'Греція',
             description: 'Греція - країна в Південній Європі, розташована на Балканському півострові і тисячах островів в Егейському та Іонічному морях. Вона є спадкоємицею могутньої Стародавній Греції, яка вважається колискою західної цивілізації. Столиця Греції Афіни славиться своєю фортецею Акрополь, яка була зведена в V столітті до н. е., і храмом Парфенон. У туристів користуються популярністю пляжі острова Санторіні з чорним піском, курорти острова Міконос і інші місця літнього відпочинку.',
             imgurl: '/img/trips/gr.jpg',
             cities: [{
@@ -230,7 +230,7 @@ function ins() {
         },
 
         {
-            country: 'Russia',
+            name: 'Russia',
             description: `The world's largest country offers it all, from historic cities and idyllic countryside to artistic riches, epic train rides and vodka - fuelled nightlife.Whether you’ re a culture vulture in search of inspiration from great artists and writers or an adventure addict looking for new horizons to conquer, Russia amply delivers.Tread in the footsteps of literary greats, including Tolstoy and Pushkin, on their country estates.Ski or climb lofty mountains in the Caucasus, go trekking or white - water rafting in the Altai Republic, hike around Lake Baikal, or scale an active volcano in Kamchatka– the variety of possibilities will make your head spin.`,
             imgurl: '/img/trips/rus.jpg',
             cities: [{
@@ -246,7 +246,7 @@ function ins() {
         },
 
         {
-            country: 'Росія',
+            name: 'Росія',
             description: 'Росія - найбільша країна світу, розташована в Східній Європі і Північній Азії і омивається водами Тихого і Північного Льодовитого океанів. Ландшафт Росії вкрай різноманітний: на її території є і тундра, і ліси, і субтропічні пляжі. У Великому театрі в Москві і Маріїнському театрі в Санкт-Петербурзі виступають балетні трупи, які здобули всесвітню славу. Санкт-Петербург, заснований імператором Петром I, відомий своїм Зимовим палацом в стилі бароко, в якому розміщується частина великої художньої колекції музею "Ермітаж".',
             imgurl: '/img/trips/rus.jpg',
             cities: [{
@@ -262,7 +262,7 @@ function ins() {
         },
 
         {
-            country: 'Spain',
+            name: 'Spain',
             description: 'Land of the siesta, daily life in Spain moves slowly and runs late. Many travelers can get frustrated by the limited store hours and seemingly laid back pace of life. But it’s this Spanish perspective — move slowly, enjoy yourself, eat well, and relax — which gives the country so much character – and why I keep coming back, over and over again. Spain is a beautiful, interesting, and dynamic country with a lot of regional uniqueness and variety. Madrid and Barcelona are hip and energetic cities, Granada has a Moorish touch, Basque Country up north contrast itself to Southern living. The Spaniards love visitors, hosting strangers, drinking good wine, laughing at a good meal, and enjoying life. A fiery, passionate place, this country will stay withy you forever and, unlike other Western European countries, will be a lot kinder to your wallet.',
             imgurl: '/img/trips/sp.jpg',
             cities: [{
@@ -274,7 +274,7 @@ function ins() {
         },
 
         {
-            country: 'Іспанія',
+            name: 'Іспанія',
             description: 'Іспанія - європейська країна, розташована на Піренейському півострові. Територія Іспанії розділена на 17 автономних регіонів. У столиці країни, Мадриді, знаходяться Королівський палац і музей Прадо, де зберігаються твори європейських майстрів. У Сеговії можна відвідати середньовічний замок (Алькасар) і побачити добре збережений римський акведук. Барселона - столиця автономного співтовариства Каталонія. Зовнішність цього міста визначають численні химерно-фантастичні твори архітектора Антоніо Гауді, серед яких храм Святого Сімейства.',
             imgurl: '/img/trips/sp.jpg',
             cities: [{
@@ -282,13 +282,13 @@ function ins() {
                 description: `Барселона - столиця автономної області Каталонія. Цей багатонаціональне місто знаменитий своєю архітектурою і мистецтвом. Одні з головних визначних пам'яток - будівлі архітектора Антоніо Гауді, наприклад храм Святого Сімейства.Також в місті знаходяться музеї сучасного мистецтва: Музей Пікассо і Фонд Жоана Міро.У Музеї історії Барселони можна подивитися не тільки експонати, пов 'язані з римського періоду, але і місця археологічних розкопок в підземній частині.`, 
                 imgurl: '/img/trips/cities/casa_mila.jpg'
             }],
-            language: 'en'
+            language: 'ua'
         },
 
         {
-            country: 'Ukraine',
+            name: 'Ukraine',
             description: 'Vast and mysterious to many, Ukraine is barely known to outsiders despite being one of the largest countries in Europe. Long-associated with its colossal neighbour Russia, it’s a country that stands out in its own right for its varied landscapes and surprising cultural diversity.To the majority of those visiting for the first time, the reputation of Ukraine’s hardy inhabitants can seem formidable. But while, much like in neighbouring Russia, cracking a smile at a stranger in the street is deemed a sure sign of madness, locals tend to be a thoroughly welcoming lot once you’ve broken the ice. Before long they’ll be showing you round the sights and inviting you to their home for a steaming borscht – the country’s iconic beetroot soup.Ukraine’s natural side is also seen as tough – and it’s true that in winter snow covers most of the land as temperatures plummet. During the rest of the year, though, it’s surprisingly clement. What’s more, with its largely unspoilt, verdant interior, Ukraine is ideal for hikers and cyclists.The Carpathian Mountains that spill over the border with Poland, Hungary and Romania dominate the west of the country while flat plains carpeted with sunflowers and cereals make up much of the central and eastern region. To the south are the almost Mediterranean-like Black Sea coast and the Crimean Peninsula, which remains a huge draw for holidaymakers every summer. And even when snow falls through the winter, the landscape is beautiful, while there are many old churches and Soviet-era buildings to dive into for shelter.',
-            imgurl: '/img/trips/ua.jpg',
+            imgurl: '/img/trips/ukr.jpg',
             cities: [{
                 name: 'Kiev',
                 description: 'Kiev is the capital of Ukraine, located on the Dnieper River. The city is famous for monuments of religious architecture and historical museums. The Kiev-Pechersk Lavra of the 11th century is a monastery and pilgrimage center. On its territory there are several churches, crowned with golden domes. This architectural complex is famous for its underground passages leading to the tombs of Orthodox monks, and a collection of gold objects of Scythian times.',
@@ -306,9 +306,9 @@ function ins() {
         },
 
         {
-            country: 'Україна',
+            name: 'Україна',
             description: 'Україна - це велика країна в Східній Європі, відома православними церквами, чорноморськими курортами і лісистими горами. У Києві, столиці країни, розташований Софійський собор, прикрашений золотими куполами, мозаїкою XI століття і фресками. Над річкою Дніпро височить монастир Києво-Печерська лавра, місце паломництва багатьох православних християн. В її скитах зберігаються релігійні реліквії, а в катакомбах - муміфіковані останки православних монахів.',
-            imgurl: '/img/trips/ua.jpg',
+            imgurl: '/img/trips/ukr.jpg',
             cities: [{
                 name: 'Київ',
                 description: `Київ - столиця України, розташована на річці Дніпро. Місто відоме пам'ятками релігійної архітектури та історичними музеями.Києво - Печерська лавра XI століття - це монастир і центр паломництва.На його території височать кілька церков, увінчаних золотими куполами.Цей архітектурний комплекс знаменитий своїми підземними ходами, які ведуть у усипальниці православних монахів, і колекцією золотих предметів скіфських часів.`,
@@ -326,7 +326,7 @@ function ins() {
         },
 
         {
-            country: 'United Kingdom',
+            name: 'United Kingdom',
             description: 'Few places cram in as much scenery, history and culture as the United Kingdom. It’s a busy, eccentric and unique destination; a land of daft humour, tea-and-cake clichés and a thousand and one different personalities; a land where thrusting cities like London, Glasgow and Manchester share map space with the peaks of Snowdonia and the colossal slopes of the Highlands.Four component nations make up the UK, and the end result is as many-layered as that fact would suggest. Its arts scene continues to be one of the most creative and successful in the world, its passions still run high on everything from politics to sport and its overall character is as modern as it is multicultural. Even the food’s good these days.',
             imgurl: '/img/trips/gbr.jpg',
             cities: [{
@@ -338,7 +338,7 @@ function ins() {
         },
 
         {
-            country: 'Великобританія',
+            name: 'Великобританія',
             description: 'Великобританія - острівна держава на північному заході Європи, що складається з Англії, Шотландії, Уельсу та Північної Ірландії. В Англії, на батьківщині Шекспіра і групи The Beatles, знаходиться столиця держави Лондон - світовий діловий і культурний центр. Також країна відома неолітичним спорудою Стоунхендж, римськими лазнями в місті Бат і старовинними університетами в Оксфорді та Кембриджі.',
             imgurl: '/img/trips/gbr.jpg',
             cities: [{
@@ -350,7 +350,7 @@ function ins() {
         },
 
         {
-            country: 'United States',
+            name: 'United States',
             description: 'The United States isn’t a popular destination for backpackers and budget travelers. Most people just come here for a short vacation and to visit one or two cities. After all, it’s a large country without a real tourist infrastructure or good cross-country transportation. Hostels really aren’t big in the United States, trains don’t go a lot of places, and we don’t offer working holiday visas. Moreover, most round-the-world tickets only stop in LA or NYC. That being said, the United States is a country that demands more time. There are lots of national parks, a diverse geography, culture, music, and great regional food. Rent a car and drive around. Take some cross-country tours. While the coastal cities are mind-blowing, the U.S. really reveals itself in the middle. I’ve done two massive road trips across the United States and I can tell you that this country amazing, diverse, friendly, and inexpensive. Don’t limit yourself on your visit here!',
             imgurl: '/img/trips/usa.jpg',
             cities: [{
@@ -370,7 +370,7 @@ function ins() {
         },
 
         {
-            country: 'Сполучені Штати Америки',
+            name: 'Сполучені Штати Америки',
             description: 'Сполучені Штати Америки - держава, що складається з 50 штатів, займає значну частину Північної Америки. Штат Аляска розташований на північному заході континенту, а Гаваї - в Тихому океані. До великих містах атлантичного узбережжя відносяться Нью-Йорк і столиця Вашингтон. На захід від них знаходиться ще одне важливе місто - Чикаго, відоме своєю вражаючою архітектурою. А на західному узбережжі розташований Лос-Анджелес зі знаменитими голлівудськими кіностудіями.',
             imgurl: '/img/trips/usa.jpg',
             cities: [{
@@ -391,7 +391,7 @@ function ins() {
     ];
 
     gd.map(p => {
-        Place.create(p, function (err, item) {
+        Country.create(p, function (err, item) {
             if (err) {
                 console.log('Error: ' + err);
             } else {

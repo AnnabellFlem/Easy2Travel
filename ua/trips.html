@@ -1,208 +1,223 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <title>Trips - Easy2Travel</title>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" href="../img/favicon.ico">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../fontawesome/web-fonts-with-css/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/timeline.css">
     <script src="../js/jquery.min.js"></script>
     <script src="../js/main.js"></script>
 </head>
 
-<body id="quiz" data-page="trips">
-<!-- Navbar -->
-<header id="header-top">
-    <nav class="navbar navbar-expand-md bg-white navbar-dark fixed-top">
-        <a class="navbar-brand app-logo" href="#">
-          <img src="../img/flat_logo.png" alt="Logo">
-        </a>
-        <button class="navbar-toggler theme" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon small"></span>
-        </button>
-        <div class="divider collapse navbar-collapse" id="collapsibleNavbar">
-        <ul class="menu nav item-show navbar-collapse">
-            <li>
-                <a href="index.html#e2t" title="Домашня сторінка">
-                <i class="fas fa-home fa-2x"></i></a>
-            </li>
-            <li>
-                <a href="guide.html" title="Гід">Гід</a>
-            </li>
-            <li>
-                <a href="trips.html" title="Подорожі">Подорожі</a>
-            </li>
-            <li>
-               <a href="404.html" title="Обрати тур">Обрати тур <i class="fas fa-angle-down"></i>
-               </a>
-                <ul class="submenu">
-                    <li><a href="404.html" title="Популярні">Популярні</a></li>
-                    <li><a href="404.html" title="Найновіші">Найновіші</a></li>
-                    <li><a href="404.html" title="За країною">За країною</a></li>
-                </ul>
-            </li>
-            <li><a href="index.html#about" title="Про нас">Про нас</a></li>
-            <li><a href="index.html#contact" title="Контакти">Контакти <i class="fas fa-angle-down"></i></a>
-            <ul class="submenu">
-                <li><a href="quiz.html" title="Опитування">Опитування</a></li>
-            </ul>
-            </li>
-        </ul>
-        <ul class="menu nav navbar-nav navbar-right">
-            <li><a href="#" title="Language"><i class="fas fa-globe fa-2x">&nbsp;</i><sup>UA</sup></a>
-            <ul id="language" class="submenu">
-                <li><a href="/en/">EN</a></li>
-                <li><a href="/ua/">UA</a></li>
-            </ul>
-            </li>
-            <li><a href="#" title="Пошук" data-toggle="modal" data-target="#search"><i class="fas fa-search fa-2x"></i></a>
-            </li>
-            <li id="sign-btn"><a href="#" title="Вхід" data-toggle="modal" data-target="#login" class="profile"><i class="fas fa-sign-in-alt fa-2x">&nbsp;</i></a>
-            <ul>
-                <li><a href="profile.html"><i class="fas fa-user">&nbsp;</i>Профіль</a></li>
-                <li><a href="#" id="logout"><i class="fas fa-sign-out-alt">&nbsp;</i>Вихід</a></li>
-            </ul>
-            </li>
-        </ul>
-        </div>
-    </nav>
-</header>
+<body id="trips" data-page="trips">
+    <header id="header-top">
+    </header>
 
-<!--Login form-->
-<div id="login">
-</div>
+    <!--Login form-->
+    <div id="login">
+    </div>
 
-<!--Search form-->
-<div id="search">
-</div>
+    <!--Search form-->
+    <div id="search">
+    </div>
 
-<div class="container-fluid col-img">
-    <div class="col-img-item col-img-item-center mb-2">
-        <figure>
-            <img src="../img/trips/92364.jpg" alt="">
-            <i class="like fas fa-heart"><span></span></i>
-            <figcaption>Кот-д'ор, Бургундія, Франція</figcaption>
-        </figure>
-        <div>
-            <p><strong>Найкращий досвід у Франції</strong><br><br>З виноградниками, вперше висадженими стародавніми римлянами, Кот д'Ор - найбільш шанована виноробна територія в Бургундії (Бургундія) - виносить винні пілігрими з усього світу. Місцеві жителі тут настійно наполягають на тому, що у Франції немає місця, де винні традиції більш глибоко вкорінені, більш свідомо заповітні. У них є ще щось пишатися: у липні 2015 року ЮНЕСКО включила цей регіон у свій список всесвітньої спадщини. Плани на новий виноробний центр, Cité des Vins de Bourgogne, ще більше відзначатимуть цей освячений терруар.</p>
-        </div>
-        <div class="star-rating__wrap">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="5" title="5 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="4" title="4 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="3" title="3 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="2" title="2 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="1" title="1 out of 5 stars">
-        </div>
-    </div>
-    <div class="col-img-item col-img-item-center mb-2">
-        <figure>
-            <img src="../img/trips/rio.jpg" alt="">
-            <i class="like fas fa-heart"><span></span></i>
-            <figcaption>Ріу-Ґранді-ду-Норті, Бразилія</figcaption>
-        </figure>
-        <div>
-            <p><strong>Наречена Сонця</strong><br><br>У Бразилії, де ідилічні пляжі це повсякденне явище, північно-східний штат Ріо-Гранде-ду-Норте готовий виявити, що це більше, ніж ще один відпочинок на сонці чи місце для серфінгу. Окрім безмежних пісків, продуктів морської солі та найбільшого в світі дерева кешью, ця область, відома як лікоть Бразилії, - це місце, де Атлантичне узбережжя робить чуттєвий вигин навколо океану. Столиця штату Натал знаходиться в трьох годинах північніше від Ріо-де-Жанейро. Вона розташовується в частині світу, де панує сонячне світло 233 дні на рік.</p>
-        </div>
-        <div class="star-rating__wrap">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="5" title="5 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="4" title="4 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="3" title="3 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="2" title="2 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="1" title="1 out of 5 stars">
-        </div>
-    </div>
-    <div class="col-img-item col-img-item-center mb-2">
-        <figure>
-            <img src="../img/trips/berm.jpg" alt="">
-            <i class="like fas fa-heart"><span></span></i>
-            <figcaption>Бермуда</figcaption>
-        </figure>
-        <div>
-            <p><strong>Тому, що життя занадто коротке</strong><br><br>"Я тебе люблю! Бог любить вас! "Повторює Джонні Барнс, 92-річний Бермудський, який радіє при проходженні скутерів і машин кожен день уранці на кільцевій зупинці в столиці Бермудських островів Гамільтона.</p>
-        </div>
-        <div class="star-rating__wrap">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="5" title="5 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="4" title="4 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="3" title="3 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="2" title="2 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="1" title="1 out of 5 stars">
-        </div>
-    </div>
-    <div class="col-img-item col-img-item-center mb-2">
-        <figure>
-            <img src="../img/trips/br.jpg" alt="">
-            <i class="like fas fa-heart"><span></span></i>
-            <figcaption>Сади Ланселота Брауна, Британія</figcaption>
-        </figure>
-        <div>
-            <p><strong>Народженний в садибі</strong><br><br>З розкішним оком скульптора, ландшафтний дизайнер 18 століття Ланселот Браун перетворив величні заміські землі Англії назавжди. Браун змінює формальний сад у прокрутці зелених парків по всій довжині і широті країни. Його звичка розповідати меценатам, що їх підстави мають великі "можливості", як кажуть, заробили йому псевдонім Здатний Браун.</p>
-        </div>
-        <div class="star-rating__wrap">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="5" title="5 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="4" title="4 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="3" title="3 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="2" title="2 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="1" title="1 out of 5 stars">
-        </div>
-    </div>
-    <div class="col-img-item col-img-item-center mb-2">
-        <figure>
-            <img src="../img/trips/gr.jpg" alt="">
-            <i class="like fas fa-heart"><span></span></i>
-            <figcaption>Гренландія</figcaption>
-        </figure>
-        <div>
-            <p><strong>Північне виявлення</strong><br><br>Інуїти Гренландії називають його силою, величезним природним світом, який переживає всі п'ять почуттів. Це шепоче вітер, який формує поверхню снігу, чіткий вдих повітря Арктики, грубість скелястих берегів.
-            "Ми знаємо, що ми не можемо контролювати природу, ми можемо бути лише близько", - каже гренландець Джейн Петерсен.</p>
-        </div>
-        <div class="star-rating__wrap">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="5" title="5 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="4" title="4 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="3" title="3 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="2" title="2 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="1" title="1 out of 5 stars">
-        </div>
-    </div>
-    <div class="col-img-item col-img-item-center mb-2">
-        <figure>
-            <img src="../img/trips/hw.jpg" alt="">
-            <i class="like fas fa-heart"><span></span></i>
-            <figcaption>Національний парк «Гавайські вулкани»</figcaption>
-        </figure>
-        <div>
-            <p><strong>100 років Землі, Вітру, і Більше за усе вогнів</strong><br><br>Великі потоки застигнутої лави через Національний парк вулканів Гаваїв - це чорні, первісні візитні картки найвидатнішого жителя парку, Гавайської богині пожежі Пеле. Пеле була зайнятою леді, тому тільки один з двох найактивніших вулканів на Землі, зупинився в Кілауеа. З 1986 року сотні акрів нових земель були створені скелею, що виривалася з глибини всередині Землі та розливалася, зчищала все на своєму шляху і зтікала у Тихий океан.</p>
-        </div>
-        <div class="star-rating__wrap">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="5" title="5 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="4" title="4 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="3" title="3 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="2" title="2 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="1" title="1 out of 5 stars">
-        </div>
-    </div>
-    <div class="col-img-item col-img-item-center mb-2">
-        <figure>
-            <img src="../img/trips/hk.jpg" alt="">
-            <i class="like fas fa-heart"><span></span></i>
-            <figcaption>Хоккайдо, Японія</figcaption>
-        </figure>
-        <div>
-            <p><strong>Абсолютний порох</strong><br><br>Ті, хто знають, обирають острів Хоккайдо для гірськолижного досвіду, який ніде більше не знайти. Північний острів Японії, оточений туманними морями і охолодженого поблизу Сибіру, - вся ця краса благословляється взимку майже повсякденними снігопадами, які накопичуються на деяких горах до 63 футів. Юки (сніг) спускається дуже сухим і легким, створюючи порох Valhalla для лижників і сноубордистівs.</p>
-        </div>
-        <div class="star-rating__wrap">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="5" title="5 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="4" title="4 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="3" title="3 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="2" title="2 out of 5 stars">
-            <input class="star-rating__input fas fa-star" type="radio" name="rating" value="1" title="1 out of 5 stars">
-        </div>
-    </div>
-</div>
+    <div class="container-fluid col-img">
+        <div id="panel-fewer"></div>
+        <div id="timeline-list" class="row mt-5">
+            <!-- <div class="col col-sm-4 p-5 timeline-panel"> -->
+            <!-- <div class="timeline-panel">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <div id="google" class="container-fluid mb-2" style="height:180px; border: 1px solid red">
+                            </div>
 
-<footer id="footer">
-</footer>
+                            <div class="media">
+                                <div class="media-body m-2">
+                                    <h4 class="media-heading">St.Sofia Cathedral</h4>
+                                    <p>Description</p>
+                                </div>
+                                <div>
+                                    <img class="media-object h-25 w-50 float-right" src="/img/trips/au.jpg" alt="Image1">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <div class="media">
+                                <div class="media-body m-2">
+                                    <h4 class="media-heading">Old town</h4>
+                                    <p>Description</p>
+                                </div>
+                                <div>
+                                    <img class="media-object h-25 w-50 float-right" src="/img/trips/ad.jpg" alt="Image">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="timeline-footer">
+                        <p>
+                            <a class="float-right">London trip</a>
+                            <i class="float-right">@username</i>
+                        </p>
+                        <a class="float-left">
+                            <i class="tl-likes far fa-thumbs-up fa-lg">&nbsp;&nbsp;</i>
+                        </a>
+                        <a class="ml-1">
+                            <i class="tl-comments far fa-comment fa-lg"></i>
+                        </a>
+                    </div>
+                </div> -->
+            <!-- </div> -->
+            <!-- <div class="col col-sm-4 p-5 timeline-panel">
+                <div class="timeline-panel">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <div id="google" class="container-fluid mb-2" style="height:180px; border: 1px solid red">
+                            </div>
 
+                            <div class="media">
+                                <div class="media-body m-2">
+                                    <h4 class="media-heading">St.Sofia Cathedral</h4>
+                                    <p>Description</p>
+                                </div>
+                                <div>
+                                    <img class="media-object h-25 w-50 float-right" src="/img/trips/au.jpg" alt="Image1">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <div class="media">
+                                <div class="media-body m-2">
+                                    <h4 class="media-heading">Old town</h4>
+                                    <p>Description</p>
+                                </div>
+                                <div>
+                                    <img class="media-object h-25 w-50 float-right" src="/img/trips/ad.jpg" alt="Image">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="timeline-footer">
+                        <p>
+                            <a class="float-right">London trip</a>
+                            <i class="float-right">@username</i>
+                        </p>
+                        <a class="float-left">
+                            <i class="tl-likes far fa-thumbs-up fa-lg">&nbsp;&nbsp;</i>
+                        </a>
+                        <a class="ml-1">
+                            <i class="tl-comments far fa-comment fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-sm-4 p-5 timeline-panel">
+                <div class="timeline-panel">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <div id="google" class="container-fluid mb-2" style="height:180px; border: 1px solid red">
+                            </div>
+
+                            <div class="media">
+                                <div class="media-body m-2">
+                                    <h4 class="media-heading">St.Sofia Cathedral</h4>
+                                    <p>Description</p>
+                                </div>
+                                <div>
+                                    <img class="media-object h-25 w-50 float-right" src="/img/trips/au.jpg" alt="Image1">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <div class="media">
+                                <div class="media-body m-2">
+                                    <h4 class="media-heading">Old town</h4>
+                                    <p>Description</p>
+                                </div>
+                                <div>
+                                    <img class="media-object h-25 w-50 float-right" src="/img/trips/ad.jpg" alt="Image">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="timeline-footer">
+                        <p>
+                            <a class="float-right">London trip</a>
+                            <i class="float-right">@username</i>
+                        </p>
+                        <a class="float-left">
+                            <i class="tl-likes far fa-thumbs-up fa-lg">&nbsp;&nbsp;</i>
+                        </a>
+                        <a class="ml-1">
+                            <i class="tl-comments far fa-comment fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-sm-4 p-5 timeline-panel">
+                <div class="timeline-panel">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <div id="google" class="container-fluid mb-2" style="height:180px; border: 1px solid red">
+                            </div>
+
+                            <div class="media">
+                                <div class="media-body m-2">
+                                    <h4 class="media-heading">St.Sofia Cathedral</h4>
+                                    <p>Description</p>
+                                </div>
+                                <div>
+                                    <img class="media-object h-25 w-50 float-right" src="/img/trips/au.jpg" alt="Image1">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <div class="media">
+                                <div class="media-body m-2">
+                                    <h4 class="media-heading">Old town</h4>
+                                    <p>Description</p>
+                                </div>
+                                <div>
+                                    <img class="media-object h-25 w-50 float-right" src="/img/trips/ad.jpg" alt="Image">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="timeline-footer">
+                        <p>
+                            <a class="float-right">London trip</a>
+                            <i class="float-right">@username</i>
+                        </p>
+                        <a class="float-left">
+                            <i class="tl-likes far fa-thumbs-up fa-lg">&nbsp;&nbsp;</i>
+                        </a>
+                        <a class="ml-1">
+                            <i class="tl-comments far fa-comment fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        <div id="panel-more"></div>
+    </div>
+
+
+    <!-- <div id="alert-box">
+    </div> -->
+    <footer id="footer">
+    </footer>
 </body>
+
 </html>

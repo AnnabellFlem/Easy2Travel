@@ -556,6 +556,25 @@ app.get('/tours/:lng', (req, res) => {
         });
 });
 
+app.get('/guide/:lng', (req, res) => {
+    Country.find({
+            language: req.params.lng
+        })
+        .sort({
+            name: 1
+        })
+        .exec((err, countries) => {
+            if (err) {
+                console.log(err);
+                res.send(setStatusMessage(statusERROR, "", {
+                    message: "Countries not found."
+                }));
+            } else {
+                res.send(setStatusMessage(statusOK, "", countries));
+            }
+        });
+});
+
 app.get('/routes/:action', (req, res) => {
     req.session.route = {
         title: req.query.title,

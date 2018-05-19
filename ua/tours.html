@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ua" dir="ltr">
+
+<head>
+    <title>Домашня сторінка - Easy2Travel</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="../img/favicon.ico">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/checkbox-style.css">
+    <link rel="stylesheet" href="../css/timeline.css">
+    <link rel="stylesheet" href="../css/city_alert.css">
+    <link rel="stylesheet" href="../fontawesome/web-fonts-with-css/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/flex-button.css">
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/main.js"></script>
+</head>
+
+<body id="tours" data-page="tours">
+    <!--!change id-->
+    <header id="header-top">
+    </header>
+
+    <!--Login form-->
+    <div id="login">
+    </div>
+
+    <!--Search form-->
+    <div id="search">
+    </div>
+
+    <!--Route form-->
+    <div id="route">
+    </div>
+
+    <div class="container-fluid img-map text-center">
+        <div id="city-search"></div>
+    </div>
+    <div id="city-place">
+    </div>
+    <div id="city-sights" class="container mt-4 clearfix">
+    </div>
+    <div id="google" class="container-fluid p-0 mt-2" style="height:420px">
+        <div id="googleMap" style="height:100%"></div>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu_KJCzaktE0qS1ASbb5xXTdhovCl_NVI&callback=initMap" async
+            defer></script>
+    </div>
+    <div class="float-panel text-center w-25">
+        <!-- <i class="p-2 downArrow bounce fas fa-chevron-down m-5" title="Scroll down"></i> -->
+        <button type="button" title="До мапи" id="btn-map" class="p-2 pulse-button m-2 action-button shadow animate blue">До мапи</button>
+        <button type="submit" title="Створити маршрут" id="btn-route" class="p-2 pulse-button m-2 action-button shadow animate blue btn-route">Ство-<br>рити</button>
+    </div>
+    <!-- <div class="text container">
+        <h1> Sorry </h1>
+        <h2>We didn't find what you looking for. Please, try again</h2>
+    </div> -->
+    <div id="city-route" class="container">
+      <!-- <div class="row">
+            <div class="col-sm">
+                <i class="fas fa-map-marker-alt mt-3 float-left downArrow"></i>
+                <p class="lead font-weight-bold mt-4 pl-5">
+                    <em id="markers-count">0 places marked</em>
+                </p>
+            </div>
+            <div class="col-sm d-flex justify-content-center">
+                <button type="submit" title="Create a route" class="m-2 action-button shadow animate blue rounded btn-route">Create a route</button>
+            </div>
+            <div class="col-sm d-flex justify-content-end">
+                <button type="button" id="btn-clear" class="downArrow close h1" aria-label="Close">
+                    <p aria-hidden="true" class="text-theme-dark m-1">&times;</p>
+                </button>
+                <p class="lead font-weight-bold pl-1 mt-4 ">
+                    <em>Clear all checked places</em>
+                </p>
+            </div>
+        </div> -->
+    </div>
+    <div id="alert-box">
+    </div>
+    <footer id="footer">
+    </footer>
+</body>
+
+</html>

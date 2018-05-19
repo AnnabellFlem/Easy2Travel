@@ -1,395 +1,1097 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ua" dir="ltr">
+
 <head>
     <title>Гід - Easy2Travel</title>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" href="../img/favicon.ico">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../fontawesome/web-fonts-with-css/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <script src="../js/jquery.min.js"></script>
     <script src="../js/jquery.mixitup.min.js"></script>
-	<script src="../js/jPages.min.js"></script>
+    <script src="../js/jPages.min.js"></script>
     <script src="../js/main.js"></script>
 </head>
 
 <body id="guide" data-page="guide">
-<!-- Navbar -->
-<header id="header-top">
-    <nav class="navbar navbar-expand-md bg-white navbar-dark fixed-top">
-        <a class="navbar-brand app-logo" href="#">
-          <img src="../img/flat_logo.png" alt="Logo">
-        </a>
-        <button class="navbar-toggler theme" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon small"></span>
-        </button>
-        <div class="divider collapse navbar-collapse" id="collapsibleNavbar">
-        <ul class="menu nav item-show navbar-collapse">
-            <li>
-                <a href="index.html#e2t" title="Домашня сторінка">
-                <i class="fas fa-home fa-2x"></i></a>
-            </li>
-            <li>
-                <a href="guide.html" title="Гід">Гід</a>
-            </li>
-            <li>
-                <a href="trips.html" title="Подорожі">Подорожі</a>
-            </li>
-            <li>
-               <a href="404.html" title="Обрати тур">Обрати тур <i class="fas fa-angle-down"></i>
-               </a>
-                <ul class="submenu">
-                    <li><a href="404.html" title="Популярні">Популярні</a></li>
-                    <li><a href="404.html" title="Найновіші">Найновіші</a></li>
-                    <li><a href="404.html" title="За країною">За країною</a></li>
-                </ul>
-            </li>
-            <li><a href="index.html#about" title="Про нас">Про нас</a></li>
-            <li><a href="index.html#contact" title="Контакти">Контакти <i class="fas fa-angle-down"></i></a>
-            <ul class="submenu">
-                <li><a href="quiz.html" title="Опитування">Опитування</a></li>
-            </ul>
-            </li>
-        </ul>
-        <ul class="menu nav navbar-nav navbar-right">
-            <li><a href="#" title="Language"><i class="fas fa-globe fa-2x">&nbsp;</i><sup>UA</sup></a>
-            <ul id="language" class="submenu">
-                <li><a href="/en/">EN</a></li>
-                <li><a href="/ua/">UA</a></li>
-            </ul>
-            </li>
-            <li><a href="#" title="Пошук" data-toggle="modal" data-target="#search"><i class="fas fa-search fa-2x"></i></a>
-            </li>
-            <li id="sign-btn"><a href="#" title="Вхід" data-toggle="modal" data-target="#login" class="profile"><i class="fas fa-sign-in-alt fa-2x">&nbsp;</i></a>
+    <!-- Navbar -->
+    <header id="header-top">
+    </header>
+
+    <!--Login form-->
+    <div id="login">
+    </div>
+
+    <!--Search form-->
+    <div id="search">
+    </div>
+
+    <div class="container-fluid tabs-items pt-5">
+        <div class="tabs">
             <ul>
-                <li><a href="profile.html"><i class="fas fa-user">&nbsp;</i>Профіль</a></li>
-                <li><a href="#" id="logout"><i class="fas fa-sign-out-alt">&nbsp;</i>Вихід</a></li>
+                <li>
+                    <a href="#" title="">A
+                        <i class=""></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="#" class="tablink1" onclick="openTab(event, 'Austria')">Austria&nbsp;&nbsp;
+                                <i class="dropdown-toggle">
+                                </i>
+                            </a>
+                            <div class="dropdown-overlay row no-gutters collapse1">
+                                <div class="col-4">
+                                    <img class="img-fluid img-thumbnail" src="../img/trips/ukr.jpg" alt="">
+                                    <div class="bottom-left theme">Kiev</div>
+                                </div>
+                                <div class="col-4">
+                                    <img class="img-fluid img-thumbnail" src="../img/trips/ukr.jpg" alt="">
+                                </div>
+                            </div>
+                            <!-- <div class="dropdown-overlay row no-gutters">
+                                <div class="col-4">
+                                    <img class="img-fluid img-thumbnail" src="../img/trips/ukr.jpg" alt="">
+                                    <div class="bottom-left theme">Kiev</div>
+                                </div>
+                                <div class="col-4">
+                                    <img class="img-fluid img-thumbnail" src="../img/trips/ukr.jpg" alt="">
+                                </div>
+                            </div> -->
+                            <!-- <a id="c1" href="#" role="button" class="dropdown-toggle">
+                                </a>
+                                <div class="dropdown-overlay row no-gutters">
+                                        <div class="col-4">
+                                            <img class="img-fluid img-thumbnail" src="../img/trips/ukr.jpg" alt="">
+                                            <div class="bottom-left theme">Kiev</div>
+                                        </div>
+                                        <div class="col-4">
+                                            <img class="img-fluid img-thumbnail" src="../img/trips/ukr.jpg" alt="">
+                                        </div>
+                                    </div> -->
+                            <!-- <a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'Austria')">Austria</a> -->
+                            <!-- </div> -->
+                            <!-- <div class="dropdown-overlay row no-gutters">
+                        <div class="col-4"><img class="img-fluid img-thumbnail" src="../img/trips/ukr.jpg" alt="">
+                            <div class="bottom-left theme">Kiev</div>
+                        </div>
+                        <div class="col-4"><img class="img-fluid img-thumbnail" src="../img/trips/ukr.jpg" alt=""></div>
+                    </div> -->
+                            <!-- Example split danger button -->
+                            <!-- <div class="btn-group">
+<div class="dropdown show">
+  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Dropdown link
+  </a>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item" href="#">Something else here</a>
+  </div>
+</div>
+                            </div> -->
+
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'Andorra')">
+                                <i class=""></i>Andorra</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" title="">B
+                        <i class=""></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'Bulgaria')">
+                                <i class=""></i>Bulgaria</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" title="">C
+                        <i class=""></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'CR')">
+                                <i class=""></i>Czech Republic</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" title="">I
+                        <i class=""></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'Italy')">
+                                <i class=""></i>Italy</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" title="">F
+                        <i class=""></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'France')">
+                                <i class=""></i>France</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" title="">G
+                        <i class=""></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'Greece')">
+                                <i class=""></i>Greece</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" title="">R
+                        <i class=""></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'Russia')">
+                                <i class=""></i>Russia</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" title="">S
+                        <i class=""></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'Spain')">
+                                <i class=""></i>Spain</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" title="">U
+                        <i class=""></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'Ukraine')" id="defaultOpen">
+                                <i class=""></i>Ukraine</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'UK')">
+                                <i class=""></i>United Kingdom</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'USA')">
+                                <i class=""></i>United States</a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
-            </li>
-        </ul>
         </div>
-    </nav>
-</header>
+        <div id="Ukraine" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="../img/trips/ukr.jpg" alt="">
+            </figure>
+            <div>
+                <p>
+                    <strong>Ukraine Travel Guide</strong>
+                    <br>
+                    <br>Vast and mysterious to many, Ukraine is barely known to outsiders despite being one of the largest countries
+                    in Europe. Long-associated with its colossal neighbour Russia, it’s a country that stands out in its
+                    own right for its varied landscapes and surprising cultural diversity.
+                    <br> To the majority of those visiting for the first time, the reputation of Ukraine’s hardy inhabitants
+                    can seem formidable. But while, much like in neighbouring Russia, cracking a smile at a stranger in the
+                    street is deemed a sure sign of madness, locals tend to be a thoroughly welcoming lot once you’ve broken
+                    the ice. Before long they’ll be showing you round the sights and inviting you to their home for a steaming
+                    borscht – the country’s iconic beetroot soup.
+                    <br> Ukraine’s natural side is also seen as tough – and it’s true that in winter snow covers most of the
+                    land as temperatures plummet. During the rest of the year, though, it’s surprisingly clement. What’s
+                    more, with its largely unspoilt, verdant interior, Ukraine is ideal for hikers and cyclists.
+                    <br> The Carpathian Mountains that spill over the border with Poland, Hungary and Romania dominate the west
+                    of the country while flat plains carpeted with sunflowers and cereals make up much of the central and
+                    eastern region. To the south are the almost Mediterranean-like Black Sea coast and the Crimean Peninsula,
+                    which remains a huge draw for holidaymakers every summer. And even when snow falls through the winter,
+                    the landscape is beautiful, while there are many old churches and Soviet-era buildings to dive into for
+                    shelter.
+                </p>
+            </div>
+            <div class="more-btn">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="float-bar">
+                <div>
+                    <h6>Area:</h6>
+                    <p>603,700 sq km (233,090 sq miles).</p>
+                </div>
+                <div>
+                    <h6>Population:</h6>
+                    <p>44.4 million (2015).</p>
+                </div>
+                <div>
+                    <h6>Population density:</h6>
+                    <p>73.6 per sq km.</p>
+                </div>
+                <div>
+                    <h6>Capital:</h6>
+                    <p>Kiev.</p>
+                </div>
+                <div>
+                    <h6>Government:</h6>
+                    <p>Republic.</p>
+                </div>
+                <div>
+                    <h6>Head of state:</h6>
+                    <p>President Petro Poroshenko since 2014.</p>
+                </div>
+                <div>
+                    <h6>Head of government:</h6>
+                    <p>Prime Minister Volodymyr Groysman since 2016.</p>
+                </div>
+                <div>
+                    <h6>Electricity:</h6>
+                    <p>220 volts AC, 50Hz. European plugs with two round pins are used.</p>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Ukraine">
+                        <i class="fab fa-wikipedia-w p-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="UK" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="../img/trips/gbr.jpg" alt="">
+            </figure>
+            <div>
+                <p>
+                    <strong>United Kingdom Travel Guide</strong>
+                    <br>
+                    <br>Few places cram in as much scenery, history and culture as the United Kingdom. It’s a busy, eccentric
+                    and unique destination; a land of daft humour, tea-and-cake clichés and a thousand and one different
+                    personalities; a land where thrusting cities like London, Glasgow and Manchester share map space with
+                    the peaks of Snowdonia and the colossal slopes of the Highlands.
+                    <br> Four component nations make up the UK, and the end result is as many-layered as that fact would suggest.
+                    Its arts scene continues to be one of the most creative and successful in the world, its passions still
+                    run high on everything from politics to sport and its overall character is as modern as it is multicultural.
+                    Even the food’s good these days.
+                </p>
+            </div>
+            <div class="more-btn">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="float-bar">
+                <div>
+                    <h6>Area:</h6>
+                    <p>242,514 sq km (93,635 sq miles).</p>
+                </div>
+                <div>
+                    <h6>Population:</h6>
+                    <p>64.6 million (2014).</p>
+                </div>
+                <div>
+                    <h6>Population density:</h6>
+                    <p>266.4 per sq km.</p>
+                </div>
+                <div>
+                    <h6>Capital:</h6>
+                    <p>London.</p>
+                </div>
+                <div>
+                    <h6>Government:</h6>
+                    <p>Constitutional monarchy.</p>
+                </div>
+                <div>
+                    <h6>Head of state:</h6>
+                    <p>HM Queen Elizabeth II since 1952.</p>
+                </div>
+                <div>
+                    <h6>Head of government:</h6>
+                    <p>Prime Minister Theresa May since 2016.</p>
+                </div>
+                <div>
+                    <h6>Electricity:</h6>
+                    <p>230 volts AC, 50Hz. Plugs with three square pins are standard.</p>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/United_Kingdom">
+                        <i class="fab fa-wikipedia-w p-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="Austria" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="../img/trips/au.jpg" alt="">
+            </figure>
+            <div>
+                <p>
+                    <strong>Austria Travel Guide</strong>
+                    <br>
+                    <br>Despite its small size, Austria has a long-established international reputation, which is why most visitors
+                    arrive with heads full of Habsburg, Mozart and Alpine visions. Some expectations are delightfully met
+                    – the mountain scenery is breathtakingly real, there are the omnipresent fingerprints of the old empire
+                    in Vienna, and home-grown musical icons Mozart, Schubert and Strauss are championed everywhere – but
+                    Austria also has a few surprises up its sleeve in the form of contemporary art, cutting-edge architecture
+                    and innovative cuisine.
+                    <br> Austria is frequently cited as one of the best places to live in Europe, and it is not difficult to
+                    see why. Remarkably safe and clean, it offers plenty of affordable culture, natural beauty and elegant
+                    Baroque and neoclassical architecture, as well as an efficient public transport system.
+                </p>
+            </div>
+            <div class="more-btn">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="float-bar">
+                <div>
+                    <h6>Area:</h6>
+                    <p>83,871 sq km (32,382 sq miles).</p>
+                </div>
+                <div>
+                    <h6>Population:</h6>
+                    <p>8.7 million (2015).</p>
+                </div>
+                <div>
+                    <h6>Population density:</h6>
+                    <p>103 per sq km.</p>
+                </div>
+                <div>
+                    <h6>Capital:</h6>
+                    <p>Vienna (Wien).</p>
+                </div>
+                <div>
+                    <h6>Government:</h6>
+                    <p>Federal Republic.</p>
+                </div>
+                <div>
+                    <h6>Head of state:</h6>
+                    <p>President Heinz Fischer since 2004. President-elect Alexander van der Bellen from July 2016.</p>
+                </div>
+                <div>
+                    <h6>Head of government:</h6>
+                    <p>Chancellor Christian Kern since 2016.</p>
+                </div>
+                <div>
+                    <h6>Electricity:</h6>
+                    <p>230 volts AC, 50Hz. European plugs with two round pins are standard.</p>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Austria">
+                        <i class="fab fa-wikipedia-w p-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="Bulgaria" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="../img/trips/blg.jpg" alt="">
+            </figure>
+            <div>
+                <p>
+                    <strong>Bulgaria Travel Guide</strong>
+                    <br>
+                    <br>Bulgaria's spectacular mountains, golden beaches and vibrant cities have begun attracting hordes of eager-eyed
+                    tourists over the past few years, and with them much has been transformed in this crossroads between
+                    the Mediterranean and Eastern Europe.
+                    <br> The country's mammoth changes have seen its cities and resorts undergoing construction booms galore,
+                    tempting buyers from Western Europe with relatively cheap property and stunning landscapes.
+                    <br> Bulgaria's beautiful beach and ski resorts are expanding quickly as a result and have lured visitors
+                    away from more expensive European destinations with low-priced lift passes and accommodation options.
+                    The main cities have shrugged off their weary Communist-era image and have become vibrant and attractive,
+                    with well-kept boulevards, varied shopping and lively nightlife. In contrast, many towns and villages
+                    have preserved the authentic Bulgarian spirit and hospitality and the country is especially proud of
+                    its rich folklore traditions.
+                </p>
+            </div>
+            <div class="more-btn">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="float-bar">
+                <div>
+                    <h6>Area:</h6>
+                    <p>110,994 sq km (42,855 sq miles).</p>
+                </div>
+                <div>
+                    <h6>Population:</h6>
+                    <p>7.2 million (2015).</p>
+                </div>
+                <div>
+                    <h6>Population density:</h6>
+                    <p>64.8 per sq km.</p>
+                </div>
+                <div>
+                    <h6>Capital:</h6>
+                    <p>Sofia.</p>
+                </div>
+                <div>
+                    <h6>Government:</h6>
+                    <p>Republic.</p>
+                </div>
+                <div>
+                    <h6>Head of state:</h6>
+                    <p>President Rosen Plevneliev since 2012.</p>
+                </div>
+                <div>
+                    <h6>Head of government:</h6>
+                    <p>Prime Minister Boyko Borisov, resigned in November 2016.</p>
+                </div>
+                <div>
+                    <h6>Electricity:</h6>
+                    <p>220-240 volts AC, 50Hz. European plugs with two round pins are standard.</p>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Bulgaria">
+                        <i class="fab fa-wikipedia-w p-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="Andorra" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="../img/trips/ad.jpg" alt="">
+            </figure>
+            <div>
+                <p>
+                    <strong>Andorra Travel Guide</strong>
+                    <br>
+                    <br>Tucked away in the eastern Pyrenees, the tiny Principality of Andorra is a land of narrow valleys and
+                    mountainous landscapes that’s popular for skiing and trekking. Its pretty villages and hamlets – dotted
+                    along the main road that traverses the country – are filled with Romanesque churches and houses, built
+                    in a unique, local style and preserved through the country’s seclusion.
+                    <br> Tracing its roots back to Ancient Greek times and Polybius’ mention of Iberian Andosinos, Andorra is
+                    not short of history. Tradition has it that Charlemagne rewarded the Andorrans for fending off the Moors
+                    by granting them a charter. It’s this peculiar independence, somehow enduring over the ages against successive
+                    threats, that has allowed Andorra’s beautiful architecture to remain so unspoiled.
+                </p>
+            </div>
+            <div class="more-btn">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="float-bar">
+                <div>
+                    <h6>Area:</h6>
+                    <p>467.8 sq km (180.6 sq miles).</p>
+                </div>
+                <div>
+                    <h6>Population:</h6>
+                    <p>85,580 (2015).</p>
+                </div>
+                <div>
+                    <h6>Population density:</h6>
+                    <p>183.3 per sq km.</p>
+                </div>
+                <div>
+                    <h6>Capital:</h6>
+                    <p>Andorra la Vella.</p>
+                </div>
+                <div>
+                    <h6>Government:</h6>
+                    <p>Principality under the suzerainty of the President of France and the Spanish Bishop of Seu d'Urgell.</p>
+                </div>
+                <div>
+                    <h6>Head of state:</h6>
+                    <p>Co-heads Joan Enric Vives i Sicilia (Bishop of la Seu d'Urgell) since 2003 and François Hollande (President
+                        of France) since 2012.</p>
+                </div>
+                <div>
+                    <h6>Head of government:</h6>
+                    <p>Prime Minister Antoni Martí Petit since 2011.</p>
+                </div>
+                <div>
+                    <h6>Electricity:</h6>
+                    <p>230 volts AC, 50Hz. European plugs with two round pins are standard.</p>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Andorra">
+                        <i class="fab fa-wikipedia-w p-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="France" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="../img/trips/fr.jpg" alt="">
+            </figure>
+            <div>
+                <p>
+                    <strong>France Travel Guide</strong>
+                    <br>
+                    <br>You could spend a lifetime’s worth of holidays in France and still not feel you’d done the country justice.
+                    It remains the planet’s most visited tourist destination, meriting its standing with an almost overwhelming
+                    mass of historical treasures, storybook landscapes and cultural idiosyncrasies.
+                    <br> The teeming glam of Paris makes for one hell of a centrepiece, matching any city on the planet for ambiance,
+                    individuality and set-piece sights. But the real beauty of France, in many ways, lies elsewhere. The
+                    country’s natural gifts are striking, with white sands, hulking mountains and swathes of rolling countryside.
+                    It’s a land that has inspired dreamers and drinkers, revolutionaries and artists. Little wonder that
+                    Francophiles (and it’s telling that even the country’s devotees have a given word to describe them) are
+                    found the world over.
+                </p>
+            </div>
+            <div class="more-btn">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="float-bar">
+                <div>
+                    <h6>Area:</h6>
+                    <p>551,500 sq km (212,935 sq miles) (not including overseas territories).</p>
+                </div>
+                <div>
+                    <h6>Population:</h6>
+                    <p>62.8 million (2015, metropolitan France only).</p>
+                </div>
+                <div>
+                    <h6>Population density:</h6>
+                    <p>113.9 per sq km.</p>
+                </div>
+                <div>
+                    <h6>Capital:</h6>
+                    <p>Paris.</p>
+                </div>
+                <div>
+                    <h6>Government:</h6>
+                    <p>Republic.</p>
+                </div>
+                <div>
+                    <h6>Head of state:</h6>
+                    <p>President François Hollande since 2012.</p>
+                </div>
+                <div>
+                    <h6>Head of government:</h6>
+                    <p>Prime Minister Manuel Valls since 2014.</p>
+                </div>
+                <div>
+                    <h6>Electricity:</h6>
+                    <p>230 volts AC, 50Hz. European plugs with two round pins are used.</p>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/France">
+                        <i class="fab fa-wikipedia-w p-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="Greece" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="../img/trips/gre.jpg" alt="">
+            </figure>
+            <div>
+                <p>
+                    <strong>Greece Travel Guide</strong>
+                    <br>
+                    <br>A flavourful melting pot of sparkling nightspots, fresh seafood, sizzling Mediterranean passion and mythical
+                    legend, Greece is a fascinating and enchanting destination.
+                    <br> The country has long held appeal for travellers, who decamp to its shores to lounge on beaches, explore
+                    ancient relics and take advantage of the legendary Grecian hospitality.
+                    <br> Yet despite its popularity, there is still an undiscovered feel to parts of Greece with Mount Olympus,
+                    the Peloponnese coast and some of the more remote islands slipping, for now at least, under the radar
+                    of mass tourism.
+                    <br> The first port of call for most visitors is Athens, the country’s stunning capital, which combines a
+                    modern centre with the stark ancient beauty of the Parthenon and a position overlooking a cerulean stretch
+                    of the Saronic Gulf.
+                </p>
+            </div>
+            <div class="more-btn">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="float-bar">
+                <div>
+                    <h6>Area:</h6>
+                    <p>131,957 sq km (50,949 sq miles).</p>
+                </div>
+                <div>
+                    <h6>Population:</h6>
+                    <p>10.8 million (2015).</p>
+                </div>
+                <div>
+                    <h6>Population density:</h6>
+                    <p>81.7 per sq km.</p>
+                </div>
+                <div>
+                    <h6>Capital:</h6>
+                    <p>Athens.</p>
+                </div>
+                <div>
+                    <h6>Government:</h6>
+                    <p>Republic.</p>
+                </div>
+                <div>
+                    <h6>Head of state:</h6>
+                    <p>President Prokopis Pavlopoulos since 2015.</p>
+                </div>
+                <div>
+                    <h6>Head of government:</h6>
+                    <p>Prime Minister Alexis Tsipras since 2015.</p>
+                </div>
+                <div>
+                    <h6>Electricity:</h6>
+                    <p>230 volts AC, 50Hz. European plugs with two round pins are used.</p>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Greece">
+                        <i class="fab fa-wikipedia-w p-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="CR" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="../img/trips/cr.jpg" alt="">
+            </figure>
+            <div>
+                <p>
+                    <strong>Czech Republic Travel Guide</strong>
+                    <br>
+                    <br>Nestled in the center of Europe, the Czech Republic is a country steeped in history. It’s been populated
+                    for thousands of years and is a land dotted with castles, medieval towns, beautiful mountains, ancient
+                    ruins, and world-class wineries. The country sees more and more tourists each year but they mostly stick
+                    to Prague. Once you escape that beautiful (but crowded) city you’ll find an inexpensive country with
+                    some of the most beautiful and rugged landscape in this part of Europe. I love taking the train from
+                    place to place and just staring out the window. If you visit, you’ll probably be coming for Prague but
+                    be sure to leave the city and see the rest of what the country has to offer! It’s too often overlooked!
+                </p>
+            </div>
+            <div class="more-btn">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="float-bar">
+                <div>
+                    <h6>Area:</h6>
+                    <p>78,866 sq km (30,450 sq miles).</p>
+                </div>
+                <div>
+                    <h6>Population:</h6>
+                    <p>10.6 million (2016).</p>
+                </div>
+                <div>
+                    <h6>Population density:</h6>
+                    <p>347.1 per sq km.</p>
+                </div>
+                <div>
+                    <h6>Capital:</h6>
+                    <p>Prague.</p>
+                </div>
+                <div>
+                    <h6>Government:</h6>
+                    <p>Republic.</p>
+                </div>
+                <div>
+                    <h6>Head of state:</h6>
+                    <p>President Miloš Zeman.</p>
+                </div>
+                <div>
+                    <h6>Head of government:</h6>
+                    <p>Prime Minister Andrej Babiš.</p>
+                </div>
+                <div>
+                    <h6>Electricity:</h6>
+                    <p>230 volts AC, 50Hz. European plugs with two round pins are used.</p>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Czech_Republic">
+                        <i class="fab fa-wikipedia-w p-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="Italy" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="../img/trips/it.jpg" alt="">
+            </figure>
+            <div>
+                <p>
+                    <strong>Italy Travel Guide</strong>
+                    <br>
+                    <br>Italy’s great food, beautiful countryside, fabulous wine, and long history make it an excellent country
+                    to visit. I fall in love with it every time I go. The vineyards in Tuscany, the history of Florence,
+                    the ancient streets in Rome, the laid back nature of Southern Italy, the gorgeous Cinque Terre, and the
+                    romantic canals in Venice all make the country irresistible. Italy leaves no one underwhelmed and, with
+                    so much to do and see, it would take a lifetime to complete. Italy is best seen slowly – just like the
+                    attitude of the country – so don’t rush it in one visit and try to do too much. Relax, take in the scenery,
+                    and enjoy a latte.
+                </p>
+            </div>
+            <div class="more-btn">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="float-bar">
+                <div>
+                    <h6>Area:</h6>
+                    <p>131,957 sq km (50,949 sq miles).</p>
+                </div>
+                <div>
+                    <h6>Population:</h6>
+                    <p>10.8 million (2015).</p>
+                </div>
+                <div>
+                    <h6>Population density:</h6>
+                    <p>81.7 per sq km.</p>
+                </div>
+                <div>
+                    <h6>Capital:</h6>
+                    <p>Athens.</p>
+                </div>
+                <div>
+                    <h6>Government:</h6>
+                    <p>Republic.</p>
+                </div>
+                <div>
+                    <h6>Head of state:</h6>
+                    <p>President Prokopis Pavlopoulos since 2015.</p>
+                </div>
+                <div>
+                    <h6>Head of government:</h6>
+                    <p>Prime Minister Alexis Tsipras since 2015.</p>
+                </div>
+                <div>
+                    <h6>Electricity:</h6>
+                    <p>230 volts AC, 50Hz. European plugs with two round pins are used.</p>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Greece">
+                        <i class="fab fa-wikipedia-w p-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="Russia" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="../img/trips/rus.jpg" alt="">
+            </figure>
+            <div>
+                <p>
+                    <strong>Russia Travel Guide</strong>
+                    <br>
+                    <br>The world's largest country offers it all, from historic cities and idyllic countryside to artistic riches,
+                    epic train rides and vodka-fuelled nightlife. Whether you’re a culture vulture in search of inspiration
+                    from great artists and writers or an adventure addict looking for new horizons to conquer, Russia amply
+                    delivers. Tread in the footsteps of literary greats, including Tolstoy and Pushkin, on their country
+                    estates. Ski or climb lofty mountains in the Caucasus, go trekking or white-water rafting in the Altai
+                    Republic, hike around Lake Baikal, or scale an active volcano in Kamchatka – the variety of possibilities
+                    will make your head spin.
+                </p>
+            </div>
+            <div class="more-btn">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="float-bar">
+                <div>
+                    <h6>Area:</h6>
+                    <p>131,957 sq km (50,949 sq miles).</p>
+                </div>
+                <div>
+                    <h6>Population:</h6>
+                    <p>10.8 million (2015).</p>
+                </div>
+                <div>
+                    <h6>Population density:</h6>
+                    <p>81.7 per sq km.</p>
+                </div>
+                <div>
+                    <h6>Capital:</h6>
+                    <p>Athens.</p>
+                </div>
+                <div>
+                    <h6>Government:</h6>
+                    <p>Republic.</p>
+                </div>
+                <div>
+                    <h6>Head of state:</h6>
+                    <p>President Prokopis Pavlopoulos since 2015.</p>
+                </div>
+                <div>
+                    <h6>Head of government:</h6>
+                    <p>Prime Minister Alexis Tsipras since 2015.</p>
+                </div>
+                <div>
+                    <h6>Electricity:</h6>
+                    <p>230 volts AC, 50Hz. European plugs with two round pins are used.</p>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Greece">
+                        <i class="fab fa-wikipedia-w p-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="China" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="../img/trips/chi.jpg" alt="">
+            </figure>
+            <div>
+                <p>
+                    <strong>China Travel Guide</strong>
+                    <br>
+                    <br>There are few countries in the world with a culture as distinct as China. A country of contrasts, China
+                    offers thriving Beijing, Shanghai, and Hong Kong, but also extremely rural and underdeveloped areas in
+                    the western part of the country. This is a country stuck between the developed and developing world.
+                    Rapid change has attracted curious people from around the globe, so it’s a great time to dip your toes
+                    into this amazing culture and explore the country. Each day creates a new China. While I dislike the
+                    pollution of many of the big cities, the countryside and food are incredible. This travel guide to China
+                    can help you get the most from you visit!
+                </p>
+            </div>
+            <div class="more-btn">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="float-bar">
+                <div>
+                    <h6>Area:</h6>
+                    <p>131,957 sq km (50,949 sq miles).</p>
+                </div>
+                <div>
+                    <h6>Population:</h6>
+                    <p>10.8 million (2015).</p>
+                </div>
+                <div>
+                    <h6>Population density:</h6>
+                    <p>81.7 per sq km.</p>
+                </div>
+                <div>
+                    <h6>Capital:</h6>
+                    <p>Athens.</p>
+                </div>
+                <div>
+                    <h6>Government:</h6>
+                    <p>Republic.</p>
+                </div>
+                <div>
+                    <h6>Head of state:</h6>
+                    <p>President Prokopis Pavlopoulos since 2015.</p>
+                </div>
+                <div>
+                    <h6>Head of government:</h6>
+                    <p>Prime Minister Alexis Tsipras since 2015.</p>
+                </div>
+                <div>
+                    <h6>Electricity:</h6>
+                    <p>230 volts AC, 50Hz. European plugs with two round pins are used.</p>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Greece">
+                        <i class="fab fa-wikipedia-w p-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="USA" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="../img/trips/usa.jpg" alt="">
+            </figure>
+            <div>
+                <p>
+                    <strong>United States Travel Guide</strong>
+                    <br>
+                    <br>The United States isn’t a popular destination for backpackers and budget travelers. Most people just
+                    come here for a short vacation and to visit one or two cities. After all, it’s a large country without
+                    a real tourist infrastructure or good cross-country transportation. Hostels really aren’t big in the
+                    United States, trains don’t go a lot of places, and we don’t offer working holiday visas. Moreover, most
+                    round-the-world tickets only stop in LA or NYC. That being said, the United States is a country that
+                    demands more time. There are lots of national parks, a diverse geography, culture, music, and great regional
+                    food. Rent a car and drive around. Take some cross-country tours. While the coastal cities are mind-blowing,
+                    the U.S. really reveals itself in the middle. I’ve done two massive road trips across the United States
+                    and I can tell you that this country amazing, diverse, friendly, and inexpensive. Don’t limit yourself
+                    on your visit here!
+                </p>
+            </div>
+            <div class="more-btn">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="float-bar">
+                <div>
+                    <h6>Area:</h6>
+                    <p>131,957 sq km (50,949 sq miles).</p>
+                </div>
+                <div>
+                    <h6>Population:</h6>
+                    <p>10.8 million (2015).</p>
+                </div>
+                <div>
+                    <h6>Population density:</h6>
+                    <p>81.7 per sq km.</p>
+                </div>
+                <div>
+                    <h6>Capital:</h6>
+                    <p>Athens.</p>
+                </div>
+                <div>
+                    <h6>Government:</h6>
+                    <p>Republic.</p>
+                </div>
+                <div>
+                    <h6>Head of state:</h6>
+                    <p>President Prokopis Pavlopoulos since 2015.</p>
+                </div>
+                <div>
+                    <h6>Head of government:</h6>
+                    <p>Prime Minister Alexis Tsipras since 2015.</p>
+                </div>
+                <div>
+                    <h6>Electricity:</h6>
+                    <p>230 volts AC, 50Hz. European plugs with two round pins are used.</p>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Greece">
+                        <i class="fab fa-wikipedia-w p-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="Japan" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="../img/trips/jp.jpg" alt="">
+            </figure>
+            <div>
+                <p>
+                    <strong>Japan Travel Guide</strong>
+                    <br>
+                    <br>Though very expensive, Japan is one of the most amazing, beautiful, and friendly countries in the world.
+                    From bustling Tokyo and zen-like Kyoto all the way to laid-back Okinawa and wintery Hokkaido, Japan is
+                    a high-tech world mixed with the politeness and respect of their past. Honestly, I love Japan. It was
+                    a life-long dream to go there and it lived up to all my expectations. Japan has mouth-watering food,
+                    majestic temples and shrines, zen gardens, lush national parks, and a rich historic culture. It’s a wonderful
+                    place and, while it may be an expensive country to visit, there are plenty of ways to make this country
+                    affordable. Don’t get scared off by the prices or the language barrier. You won’t regret your visit here
+                    – it’s one of the most amazing countries in the world. Let this travel guide help you plan an affordable
+                    trip to Japan!
+                </p>
+            </div>
+            <div class="more-btn">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="float-bar">
+                <div>
+                    <h6>Area:</h6>
+                    <p>131,957 sq km (50,949 sq miles).</p>
+                </div>
+                <div>
+                    <h6>Population:</h6>
+                    <p>10.8 million (2015).</p>
+                </div>
+                <div>
+                    <h6>Population density:</h6>
+                    <p>81.7 per sq km.</p>
+                </div>
+                <div>
+                    <h6>Capital:</h6>
+                    <p>Athens.</p>
+                </div>
+                <div>
+                    <h6>Government:</h6>
+                    <p>Republic.</p>
+                </div>
+                <div>
+                    <h6>Head of state:</h6>
+                    <p>President Prokopis Pavlopoulos since 2015.</p>
+                </div>
+                <div>
+                    <h6>Head of government:</h6>
+                    <p>Prime Minister Alexis Tsipras since 2015.</p>
+                </div>
+                <div>
+                    <h6>Electricity:</h6>
+                    <p>230 volts AC, 50Hz. European plugs with two round pins are used.</p>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Greece">
+                        <i class="fab fa-wikipedia-w p-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="Spain" class="col-img-item col-img-item-right tab-item mt-5">
+            <figure class="mr-2">
+                <img src="../img/trips/sp.jpg" alt="">
+            </figure>
+            <div>
+                <p>
+                    <strong>Spain Travel Guide</strong>
+                    <br>
+                    <br>Land of the siesta, daily life in Spain moves slowly and runs late. Many travelers can get frustrated
+                    by the limited store hours and seemingly laid back pace of life. But it’s this Spanish perspective —
+                    move slowly, enjoy yourself, eat well, and relax — which gives the country so much character – and why
+                    I keep coming back, over and over again. Spain is a beautiful, interesting, and dynamic country with
+                    a lot of regional uniqueness and variety. Madrid and Barcelona are hip and energetic cities, Granada
+                    has a Moorish touch, Basque Country up north contrast itself to Southern living. The Spaniards love visitors,
+                    hosting strangers, drinking good wine, laughing at a good meal, and enjoying life. A fiery, passionate
+                    place, this country will stay withy you forever and, unlike other Western European countries, will be
+                    a lot kinder to your wallet.
+                </p>
+            </div>
+            <div class="more-btn">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="float-bar">
+                <div>
+                    <h6>Area:</h6>
+                    <p>131,957 sq km (50,949 sq miles).</p>
+                </div>
+                <div>
+                    <h6>Population:</h6>
+                    <p>10.8 million (2015).</p>
+                </div>
+                <div>
+                    <h6>Population density:</h6>
+                    <p>81.7 per sq km.</p>
+                </div>
+                <div>
+                    <h6>Capital:</h6>
+                    <p>Athens.</p>
+                </div>
+                <div>
+                    <h6>Government:</h6>
+                    <p>Republic.</p>
+                </div>
+                <div>
+                    <h6>Head of state:</h6>
+                    <p>President Prokopis Pavlopoulos since 2015.</p>
+                </div>
+                <div>
+                    <h6>Head of government:</h6>
+                    <p>Prime Minister Alexis Tsipras since 2015.</p>
+                </div>
+                <div>
+                    <h6>Electricity:</h6>
+                    <p>230 volts AC, 50Hz. European plugs with two round pins are used.</p>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Greece">
+                        <i class="fab fa-wikipedia-w p-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
 
-<!--Login form-->
-<div id="login">
-</div>
-
-<!--Search form-->
-<div id="search">
-</div>
-
-<div class="container-fluid tabs-items pt-5">
-    <div class="tabs">
-        <ul>
-            <li><a href="#" title="">A<i class=""></i></a>
-                <ul>
-                  <li><a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'Austria')"><i class=""></i>Австрія</a></li>
-                  <li><a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'Andorra')"><i class=""></i>Андорра</a></li>
-                </ul>
-            </li>
-            <li><a href="#" title="">Б<i class=""></i></a>
-                <ul>
-                  <li><a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'Bulgaria')"><i class=""></i>Болгарія</a></li>
-                </ul>
-            </li>
-            <li><a href="#" title="">Ф<i class=""></i></a>
-                <ul>
-                  <li><a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'France')"><i class=""></i>Франція</a></li>
-                </ul>
-            </li>
-            <li><a href="#" title="">Г<i class=""></i></a>
-                <ul>
-                  <li><a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'Greece')"><i class=""></i>Греція</a></li>
-                </ul>
-            </li>
-            <li><a href="#" title="">У<i class=""></i></a>
-                <ul>
-                  <li><a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'Ukraine')" id="defaultOpen"><i class=""></i>Україна</a></li>
-                  <li><a href="javascript:void(0)" class="tablink" onclick="openTab(event, 'UK')"><i class=""></i>Великобританія</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-    <div id="Ukraine" class="col-img-item col-img-item-right tab-item mt-5">
-        <figure class="mr-2">
-            <img src="../img/trips/ukr.jpg" alt="">
-        </figure>
-        <div>
-            <p><strong>Гід з порожей Україною</strong><br><br>Важко і загадково багатьом сприйняти той факт, що Україна є однією з найбільших країн Європи, але відома далеко не кожному. Вона давно пов'язується і асоціюється  з колосальним сусідом - Росією. Ця країна виділяється самостійно за свої різноманітні ландшафти та дивовижне культурне різноманіття. <br>
-            Для більшості репутація витривалих жителів України може здатися грізною. Але в той час, як і в сусідній Русі, тріскаючи посмішкою у чужих на вулиці вважається неперевершеною ознакою безумства, місцеві жителі, як правило, дуже раді вітати кожного, коли ви зрушили лід довіри. Незабаром вони покажуть вам околиці і запросять вас до свого будинку покуштувати знаменитого борщу - так званого супу з буряка в країні. <br>
-            Звичайна природна сторона України також вважається жорсткою - і це правда, що взимку сніг охоплює більшу частину землі, коли температура падає. Протягом решти року, однак, вона дивує розкішним різнотрав'ям. Більше того, Україна ідеально підходить для туристів та велотурів. <br>
-            На заході країна ділить свої кордони з Польщею, Угорщиною та Румунію. На плоскогір'ях розташована значна частина центрального та східного регіонів, які оброблені ланами з соняшниками та злаками. На південь розкинуло свої межі чорноморське узбережжя. Це все знаходиться майже у Середземному морі та охоплює Кримський півострів, що залишається остівком спокою для відпочиваючих кожного літа. І навіть коли сніг проривається взимку, краєвиди є мальовничими. І навіть багато старих церквів та будинків радянської епохи мріють захопити ваше серце і залишитися в ньому назавжди.
-            </p>
-        </div>
-        <div class="more-btn">
-            <i class="fas fa-info-circle"></i>
-        </div>
-        <div class="float-bar">
-            <div><h6>Площа:</h6><p>603,700 кв км(233,090 кв милі).</p>
-            </div>
-            <div><h6>Населення:</h6><p>44.4 мільйони (2015).</p>
-            </div>
-            <div><h6>Густота населення:</h6><p>73.6 на кв км.</p>
-            </div>
-            <div><h6>Столиця:</h6><p>Київ.</p>
-            </div>
-            <div><h6>Форма правління:</h6><p>Республіканська.</p>
-            </div>
-            <div><h6>Голова країни:</h6><p>Президент Петро Порошенко з 2014 року.</p>
-            </div>
-            <div><h6>Голова Управління:</h6><p>Прем'єр Міністр Володимир Гройсман з 2016 року.</p>
-            </div>
-            <div><h6>Електроенегрія:</h6><p>220 вольт AC, 50Hz. Використовуються європейські пробки з двома круглими штифтами.</p>
-            </div>
-            <div>
-                <a href="https://en.wikipedia.org/wiki/Ukraine">
-                    <i class="fab fa-wikipedia-w p-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div id="UK" class="col-img-item col-img-item-right tab-item mt-5">
-        <figure class="mr-2">
-            <img src="../img/trips/gbr.jpg" alt="">
-        </figure>
-        <div>
-            <p><strong>Гід з подорожей у Великобританії</strong><br><br>Few places cram in as much scenery, history and culture as the United Kingdom. It’s a busy, eccentric and unique destination; a land of daft humour, tea-and-cake clichés and a thousand and one different personalities; a land where thrusting cities like London, Glasgow and Manchester share map space with the peaks of Snowdonia and the colossal slopes of the Highlands.<br>
-            Four component nations make up the UK, and the end result is as many-layered as that fact would suggest. Its arts scene continues to be one of the most creative and successful in the world, its passions still run high on everything from politics to sport and its overall character is as modern as it is multicultural. Even the food’s good these days.
-            </p>
-        </div>
-        <div class="more-btn">
-            <i class="fas fa-info-circle"></i>
-        </div>
-        <div class="float-bar">
-            <div><h6>Проща:</h6><p>242,514 кв км (93,635 кв миль).</p>
-            </div>
-            <div><h6>Населення:</h6><p>64.6 million (2014).</p>
-            </div>
-            <div><h6>Population density:</h6><p>266.4 per sq km.</p>
-            </div>
-            <div><h6>Столиця:</h6><p>London.</p>
-            </div>
-            <div><h6>Government:</h6><p>Constitutional monarchy.</p>
-            </div>
-            <div><h6>Head of state:</h6><p>HM Queen Elizabeth II since 1952.</p>
-            </div>
-            <div><h6>Head of government:</h6><p>Prime Minister Theresa May since 2016.</p>
-            </div>
-            <div><h6>Electricity:</h6><p>230 volts AC, 50Hz. Plugs with three square pins are standard.</p>
-            </div>
-            <div>
-                <a href="https://en.wikipedia.org/wiki/United_Kingdom">
-                    <i class="fab fa-wikipedia-w p-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div id="Austria" class="col-img-item col-img-item-right tab-item mt-5">
-        <figure class="mr-2">
-            <img src="../mg/trips/au.jpg" alt="">
-        </figure>
-        <div>
-            <p><strong>Austria Travel Guide</strong><br><br>Despite its small size, Austria has a long-established international reputation, which is why most visitors arrive with heads full of Habsburg, Mozart and Alpine visions. Some expectations are delightfully met – the mountain scenery is breathtakingly real, there are the omnipresent fingerprints of the old empire in Vienna, and home-grown musical icons Mozart, Schubert and Strauss are championed everywhere – but Austria also has a few surprises up its sleeve in the form of contemporary art, cutting-edge architecture and innovative cuisine.<br>
-            Austria is frequently cited as one of the best places to live in Europe, and it is not difficult to see why. Remarkably safe and clean, it offers plenty of affordable culture, natural beauty and elegant Baroque and neoclassical architecture, as well as an efficient public transport system.
-            </p>
-        </div>
-        <div class="more-btn">
-            <i class="fas fa-info-circle"></i>
-        </div>
-        <div class="float-bar">
-            <div><h6>Area:</h6><p>83,871 sq km (32,382 sq miles).</p>
-            </div>
-            <div><h6>Population:</h6><p>8.7 million (2015).</p>
-            </div>
-            <div><h6>Population density:</h6><p>103 per sq km.</p>
-            </div>
-            <div><h6>Capital:</h6><p>Vienna (Wien).</p>
-            </div>
-            <div><h6>Government:</h6><p>Federal Republic.</p>
-            </div>
-            <div><h6>Head of state:</h6><p>President Heinz Fischer since 2004. President-elect Alexander van der Bellen from July 2016.</p>
-            </div>
-            <div><h6>Head of government:</h6><p>Chancellor Christian Kern since 2016.</p>
-            </div>
-            <div><h6>Electricity:</h6><p>230 volts AC, 50Hz. European plugs with two round pins are standard.</p>
-            </div>
-            <div>
-                <a href="https://en.wikipedia.org/wiki/Austria">
-                    <i class="fab fa-wikipedia-w p-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div id="Bulgaria" class="col-img-item col-img-item-right tab-item mt-5">
-        <figure class="mr-2">
-            <img src="../img/trips/blg.jpg" alt="">
-        </figure>
-        <div>
-            <p><strong>Bulgaria Travel Guide</strong><br><br>Bulgaria's spectacular mountains, golden beaches and vibrant cities have begun attracting hordes of eager-eyed tourists over the past few years, and with them much has been transformed in this crossroads between the Mediterranean and Eastern Europe.<br>
-            The country's mammoth changes have seen its cities and resorts undergoing construction booms galore, tempting buyers from Western Europe with relatively cheap property and stunning landscapes.<br>
-            Bulgaria's beautiful beach and ski resorts are expanding quickly as a result and have lured visitors away from more expensive European destinations with low-priced lift passes and accommodation options. The main cities have shrugged off their weary Communist-era image and have become vibrant and attractive, with well-kept boulevards, varied shopping and lively nightlife. In contrast, many towns and villages have preserved the authentic Bulgarian spirit and hospitality and the country is especially proud of its rich folklore traditions.
-            </p>
-        </div>
-        <div class="more-btn">
-            <i class="fas fa-info-circle"></i>
-        </div>
-        <div class="float-bar">
-            <div><h6>Area:</h6><p>110,994 sq km (42,855 sq miles).</p>
-            </div>
-            <div><h6>Population:</h6><p>7.2 million (2015).</p>
-            </div>
-            <div><h6>Population density:</h6><p>64.8 per sq km.</p>
-            </div>
-            <div><h6>Capital:</h6><p>Sofia.</p>
-            </div>
-            <div><h6>Government:</h6><p>Republic.</p>
-            </div>
-            <div><h6>Head of state:</h6><p>President Rosen Plevneliev since 2012.</p>
-            </div>
-            <div><h6>Head of government:</h6><p>Prime Minister Boyko Borisov, resigned in November 2016.</p>
-            </div>
-            <div><h6>Electricity:</h6><p>220-240 volts AC, 50Hz. European plugs with two round pins are standard.</p>
-            </div>
-            <div>
-                <a href="https://en.wikipedia.org/wiki/Bulgaria">
-                    <i class="fab fa-wikipedia-w p-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div id="Andorra" class="col-img-item col-img-item-right tab-item mt-5">
-        <figure class="mr-2">
-            <img src="../img/trips/ad.jpg" alt="">
-        </figure>
-        <div>
-            <p><strong>Andorra Travel Guide</strong><br><br>Tucked away in the eastern Pyrenees, the tiny Principality of Andorra is a land of narrow valleys and mountainous landscapes that’s popular for skiing and trekking. Its pretty villages and hamlets – dotted along the main road that traverses the country – are filled with Romanesque churches and houses, built in a unique, local style and preserved through the country’s seclusion.<br>
-            Tracing its roots back to Ancient Greek times and Polybius’ mention of Iberian Andosinos, Andorra is not short of history. Tradition has it that Charlemagne rewarded the Andorrans for fending off the Moors by granting them a charter. It’s this peculiar independence, somehow enduring over the ages against successive threats, that has allowed Andorra’s beautiful architecture to remain so unspoiled.
-            </p>
-        </div>
-        <div class="more-btn">
-            <i class="fas fa-info-circle"></i>
-        </div>
-        <div class="float-bar">
-            <div><h6>Area:</h6><p>467.8 sq km (180.6 sq miles).</p>
-            </div>
-            <div><h6>Population:</h6><p>85,580 (2015).</p>
-            </div>
-            <div><h6>Population density:</h6><p>183.3 per sq km.</p>
-            </div>
-            <div><h6>Capital:</h6><p>Andorra la Vella.</p>
-            </div>
-            <div><h6>Government:</h6><p>Principality under the suzerainty of the President of France and the Spanish Bishop of Seu d'Urgell.</p>
-            </div>
-            <div><h6>Head of state:</h6><p>Co-heads Joan Enric Vives i Sicilia (Bishop of la Seu d'Urgell) since 2003 and François Hollande (President of France) since 2012.</p>
-            </div>
-            <div><h6>Head of government:</h6><p>Prime Minister Antoni Martí Petit since 2011.</p>
-            </div>
-            <div><h6>Electricity:</h6><p>230 volts AC, 50Hz. European plugs with two round pins are standard.</p>
-            </div>
-            <div>
-                <a href="https://en.wikipedia.org/wiki/Andorra">
-                    <i class="fab fa-wikipedia-w p-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div id="France" class="col-img-item col-img-item-right tab-item mt-5">
-        <figure class="mr-2">
-            <img src="../img/trips/fr.jpg" alt="">
-        </figure>
-        <div>
-            <p><strong>France Travel Guide</strong><br><br>You could spend a lifetime’s worth of holidays in France and still not feel you’d done the country justice. It remains the planet’s most visited tourist destination, meriting its standing with an almost overwhelming mass of historical treasures, storybook landscapes and cultural idiosyncrasies.<br>
-            The teeming glam of Paris makes for one hell of a centrepiece, matching any city on the planet for ambiance, individuality and set-piece sights. But the real beauty of France, in many ways, lies elsewhere. The country’s natural gifts are striking, with white sands, hulking mountains and swathes of rolling countryside. It’s a land that has inspired dreamers and drinkers, revolutionaries and artists. Little wonder that Francophiles (and it’s telling that even the country’s devotees have a given word to describe them) are found the world over.
-            </p>
-        </div>
-        <div class="more-btn">
-            <i class="fas fa-info-circle"></i>
-        </div>
-        <div class="float-bar">
-            <div><h6>Area:</h6><p>551,500 sq km (212,935 sq miles) (not including overseas territories).</p>
-            </div>
-            <div><h6>Population:</h6><p>62.8 million (2015, metropolitan France only).</p>
-            </div>
-            <div><h6>Population density:</h6><p>113.9 per sq km.</p>
-            </div>
-            <div><h6>Capital:</h6><p>Paris.</p>
-            </div>
-            <div><h6>Government:</h6><p>Republic.</p>
-            </div>
-            <div><h6>Head of state:</h6><p>President François Hollande since 2012.</p>
-            </div>
-            <div><h6>Head of government:</h6><p>Prime Minister Manuel Valls since 2014.</p>
-            </div>
-            <div><h6>Electricity:</h6><p>230 volts AC, 50Hz. European plugs with two round pins are used.</p>
-            </div>
-            <div>
-                <a href="https://en.wikipedia.org/wiki/France">
-                    <i class="fab fa-wikipedia-w p-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div id="Greece" class="col-img-item col-img-item-right tab-item mt-5">
-        <figure class="mr-2">
-            <img src="../img/trips/gre.jpg" alt="">
-        </figure>
-        <div>
-            <p><strong>Greece Travel Guide</strong><br><br>A flavourful melting pot of sparkling nightspots, fresh seafood, sizzling Mediterranean passion and mythical legend, Greece is a fascinating and enchanting destination.<br>
-            The country has long held appeal for travellers, who decamp to its shores to lounge on beaches, explore ancient relics and take advantage of the legendary Grecian hospitality.<br>
-            Yet despite its popularity, there is still an undiscovered feel to parts of Greece with Mount Olympus, the Peloponnese coast and some of the more remote islands slipping, for now at least, under the radar of mass tourism.<br>
-            The first port of call for most visitors is Athens, the country’s stunning capital, which combines a modern centre with the stark ancient beauty of the Parthenon and a position overlooking a cerulean stretch of the Saronic Gulf.
-            </p>
-        </div>
-        <div class="more-btn">
-            <i class="fas fa-info-circle"></i>
-        </div>
-        <div class="float-bar">
-            <div><h6>Area:</h6><p>131,957 sq km (50,949 sq miles).</p>
-            </div>
-            <div><h6>Population:</h6><p>10.8 million (2015).</p>
-            </div>
-            <div><h6>Population density:</h6><p>81.7 per sq km.</p>
-            </div>
-            <div><h6>Capital:</h6><p>Athens.</p>
-            </div>
-            <div><h6>Government:</h6><p>Republic.</p>
-            </div>
-            <div><h6>Head of state:</h6><p>President Prokopis Pavlopoulos since 2015.</p>
-            </div>
-            <div><h6>Head of government:</h6><p>Prime Minister Alexis Tsipras since 2015.</p>
-            </div>
-            <div><h6>Electricity:</h6><p>230 volts AC, 50Hz. European plugs with two round pins are used.</p>
-            </div>
-            <div>
-                <a href="https://en.wikipedia.org/wiki/Greece">
-                    <i class="fab fa-wikipedia-w p-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    <script>
-        function openTab(event, tabName) {
-            var i, item, tablinks;
-    
-            item = document.getElementsByClassName("tab-item");
-            for (i = 0; i < item.length; i++) {
-                item[i].style.display = "none";
+        <script>
+            function openTab(event, tabName) {
+                var i, item, tablinks;
+                // alert(12345);
+                item = document.getElementsByClassName("tab-item");
+                for (i = 0; i < item.length; i++) {
+                    item[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablink");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(tabName).style.display = "block";
+                event.currentTarget.className += " active";
             }
-            tablinks = document.getElementsByClassName("tablink");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(tabName).style.display = "block";
-            event.currentTarget.className += " active";
-        }
-        document.getElementById("defaultOpen").click();
-    </script>
-</div>
+            document.getElementById("defaultOpen").click();
+        </script>
+    </div>
 
-<footer id="footer">
-</footer>
+    <footer id="footer">
+    </footer>
 
 </body>
+
 </html>
