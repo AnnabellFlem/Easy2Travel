@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-mongoose.connect("mongodb://localhost:27017/e2t", {
+mongoose.connect("mongodb://admin:admin@ds129670.mlab.com:29670/heroku_05k89dpz", {
     useMongoClient: true
 });
 const db = mongoose.connection;
